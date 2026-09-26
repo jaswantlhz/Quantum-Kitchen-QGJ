@@ -8,17 +8,23 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          "bg-cyan-500 text-black font-semibold hover:bg-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.5)] border border-cyan-300",
+          "bg-[#8a3ffc] text-white font-medium hover:bg-[#7b2cbf] border border-transparent shadow-sm",
         cyber:
-          "bg-gradient-to-r from-pink-600 to-purple-600 text-white font-semibold hover:from-pink-500 hover:to-purple-500 shadow-[0_0_20px_rgba(236,72,153,0.4)] border border-pink-400/40",
+          "bg-[#8a3ffc] text-white font-semibold hover:bg-[#6929c4] border border-[#a56eff]/40 shadow-sm",
+        qiskit:
+          "bg-[#8a3ffc] text-white font-medium hover:bg-[#7b2cbf] border border-transparent shadow-sm",
+        teal:
+          "bg-[#009d9a] text-white font-medium hover:bg-[#007d79] border border-transparent shadow-sm",
         neonGreen:
-          "bg-emerald-500 text-black font-bold hover:bg-emerald-400 shadow-[0_0_15px_rgba(16,185,129,0.5)] border border-emerald-300",
+          "bg-[#24a148] text-white font-medium hover:bg-[#198038] border border-transparent",
         outline:
-          "border border-cyan-500/40 bg-cyan-950/20 text-cyan-300 hover:bg-cyan-900/40 hover:border-cyan-400 hover:text-white backdrop-blur-sm",
+          "border border-[#525252] bg-transparent text-[#f4f4f4] hover:bg-[#262626] hover:text-white",
+        secondary:
+          "bg-[#262626] text-[#f4f4f4] hover:bg-[#393939] border border-[#393939]",
         ghost:
-          "text-slate-300 hover:text-white hover:bg-slate-800/60",
+          "text-slate-300 hover:text-white hover:bg-[#262626]",
         destructive:
-          "bg-rose-600 text-white hover:bg-rose-500 shadow-[0_0_15px_rgba(244,63,94,0.4)]",
+          "bg-[#da1e28] text-white hover:bg-[#ba1b23] border border-transparent",
       },
       size: {
         default: "h-10 px-4 py-2",

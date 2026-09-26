@@ -97,21 +97,19 @@ export default function QuantumKitchenPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background text-foreground flex flex-col justify-between selection:bg-cyan-500 selection:text-black transition-colors duration-200">
-      {/* Top Cyberpunk Diner Nav */}
-      <header className="border-b border-cyan-500/20 bg-slate-950/80 backdrop-blur-md px-4 py-3 sticky top-0 z-40">
+    <div className="min-h-screen bg-background text-foreground flex flex-col justify-between selection:bg-[#8a3ffc] selection:text-white transition-colors duration-200">
+      {/* Top Qiskit Kitchen Nav */}
+      <header className="border-b border-[#333333] bg-[#121212]/95 backdrop-blur-md px-4 py-3 sticky top-0 z-40">
         <div className="mx-auto max-w-7xl flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-500 via-pink-500 to-purple-600 p-0.5 shadow-[0_0_20px_rgba(6,182,212,0.4)]">
-              <div className="flex h-full w-full items-center justify-center rounded-[10px] bg-slate-950">
-                <ChefHat className="h-5 w-5 text-cyan-400" />
-              </div>
+            <div className="flex h-9 w-9 items-center justify-center rounded-lg border border-[#393939] bg-[#1c1c1c] shadow-sm">
+              <ChefHat className="h-5 w-5 text-[#8a3ffc]" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h1 className="text-base sm:text-lg font-black tracking-tight text-white flex items-center gap-1.5">
+                <h1 className="text-base sm:text-lg font-bold tracking-tight text-[#f4f4f4] flex items-center gap-1.5">
                   QUANTUM KITCHEN
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-purple-400">
+                  <span className="text-[#8a3ffc]">
                     COSMIC THREADS
                   </span>
                 </h1>
@@ -125,14 +123,14 @@ export default function QuantumKitchenPage() {
                   tooltip="How to Play Guide"
                 >
                   <div className="space-y-2 text-xs">
-                    <div className="p-2.5 rounded-lg bg-cyan-950/40 border border-cyan-500/30">
-                      <b className="text-cyan-300">1. The Prep (Braiding):</b> Swipe or click lane crossings to weave particle strands around each other.
+                    <div className="p-2.5 rounded-lg bg-[#262626] border border-[#393939]">
+                      <b className="text-[#009d9a]">1. The Prep (Braiding):</b> Swipe or click lane crossings to weave particle strands around each other.
                     </div>
-                    <div className="p-2.5 rounded-lg bg-pink-950/40 border border-pink-500/30">
-                      <b className="text-pink-300">2. Non-Abelian Flavor Rules:</b> Order matters! A twist in Lane 1 followed by Lane 2 produces a completely different quantum state and flavor than the reverse.
+                    <div className="p-2.5 rounded-lg bg-[#262626] border border-[#393939]">
+                      <b className="text-[#ee5396]">2. Non-Abelian Flavor Rules:</b> Order matters! A twist in Lane 1 followed by Lane 2 produces a completely different quantum state and flavor than the reverse.
                     </div>
-                    <div className="p-2.5 rounded-lg bg-purple-950/40 border border-purple-500/30">
-                      <b className="text-purple-300">3. The Cook (Fusion Bowl):</b> Collide strands in the mixing bowl. Perfect braids fuse into lucrative super-particle desserts; uncrossed strands cancel into identity ash!
+                    <div className="p-2.5 rounded-lg bg-[#262626] border border-[#393939]">
+                      <b className="text-[#be95ff]">3. The Cook (Fusion Bowl):</b> Collide strands in the mixing bowl. Perfect braids fuse into lucrative super-particle desserts; uncrossed strands cancel into identity ash!
                     </div>
                   </div>
                 </InfoDialog>
@@ -142,10 +140,10 @@ export default function QuantumKitchenPage() {
 
           <div className="flex items-center gap-2.5">
             {/* Credits Counter */}
-            <div className="flex items-center gap-1.5 rounded-xl border border-amber-500/30 bg-amber-950/30 px-3 py-1.5 font-mono text-xs text-amber-300 shadow-[0_0_10px_rgba(245,158,11,0.2)]">
+            <div className="flex items-center gap-1.5 rounded-lg border border-[#393939] bg-[#262626] px-3 py-1.5 font-mono text-xs text-[#f1c21b] shadow-sm">
               <span>🪙</span>
-              <span className="font-extrabold">{credits}</span>
-              <span className="text-[10px] text-amber-400/80">CR</span>
+              <span className="font-bold">{credits}</span>
+              <span className="text-[10px] text-[#f1c21b]/80">CR</span>
             </div>
 
             {/* Theme Toggle (Light / Dark) */}
@@ -156,10 +154,10 @@ export default function QuantumKitchenPage() {
               size="sm"
               variant="outline"
               onClick={toggleSound}
-              className="h-8 px-2.5 border-slate-800 text-slate-300"
+              className="h-8 px-2.5 border-[#393939] text-slate-300 hover:text-white"
               title={isMuted ? 'Unmute Audio' : 'Mute Audio'}
             >
-              {isMuted ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4 text-cyan-400" />}
+              {isMuted ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4 text-[#8a3ffc]" />}
             </Button>
 
             {/* Link to Scientist Admin Portal */}
@@ -191,10 +189,10 @@ export default function QuantumKitchenPage() {
                     refreshState();
                   }
                 }}
-                className={`flex items-center gap-2 rounded-xl px-3.5 py-1.5 text-xs font-semibold transition-all shrink-0 cursor-pointer ${
+                className={`flex items-center gap-2 rounded-lg px-3.5 py-1.5 text-xs font-medium transition-all shrink-0 cursor-pointer ${
                   isActive
-                    ? 'border border-cyan-400 bg-cyan-950/80 text-cyan-200 shadow-[0_0_15px_rgba(6,182,212,0.4)]'
-                    : 'border border-slate-800/80 bg-slate-900/40 text-slate-400 hover:text-slate-200 hover:bg-slate-900'
+                    ? 'border border-[#8a3ffc] bg-[#8a3ffc]/20 text-[#be95ff]'
+                    : 'border border-[#333333] bg-[#1c1c1c] text-slate-400 hover:text-[#f4f4f4] hover:bg-[#262626]'
                 }`}
               >
                 <span>{r.dishIcon}</span>
@@ -241,8 +239,8 @@ export default function QuantumKitchenPage() {
               />
 
               {/* Compact Physics Guide Trigger */}
-              <div className="flex items-center justify-between rounded-xl border border-slate-800/80 bg-slate-950/60 p-3">
-                <span className="text-xs font-semibold text-slate-300 flex items-center gap-1.5">
+              <div className="flex items-center justify-between rounded-lg border border-[#393939] bg-[#1c1c1c] p-3 shadow-sm">
+                <span className="text-xs font-semibold text-[#f4f4f4] flex items-center gap-1.5">
                   ⚛️ Anyon Physics Note
                 </span>
                 <InfoDialog
@@ -251,16 +249,16 @@ export default function QuantumKitchenPage() {
                   tooltip="Anyon Physics Guide"
                 >
                   <div className="space-y-2 text-xs">
-                    <div className="p-2.5 rounded-lg bg-cyan-950/40 border border-cyan-500/20">
-                      <b className="text-cyan-300">Lane 1 (R-Matrix):</b> Phase shift rotating quantum amplitude vector [α, β].
+                    <div className="p-2.5 rounded-lg bg-[#262626] border border-[#393939]">
+                      <b className="text-[#009d9a]">Lane 1 (R-Matrix):</b> Phase shift rotating quantum amplitude vector [α, β].
                     </div>
-                    <div className="p-2.5 rounded-lg bg-purple-950/40 border border-purple-500/20">
-                      <b className="text-purple-300">Lane 2 (F-Matrix):</b> Basis transformation mixing states via golden ratio:
-                      <div className="font-mono text-cyan-400 text-[10px] mt-1">
+                    <div className="p-2.5 rounded-lg bg-[#262626] border border-[#393939]">
+                      <b className="text-[#be95ff]">Lane 2 (F-Matrix):</b> Basis transformation mixing states via golden ratio:
+                      <div className="font-mono text-[#009d9a] text-[10px] mt-1">
                         τ = (√5 - 1) / 2 ≈ 0.618034
                       </div>
                     </div>
-                    <div className="p-2.5 rounded-lg bg-emerald-950/40 border border-emerald-500/20 text-emerald-300 font-mono text-[11px]">
+                    <div className="p-2.5 rounded-lg bg-[#262626] border border-[#393939] text-[#24a148] font-mono text-[11px]">
                       Anyon Fusion: τ ⊗ τ = 1 ⊕ τ
                     </div>
                   </div>

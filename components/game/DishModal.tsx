@@ -96,16 +96,16 @@ export function DishModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-md border-cyan-500/50 bg-slate-950/95 shadow-[0_0_50px_rgba(6,182,212,0.3)]">
+      <DialogContent className="max-w-md border border-[#333333] bg-[#1c1c1c] shadow-lg">
         <DialogHeader className="text-center">
           {/* Ceramic Serving Plate Presentation */}
-          <div className="relative mx-auto my-2 flex h-24 w-24 items-center justify-center rounded-full border-4 border-slate-700/60 bg-gradient-to-tr from-slate-900 via-slate-800 to-slate-950 shadow-[0_0_30px_rgba(6,182,212,0.4)]">
-            {/* Glowing Plated Ring */}
-            <div className="absolute inset-1 rounded-full border border-cyan-400/40 animate-pulse" />
-            <span className="text-4xl drop-shadow-lg">{recipe.dishIcon}</span>
+          <div className="relative mx-auto my-2 flex h-24 w-24 items-center justify-center rounded-full border-2 border-[#525252] bg-[#161616] shadow-sm">
+            {/* Fine Concentric Ceramic Rim */}
+            <div className="absolute inset-1.5 rounded-full border border-[#393939]" />
+            <span className="text-4xl drop-shadow-sm">{recipe.dishIcon}</span>
 
             {/* Sketched Ingredient Garnish Strip */}
-            <div className="absolute -bottom-2 flex items-center justify-center -space-x-1 bg-slate-900/90 px-1.5 py-0.5 rounded-full border border-cyan-500/40 shadow-md">
+            <div className="absolute -bottom-2 flex items-center justify-center -space-x-1 bg-[#262626] px-2 py-0.5 rounded-full border border-[#393939] shadow-sm">
               {recipe.ingredients.map((ingKey) => {
                 const item = INGREDIENTS[ingKey];
                 if (!item) return null;
@@ -113,7 +113,7 @@ export function DishModal({
                   <span
                     key={ingKey}
                     title={item.label}
-                    className="inline-flex h-4 w-4 items-center justify-center rounded-full bg-slate-950/90 p-0.5"
+                    className="inline-flex h-4 w-4 items-center justify-center rounded-full bg-[#161616] p-0.5"
                     dangerouslySetInnerHTML={{ __html: item.sketchSvg }}
                   />
                 );
@@ -121,22 +121,22 @@ export function DishModal({
             </div>
 
             {/* Grade Badge Ribbon */}
-            <div className="absolute -top-1 -right-2 rounded-full border border-amber-400 bg-amber-500 px-2 py-0.5 text-[10px] font-black text-black shadow-lg">
+            <div className="absolute -top-1 -right-2 rounded-full border border-[#f1c21b] bg-[#f1c21b] px-2 py-0.5 text-[10px] font-bold text-black">
               {result.grade}
             </div>
           </div>
 
           <div className="flex items-center justify-center gap-1.5 mt-1">
-            <Badge variant="outline" className="text-[10px] font-mono border-cyan-500/40 text-cyan-300">
+            <Badge variant="default" className="text-[10px] font-mono">
               {result.compositeMeal || recipe.mealCategory}
             </Badge>
             <Badge variant="secondary" className="text-[10px] font-mono flex items-center gap-1">
-              <Flame className="h-3 w-3 text-orange-400" />
+              <Flame className="h-3 w-3 text-[#ff832b]" />
               <span>{result.umamiMultiplier}x Umami</span>
             </Badge>
           </div>
 
-          <DialogTitle className="text-2xl font-black tracking-wide text-white mt-1">
+          <DialogTitle className="text-2xl font-bold tracking-wide text-[#f4f4f4] mt-1">
             {result.dishName}
           </DialogTitle>
           <DialogDescription className="text-xs text-slate-300">
@@ -145,14 +145,14 @@ export function DishModal({
         </DialogHeader>
 
         {/* Plated Score & Specs */}
-        <div className="space-y-3 rounded-xl border border-slate-800 bg-slate-900/60 p-4">
-          <div className="flex items-center justify-between border-b border-slate-800/80 pb-2">
+        <div className="space-y-3 rounded-lg border border-[#393939] bg-[#262626] p-4">
+          <div className="flex items-center justify-between border-b border-[#393939] pb-2">
             <div className="flex items-center gap-1.5 text-xs text-slate-400 font-semibold">
-              <Award className="h-4 w-4 text-amber-400" />
+              <Award className="h-4 w-4 text-[#f1c21b]" />
               <span>Plated Score</span>
             </div>
             <div className="flex items-center gap-2">
-              <span className="font-mono text-base font-extrabold text-amber-400">
+              <span className="font-mono text-base font-bold text-[#f1c21b]">
                 {result.platedScore} <span className="text-xs text-slate-400">PTS</span>
               </span>
               <Badge
@@ -165,13 +165,13 @@ export function DishModal({
           </div>
 
           <div className="grid grid-cols-2 gap-2 text-xs">
-            <div className="rounded-lg bg-slate-950/60 p-2">
+            <div className="rounded-lg bg-[#161616] p-2 border border-[#333333]">
               <span className="text-slate-400 block text-[10px]">Braid Word</span>
-              <span className="font-mono font-bold text-cyan-300">{braidWord}</span>
+              <span className="font-mono font-bold text-[#be95ff]">{braidWord}</span>
             </div>
-            <div className="rounded-lg bg-slate-950/60 p-2">
+            <div className="rounded-lg bg-[#161616] p-2 border border-[#333333]">
               <span className="text-slate-400 block text-[10px]">Credits Rewarded</span>
-              <span className="font-mono font-bold text-amber-400">+🪙 {earnedCredits} CR</span>
+              <span className="font-mono font-bold text-[#f1c21b]">+🪙 {earnedCredits} CR</span>
             </div>
           </div>
 
@@ -181,27 +181,27 @@ export function DishModal({
               Plated Flavor Harmony
             </span>
             <div className="grid grid-cols-4 gap-1.5 text-center font-mono text-[11px]">
-              <div className="rounded bg-pink-950/40 border border-pink-500/20 p-1.5">
-                <span className="block text-[10px] text-pink-400">Sweet</span>
-                <span className="font-bold text-pink-200">{result.flavorProfile.sweetness}%</span>
+              <div className="rounded bg-[#161616] border border-[#333333] p-1.5">
+                <span className="block text-[10px] text-[#ee5396]">Sweet</span>
+                <span className="font-bold text-[#f4f4f4]">{result.flavorProfile.sweetness}%</span>
               </div>
-              <div className="rounded bg-emerald-950/40 border border-emerald-500/20 p-1.5">
-                <span className="block text-[10px] text-emerald-400">Sour</span>
-                <span className="font-bold text-emerald-200">{result.flavorProfile.sourness}%</span>
+              <div className="rounded bg-[#161616] border border-[#333333] p-1.5">
+                <span className="block text-[10px] text-[#009d9a]">Sour</span>
+                <span className="font-bold text-[#f4f4f4]">{result.flavorProfile.sourness}%</span>
               </div>
-              <div className="rounded bg-amber-950/40 border border-amber-500/20 p-1.5">
-                <span className="block text-[10px] text-amber-400">Spicy</span>
-                <span className="font-bold text-amber-200">{result.flavorProfile.spiciness}%</span>
+              <div className="rounded bg-[#161616] border border-[#333333] p-1.5">
+                <span className="block text-[10px] text-[#da1e28]">Spicy</span>
+                <span className="font-bold text-[#f4f4f4]">{result.flavorProfile.spiciness}%</span>
               </div>
-              <div className="rounded bg-purple-950/40 border border-purple-500/20 p-1.5">
-                <span className="block text-[10px] text-purple-400">Umami</span>
-                <span className="font-bold text-purple-200">{result.flavorProfile.umami}%</span>
+              <div className="rounded bg-[#161616] border border-[#333333] p-1.5">
+                <span className="block text-[10px] text-[#be95ff]">Umami</span>
+                <span className="font-bold text-[#f4f4f4]">{result.flavorProfile.umami}%</span>
               </div>
             </div>
           </div>
 
-          <div className="rounded-lg border border-cyan-500/20 bg-cyan-950/20 p-2 text-[11px] text-cyan-200 flex items-center gap-1.5">
-            <Sparkles className="h-3.5 w-3.5 text-cyan-400 shrink-0" />
+          <div className="rounded-lg border border-[#393939] bg-[#161616] p-2 text-[11px] text-[#c6c6c6] flex items-center gap-1.5">
+            <Sparkles className="h-3.5 w-3.5 text-[#8a3ffc] shrink-0" />
             <span>Telemetry logged to <b>Scientist Portal (/admin)</b> for research!</span>
           </div>
         </div>

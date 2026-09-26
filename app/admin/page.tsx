@@ -73,14 +73,14 @@ export default function AdminPage() {
   return (
     <div className="min-h-screen bg-background text-foreground p-4 sm:p-6 lg:p-8 transition-colors duration-200">
       {/* Top Header Bar */}
-      <header className="mx-auto max-w-7xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-cyan-500/20 pb-5">
+      <header className="mx-auto max-w-7xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-[#333333] pb-5">
         <div>
           <div className="flex items-center gap-2">
-            <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-cyan-950 border border-cyan-500/40 text-cyan-400 shadow-[0_0_15px_rgba(6,182,212,0.4)]">
-              <Atom className="h-5 w-5 animate-spin" />
+            <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-[#262626] border border-[#393939] text-[#8a3ffc]">
+              <Atom className="h-5 w-5" />
             </span>
             <div>
-              <h1 className="text-xl sm:text-2xl font-black tracking-tight text-white flex items-center gap-2">
+              <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-[#f4f4f4] flex items-center gap-2">
                 Quantum Scientist Portal
                 <Badge variant="default" className="text-[10px] tracking-widest font-mono">
                   B₃ ANYON OBSERVATORY
@@ -101,14 +101,14 @@ export default function AdminPage() {
             size="sm"
             onClick={fetchBraids}
             disabled={loading}
-            className="h-8 border-slate-700 text-xs"
+            className="h-8 border-[#393939] text-xs"
           >
             <RefreshCw className={`mr-1.5 h-3.5 w-3.5 ${loading ? 'animate-spin' : ''}`} />
             Refresh
           </Button>
 
           <Link href="/">
-            <Button size="sm" variant="cyber" className="h-8 text-xs font-bold">
+            <Button size="sm" variant="default" className="h-8 text-xs font-bold">
               <ChefHat className="mr-1.5 h-3.5 w-3.5" /> Return to Kitchen
             </Button>
           </Link>
@@ -136,13 +136,13 @@ export default function AdminPage() {
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
               {/* Left Column: Braid Telemetry Table */}
               <div className="lg:col-span-7 space-y-4">
-                <Card className="border-slate-800 bg-slate-950/70 p-4">
+                <Card className="border-[#333333] bg-[#1c1c1c] p-4 shadow-sm">
                   <div className="flex items-center justify-between mb-3">
                     <span className="text-xs font-bold text-slate-300 uppercase tracking-wider">
                       Archived Braid Experiments
                     </span>
                     <span className="text-[11px] text-slate-400">
-                      Total records: <strong className="text-cyan-400">{braids.length}</strong>
+                      Total records: <strong className="text-[#8a3ffc]">{braids.length}</strong>
                     </span>
                   </div>
                   <BraidTable
@@ -156,16 +156,16 @@ export default function AdminPage() {
               {/* Right Column: Deep Quantum Inspector & SVG Knot Projection */}
               <div className="lg:col-span-5 space-y-4">
                 {selectedBraid && (
-                  <Card className="border-cyan-500/30 bg-slate-950/80 p-4">
+                  <Card className="border-[#333333] bg-[#1c1c1c] p-4 shadow-sm">
                     <div className="flex items-center justify-between mb-2">
-                      <span className="text-[11px] font-bold text-cyan-400 uppercase tracking-wider">
+                      <span className="text-[11px] font-bold text-[#be95ff] uppercase tracking-wider">
                         Topological 2D Knot Projection
                       </span>
                       <span className="font-mono text-[10px] text-slate-500">
                         SVG Vector Engine
                       </span>
                     </div>
-                    <div className="flex justify-center p-2 rounded-xl bg-slate-900/40 border border-slate-800">
+                    <div className="flex justify-center p-2 rounded-lg bg-[#161616] border border-[#333333]">
                       <BraidDiagramSvg
                         crossings={selectedBraid.crossings}
                         width={340}

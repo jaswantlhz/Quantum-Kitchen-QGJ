@@ -143,12 +143,12 @@ export function BraidCanvas({
 
     ctx.clearRect(0, 0, width, height);
 
-    // Canvas Background fill
-    ctx.fillStyle = isLight ? '#f8fafc' : '#060811';
+    // Canvas Background fill - Qiskit Matte Surface
+    ctx.fillStyle = isLight ? '#ffffff' : '#161616';
     ctx.fillRect(0, 0, width, height);
 
-    // Grid lines adapting to theme
-    ctx.strokeStyle = isLight ? 'rgba(203, 213, 225, 0.7)' : 'rgba(30, 41, 59, 0.4)';
+    // Grid lines adapting to theme - Subtle 1px Technical Drafting Grid
+    ctx.strokeStyle = isLight ? 'rgba(0, 0, 0, 0.05)' : 'rgba(255, 255, 255, 0.05)';
     ctx.lineWidth = 1;
     for (let x = 0; x < width; x += 35) {
       ctx.beginPath();
@@ -181,7 +181,7 @@ export function BraidCanvas({
       drawIngredientSketch(ctx, ingKey, x, currentY - 12, 13, false);
     });
 
-    // 2. Draw lines step by step
+    // 2. Draw lines step by step - Solid vector strokes, zero neon blur
     crossings.forEach((c) => {
       const nextY = currentY + stepHeight;
 
@@ -197,8 +197,7 @@ export function BraidCanvas({
           const x = strandXPositions[laneIdx];
           ctx.strokeStyle = strandColors[sId];
           ctx.lineWidth = 4;
-          ctx.shadowBlur = 8;
-          ctx.shadowColor = strandColors[sId];
+          ctx.shadowBlur = 0;
           ctx.beginPath();
           ctx.moveTo(x, currentY);
           ctx.lineTo(x, nextY);
@@ -209,7 +208,6 @@ export function BraidCanvas({
             ctx.fillStyle = '#ffffff';
             ctx.fillRect(x - 3, (currentY + nextY) / 2, 6, 2);
           }
-          ctx.shadowBlur = 0;
         }
       });
 
@@ -218,11 +216,10 @@ export function BraidCanvas({
       const x2 = strandXPositions[rightLane];
       const midY = (currentY + nextY) / 2;
 
-      const drawSpline = (startX: number, endX: number, color: string, isUnder: boolean) => {
+      const drawSpline = (startX: number, endX: number, color: string) => {
         ctx.strokeStyle = color;
         ctx.lineWidth = 4.5;
-        ctx.shadowBlur = isUnder ? 3 : 12;
-        ctx.shadowColor = color;
+        ctx.shadowBlur = 0;
         ctx.beginPath();
         ctx.moveTo(startX, currentY);
         ctx.bezierCurveTo(startX, midY, endX, midY, endX, nextY);
@@ -233,40 +230,40 @@ export function BraidCanvas({
           ctx.fillStyle = '#ffffff';
           ctx.fillRect(endX - 3, nextY - 5, 6, 2);
         }
-        ctx.shadowBlur = 0;
       };
 
-      const bridgeColor = isLight ? '#f8fafc' : '#05070e';
+      const bridgeColor = isLight ? '#ffffff' : '#161616';
 
       if (c.isOver) {
-        drawSpline(x2, x1, strandColors[strandRight], true);
+        drawSpline(x2, x1, strandColors[strandRight]);
         ctx.strokeStyle = bridgeColor;
         ctx.lineWidth = 9;
         ctx.beginPath();
         ctx.moveTo(x1, currentY);
         ctx.bezierCurveTo(x1, midY, x2, midY, x2, nextY);
         ctx.stroke();
-        drawSpline(x1, x2, strandColors[strandLeft], false);
+        drawSpline(x1, x2, strandColors[strandLeft]);
       } else {
-        drawSpline(x1, x2, strandColors[strandLeft], true);
+        drawSpline(x1, x2, strandColors[strandLeft]);
         ctx.strokeStyle = bridgeColor;
         ctx.lineWidth = 9;
         ctx.beginPath();
         ctx.moveTo(x2, currentY);
         ctx.bezierCurveTo(x2, midY, x1, midY, x1, nextY);
         ctx.stroke();
-        drawSpline(x2, x1, strandColors[strandRight], false);
+        drawSpline(x2, x1, strandColors[strandRight]);
       }
 
-      // If line merger occurred at this crossing, draw lightning spark
+      // If line merger occurred at this crossing, draw crisp golden connector
       if (c.isMerged) {
-        ctx.fillStyle = '#facc15';
-        ctx.shadowBlur = 10;
-        ctx.shadowColor = '#facc15';
-        ctx.beginPath();
-        ctx.arc((x1 + x2) / 2, midY, 6, 0, Math.PI * 2);
-        ctx.fill();
+        ctx.fillStyle = '#f1c21b';
         ctx.shadowBlur = 0;
+        ctx.beginPath();
+        ctx.arc((x1 + x2) / 2, midY, 5, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = '#ffffff';
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
       }
 
       posMap[strandLeft] = rightLane;
@@ -280,8 +277,7 @@ export function BraidCanvas({
       const endX = strandXPositions[laneIdx];
       ctx.strokeStyle = strandColors[strandId];
       ctx.lineWidth = 4;
-      ctx.shadowBlur = 8;
-      ctx.shadowColor = strandColors[strandId];
+      ctx.shadowBlur = 0;
       ctx.beginPath();
       ctx.moveTo(startX, currentY);
       ctx.lineTo(endX, height - 32);
@@ -290,9 +286,8 @@ export function BraidCanvas({
       // Lead-in particle beads
       ctx.fillStyle = strandColors[strandId];
       ctx.beginPath();
-      ctx.arc(endX, height - 32, 5, 0, Math.PI * 2);
+      ctx.arc(endX, height - 32, 4.5, 0, Math.PI * 2);
       ctx.fill();
-      ctx.shadowBlur = 0;
     });
   }, [crossings, strandColors, springWiggle, numStrands, ingredientsList]);
 
@@ -301,23 +296,23 @@ export function BraidCanvas({
   return (
     <div
       ref={containerRef}
-      className="relative flex flex-col items-center rounded-2xl border border-cyan-500/30 bg-slate-950/80 p-4 shadow-[0_0_35px_rgba(6,182,212,0.15)] backdrop-blur-xl"
+      className="relative flex flex-col items-center rounded-xl border border-[#333333] bg-[#1c1c1c] p-4 shadow-sm backdrop-blur-md"
     >
       {/* Top HUD bar with Umami Multiplier Ladder */}
-      <div className="flex w-full items-center justify-between border-b border-slate-800/80 pb-3 gap-2">
+      <div className="flex w-full items-center justify-between border-b border-[#333333] pb-3 gap-2">
         <div className="flex items-center gap-2">
           <Badge variant="default" className="text-xs">
             <Sparkles className="mr-1 h-3 w-3" />
             {numStrands}-Strand Braid
           </Badge>
-          <span className="font-mono text-xs text-cyan-300 font-bold tracking-wider">
+          <span className="font-mono text-xs text-[#be95ff] font-bold tracking-wider">
             {engine.getBraidWord()}
           </span>
         </div>
 
         {/* Live Umami Multiplier Badge */}
-        <div className="flex items-center gap-1.5 rounded-lg border border-purple-500/40 bg-purple-950/40 px-2.5 py-1 text-xs font-mono font-bold text-purple-200 shadow-[0_0_12px_rgba(168,85,247,0.3)]">
-          <Flame className="h-3.5 w-3.5 text-purple-400" />
+        <div className="flex items-center gap-1.5 rounded-lg border border-[#525252] bg-[#262626] px-2.5 py-1 text-xs font-mono font-bold text-[#f4f4f4]">
+          <Flame className="h-3.5 w-3.5 text-[#f1c21b]" />
           <span>Umami: {umamiMultiplier}x</span>
         </div>
 
@@ -327,7 +322,7 @@ export function BraidCanvas({
             variant="outline"
             onClick={handleUndo}
             disabled={crossings.length === 0}
-            className="h-7 text-xs px-2"
+            className="h-7 text-xs px-2.5"
           >
             <Undo2 className="mr-1 h-3 w-3" /> Undo
           </Button>
@@ -336,7 +331,7 @@ export function BraidCanvas({
             variant="ghost"
             onClick={handleReset}
             disabled={crossings.length === 0}
-            className="h-7 text-xs px-2 text-rose-400 hover:text-rose-300"
+            className="h-7 text-xs px-2.5 text-rose-400 hover:text-rose-300"
           >
             <RotateCcw className="mr-1 h-3 w-3" /> Reset
           </Button>
@@ -344,11 +339,11 @@ export function BraidCanvas({
       </div>
 
       {/* Appliance Station Toolbar */}
-      <div className="flex items-center justify-between w-full mt-2.5 px-2 py-1.5 rounded-xl border border-slate-800 bg-slate-900/60 text-xs">
+      <div className="flex items-center justify-between w-full mt-2.5 px-2.5 py-1.5 rounded-lg border border-[#333333] bg-[#262626] text-xs">
         <span className="text-[11px] font-bold text-slate-400 flex items-center gap-1">
-          <Utensils className="h-3 w-3 text-cyan-400" /> Station:
+          <Utensils className="h-3 w-3 text-[#009d9a]" /> Station:
         </span>
-        <div className="flex items-center gap-1 overflow-x-auto">
+        <div className="flex items-center gap-1.5 overflow-x-auto">
           {(
             [
               { id: 'chop', label: '🔪 Chop', tooltip: 'Accelerates phase rotation (Sweetness)' },
@@ -362,10 +357,10 @@ export function BraidCanvas({
               key={app.id}
               type="button"
               onClick={() => setSelectedAppliance(app.id)}
-              className={`px-2 py-0.5 rounded-lg text-[11px] font-semibold transition-all cursor-pointer ${
+              className={`px-2.5 py-1 rounded-md text-[11px] font-medium transition-all cursor-pointer ${
                 selectedAppliance === app.id
-                  ? 'bg-cyan-500 text-black font-bold shadow-[0_0_10px_rgba(6,182,212,0.5)]'
-                  : 'text-slate-400 hover:text-white hover:bg-slate-800'
+                  ? 'bg-[#8a3ffc] text-white font-bold'
+                  : 'text-slate-400 hover:text-white hover:bg-[#333333]'
               }`}
               title={app.tooltip}
             >
@@ -378,10 +373,10 @@ export function BraidCanvas({
         <button
           type="button"
           onClick={() => setMergeNext(!mergeNext)}
-          className={`flex items-center gap-1 px-2 py-0.5 rounded-lg text-[11px] font-bold transition-all cursor-pointer ${
+          className={`flex items-center gap-1 px-2.5 py-1 rounded-md text-[11px] font-bold transition-all cursor-pointer ${
             mergeNext
-              ? 'bg-amber-400 text-black shadow-[0_0_15px_rgba(251,191,36,0.6)] animate-pulse'
-              : 'border border-amber-500/40 text-amber-300 hover:bg-amber-950/40'
+              ? 'bg-[#f1c21b] text-black font-bold'
+              : 'border border-[#f1c21b]/50 text-[#f1c21b] hover:bg-[#f1c21b]/10'
           }`}
           title="When enabled, next crossing merges two lines into a composite meal thread!"
         >
@@ -396,12 +391,12 @@ export function BraidCanvas({
           ref={canvasRef}
           width={Math.max(500, numStrands * 115)}
           height={330}
-          className="rounded-xl border border-slate-300 dark:border-slate-800/80 bg-slate-50 dark:bg-[#060811] shadow-inner max-w-full"
+          className="rounded-lg border border-[#333333] bg-[#161616] max-w-full"
         />
       </div>
 
       {/* Dynamic Crossing Controls for All N-1 Lanes */}
-      <div className="w-full flex items-center justify-center gap-3 flex-wrap py-2.5 border-t border-slate-800/60 mb-1">
+      <div className="w-full flex items-center justify-center gap-3 flex-wrap py-2.5 border-t border-[#333333] mb-1 bg-[#161616]/70 rounded-lg p-2">
         {Array.from({ length: numStrands - 1 }, (_, i) => {
           const laneNum = i + 1;
           const isPhase = laneNum % 2 === 1;
@@ -409,15 +404,15 @@ export function BraidCanvas({
           return (
             <div
               key={`lane-ctrl-${laneNum}`}
-              className={`flex flex-col items-center gap-1.5 rounded-xl border p-2 backdrop-blur-md shadow-md min-w-[130px] ${
+              className={`flex flex-col items-center gap-1.5 rounded-lg border p-2 shadow-sm min-w-[130px] ${
                 isPhase
-                  ? 'border-cyan-500/40 bg-white/95 dark:bg-slate-900/90'
-                  : 'border-purple-500/40 bg-white/95 dark:bg-slate-900/90'
+                  ? 'border-[#009d9a]/50 bg-[#262626]'
+                  : 'border-[#8a3ffc]/50 bg-[#262626]'
               }`}
             >
               <span
                 className={`text-[10px] uppercase font-bold tracking-wider ${
-                  isPhase ? 'text-cyan-600 dark:text-cyan-400' : 'text-purple-600 dark:text-purple-400'
+                  isPhase ? 'text-[#009d9a]' : 'text-[#a56eff]'
                 }`}
               >
                 Lane {laneNum} (σ{laneNum === 1 ? '₁' : laneNum === 2 ? '₂' : laneNum === 3 ? '₃' : laneNum})
@@ -427,7 +422,7 @@ export function BraidCanvas({
                   size="sm"
                   variant="outline"
                   onClick={() => handleCrossing(laneNum, true)}
-                  className="h-7 flex-1 px-2 text-[11px] font-bold border-cyan-500/40 hover:bg-cyan-500/20"
+                  className="h-7 flex-1 px-2 text-[11px] font-bold border-[#525252] hover:bg-[#333333]"
                   title={`Lane ${laneNum} Over crossing`}
                 >
                   Over (σ{laneNum})
@@ -436,7 +431,7 @@ export function BraidCanvas({
                   size="sm"
                   variant="outline"
                   onClick={() => handleCrossing(laneNum, false)}
-                  className="h-7 flex-1 px-2 text-[11px] font-bold border-cyan-500/40 hover:bg-cyan-500/20"
+                  className="h-7 flex-1 px-2 text-[11px] font-bold border-[#525252] hover:bg-[#333333]"
                   title={`Lane ${laneNum} Under crossing`}
                 >
                   Under (σ{laneNum}⁻¹)

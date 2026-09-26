@@ -12,13 +12,13 @@ interface BraidDiagramSvgProps {
 }
 
 const DEFAULT_STRAND_COLORS = [
-  '#ff6b35', // Carrot (Orange)
-  '#2ec4b6', // Lettuce (Cyan/Emerald)
-  '#e63946', // Tomato (Red)
-  '#f3c053', // Bread (Gold)
-  '#70e000', // Pepper (Lime)
-  '#a855f7', // Purple
-  '#d00000', // Paprika (Crimson)
+  '#ff832b', // Carbon Orange 40 (Carrot)
+  '#8a3ffc', // Qiskit Purple 60 (Potato)
+  '#009d9a', // Quantum Gate Teal 50 (Lettuce)
+  '#ee5396', // Qiskit Magenta 50 (Tomato)
+  '#24a148', // Carbon Green 50 (Pepper)
+  '#da1e28', // Carbon Red 60 (Paprika)
+  '#f1c21b', // Carbon Gold / Yellow 30 (Bread)
 ];
 
 export function BraidDiagramSvg({
@@ -172,7 +172,7 @@ export function BraidDiagramSvg({
       width={width}
       height={height}
       viewBox={`0 0 ${width} ${height}`}
-      className="rounded-xl border border-slate-300 dark:border-slate-800 bg-slate-50 dark:bg-[#070a12] shadow-inner"
+      className="rounded-lg border border-[#333333] bg-[#161616]"
     >
       {/* Top particle terminals */}
       {strandX.map((x, i) => (

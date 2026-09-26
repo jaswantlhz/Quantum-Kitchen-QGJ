@@ -16,12 +16,12 @@ interface StabilizerShopProps {
 
 export function StabilizerShop({ upgrades, credits, onBuyUpgrade }: StabilizerShopProps) {
   return (
-    <Card className="border-cyan-500/20 bg-slate-950/80">
-      <CardHeader className="p-3.5 border-b border-slate-800/60 pb-2.5">
+    <Card className="border-[#333333] bg-[#1c1c1c] shadow-sm">
+      <CardHeader className="p-3.5 border-b border-[#333333] pb-2.5">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <ShoppingBag className="h-4 w-4 text-cyan-400" />
-            <CardTitle className="text-sm font-bold text-white">Quantum Pantry</CardTitle>
+            <ShoppingBag className="h-4 w-4 text-[#8a3ffc]" />
+            <CardTitle className="text-sm font-bold text-[#f4f4f4]">Quantum Pantry</CardTitle>
             <InfoDialog
               title="Quantum Pantry Upgrades"
               description="Stabilizers dampen ambient thermal decoherence and lock quantum odds towards the desired Super-Particle fusion channel."
@@ -43,25 +43,25 @@ export function StabilizerShop({ upgrades, credits, onBuyUpgrade }: StabilizerSh
             return (
               <div
                 key={u.id}
-                className="flex items-center justify-between rounded-xl border border-slate-800/80 bg-slate-900/50 p-2.5 hover:border-slate-700 transition-colors"
+                className="flex items-center justify-between rounded-lg border border-[#393939] bg-[#262626] p-2.5 hover:border-[#525252] transition-colors"
               >
                 <div className="flex items-center gap-2.5 min-w-0 pr-2">
                   <span className="text-xl shrink-0">{u.icon}</span>
                   <div className="min-w-0">
                     <div className="flex items-center gap-1.5">
-                      <span className="text-xs font-bold text-slate-100 truncate">{u.name}</span>
+                      <span className="text-xs font-bold text-[#f4f4f4] truncate">{u.name}</span>
                       <InfoDialog
                         title={u.name}
                         description={u.description}
                         tooltip="Equipment Details"
                       >
-                        <div className="rounded bg-slate-900 border border-slate-800 p-2 text-xs text-emerald-400 font-mono">
+                        <div className="rounded bg-[#161616] border border-[#393939] p-2 text-xs text-[#24a148] font-mono">
                           Active Effect: {u.effectLabel}
                         </div>
                       </InfoDialog>
                     </div>
                     <div className="flex items-center gap-1.5 mt-0.5 flex-wrap">
-                      <span className="text-[10px] text-emerald-400 font-mono font-medium truncate">
+                      <span className="text-[10px] text-[#24a148] font-mono font-medium truncate">
                         {u.effectLabel}
                       </span>
                       <span className="text-[9px] text-slate-400 font-mono shrink-0">

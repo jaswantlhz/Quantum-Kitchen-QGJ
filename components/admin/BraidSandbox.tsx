@@ -97,18 +97,18 @@ export function BraidSandbox({ onBraidSaved }: BraidSandboxProps) {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
       {/* Left: Interactive Braid Knot Generator & Operators */}
-      <Card className="lg:col-span-7 border-purple-500/30 bg-slate-950/80">
-        <CardHeader className="p-4 border-b border-slate-800/80">
+      <Card className="lg:col-span-7 border-[#333333] bg-[#1c1c1c] shadow-sm">
+        <CardHeader className="p-4 border-b border-[#333333]">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div className="flex items-center gap-2">
-              <Sparkles className="h-5 w-5 text-purple-400" />
-              <CardTitle className="text-base text-white">N-Strand Braid Theory Sandbox</CardTitle>
+              <Sparkles className="h-5 w-5 text-[#8a3ffc]" />
+              <CardTitle className="text-base text-[#f4f4f4]">N-Strand Braid Theory Sandbox</CardTitle>
             </div>
 
             {/* Strand count selector (2 to 7) */}
-            <div className="flex items-center gap-1.5 rounded-lg bg-slate-900 border border-slate-800 p-1">
+            <div className="flex items-center gap-1.5 rounded-lg bg-[#262626] border border-[#393939] p-1">
               <span className="text-[10px] uppercase font-bold text-slate-400 px-1.5 flex items-center gap-1">
-                <Layers className="h-3 w-3 text-cyan-400" /> Strands:
+                <Layers className="h-3 w-3 text-[#009d9a]" /> Strands:
               </span>
               {[2, 3, 4, 5, 6, 7].map((num) => (
                 <button
@@ -117,7 +117,7 @@ export function BraidSandbox({ onBraidSaved }: BraidSandboxProps) {
                   onClick={() => handleStrandCountChange(num)}
                   className={`h-6 w-6 rounded font-mono text-xs font-bold transition-all cursor-pointer ${
                     strandCount === num
-                      ? 'bg-cyan-500 text-black shadow-[0_0_8px_rgba(6,182,212,0.5)]'
+                      ? 'bg-[#8a3ffc] text-white font-bold'
                       : 'text-slate-400 hover:text-white'
                   }`}
                 >
@@ -127,7 +127,7 @@ export function BraidSandbox({ onBraidSaved }: BraidSandboxProps) {
             </div>
 
             <div className="flex gap-2">
-              <Button size="sm" variant="outline" onClick={handleUndo} disabled={crossings.length === 0} className="h-7 text-xs">
+              <Button size="sm" variant="outline" onClick={handleUndo} disabled={crossings.length === 0} className="h-7 text-xs border-[#525252]">
                 <Undo2 className="mr-1 h-3 w-3" /> Undo
               </Button>
               <Button size="sm" variant="ghost" onClick={handleReset} disabled={crossings.length === 0} className="h-7 text-xs text-rose-400">
@@ -139,7 +139,7 @@ export function BraidSandbox({ onBraidSaved }: BraidSandboxProps) {
 
         <CardContent className="p-4 space-y-4">
           {/* Dynamic Operator Buttons for N - 1 lanes */}
-          <div className="rounded-xl border border-slate-800 bg-slate-900/60 p-3 space-y-2">
+          <div className="rounded-lg border border-[#393939] bg-[#262626] p-3 space-y-2">
             <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider block">
               Anyon Generators (Braid Group B_{strandCount})
             </span>
@@ -156,8 +156,8 @@ export function BraidSandbox({ onBraidSaved }: BraidSandboxProps) {
                       onClick={() => applyOperator(lane, true)}
                       className={`h-8 border font-mono text-xs font-bold ${
                         isOdd
-                          ? 'border-cyan-500/50 hover:bg-cyan-950/50 text-cyan-300'
-                          : 'border-purple-500/50 hover:bg-purple-950/50 text-purple-300'
+                          ? 'border-[#009d9a]/50 hover:bg-[#333333] text-[#009d9a]'
+                          : 'border-[#8a3ffc]/50 hover:bg-[#333333] text-[#be95ff]'
                       }`}
                     >
                       + σ{lane === 1 ? '₁' : lane === 2 ? '₂' : lane === 3 ? '₃' : lane} (Over)
@@ -168,8 +168,8 @@ export function BraidSandbox({ onBraidSaved }: BraidSandboxProps) {
                       onClick={() => applyOperator(lane, false)}
                       className={`h-8 border font-mono text-xs font-bold ${
                         isOdd
-                          ? 'border-cyan-500/50 hover:bg-cyan-950/50 text-cyan-300'
-                          : 'border-purple-500/50 hover:bg-purple-950/50 text-purple-300'
+                          ? 'border-[#009d9a]/50 hover:bg-[#333333] text-[#009d9a]'
+                          : 'border-[#8a3ffc]/50 hover:bg-[#333333] text-[#be95ff]'
                       }`}
                     >
                       - σ{lane === 1 ? '₁' : lane === 2 ? '₂' : lane === 3 ? '₃' : lane}⁻¹ (Under)
@@ -181,14 +181,14 @@ export function BraidSandbox({ onBraidSaved }: BraidSandboxProps) {
           </div>
 
           {/* SVG Diagram Canvas */}
-          <div className="flex justify-center p-2 rounded-xl bg-slate-950 border border-slate-800">
+          <div className="flex justify-center p-2 rounded-lg bg-[#161616] border border-[#333333]">
             <BraidDiagramSvg crossings={crossings} strandCount={strandCount} width={Math.max(380, strandCount * 65)} height={240} />
           </div>
 
           {/* Braid Word Preview */}
-          <div className="flex items-center justify-between rounded-lg bg-slate-900/80 border border-slate-800 p-2.5">
+          <div className="flex items-center justify-between rounded-lg bg-[#262626] border border-[#393939] p-2.5">
             <span className="text-xs text-slate-400">Current Braid Word:</span>
-            <span className="font-mono text-sm font-bold text-cyan-300">
+            <span className="font-mono text-sm font-bold text-[#be95ff]">
               {engine.getBraidWord()}
             </span>
           </div>
@@ -196,28 +196,28 @@ export function BraidSandbox({ onBraidSaved }: BraidSandboxProps) {
       </Card>
 
       {/* Right: Quantum State Telemetry & Archival Form */}
-      <Card className="lg:col-span-5 border-cyan-500/30 bg-slate-950/80">
-        <CardHeader className="p-4 border-b border-slate-800/80">
-          <CardTitle className="text-base text-white">Quantum Metrics & Save</CardTitle>
+      <Card className="lg:col-span-5 border-[#333333] bg-[#1c1c1c] shadow-sm">
+        <CardHeader className="p-4 border-b border-[#333333]">
+          <CardTitle className="text-base text-[#f4f4f4]">Quantum Metrics & Save</CardTitle>
         </CardHeader>
 
         <CardContent className="p-4 space-y-4">
           {/* State Vector */}
-          <div className="rounded-xl border border-slate-800 bg-slate-900/60 p-3 space-y-2">
+          <div className="rounded-lg border border-[#393939] bg-[#262626] p-3 space-y-2">
             <div className="flex justify-between text-xs">
               <span className="text-slate-400">State Vector [α, β]</span>
-              <span className="font-mono text-cyan-400 font-bold">
+              <span className="font-mono text-[#009d9a] font-bold">
                 [{stateVector[0].toFixed(3)}, {stateVector[1].toFixed(3)}]
               </span>
             </div>
             <div className="grid grid-cols-2 gap-2 text-xs font-mono">
-              <div className="p-2 rounded bg-slate-950 border border-slate-800">
-                <span className="text-slate-500 block text-[10px]">P(τ) Super-Particle</span>
-                <span className="text-cyan-300 font-bold">{(successEnergy * 100).toFixed(1)}%</span>
+              <div className="p-2 rounded bg-[#161616] border border-[#333333]">
+                <span className="text-slate-400 block text-[10px]">P(τ) Super-Particle</span>
+                <span className="text-[#009d9a] font-bold">{(successEnergy * 100).toFixed(1)}%</span>
               </div>
-              <div className="p-2 rounded bg-slate-950 border border-slate-800">
-                <span className="text-slate-500 block text-[10px]">P(1) Identity</span>
-                <span className="text-rose-400 font-bold">{(decoherenceGlitch * 100).toFixed(1)}%</span>
+              <div className="p-2 rounded bg-[#161616] border border-[#333333]">
+                <span className="text-slate-400 block text-[10px]">P(1) Identity</span>
+                <span className="text-[#da1e28] font-bold">{(decoherenceGlitch * 100).toFixed(1)}%</span>
               </div>
             </div>
           </div>
@@ -232,7 +232,7 @@ export function BraidSandbox({ onBraidSaved }: BraidSandboxProps) {
                 type="text"
                 value={braidTitle}
                 onChange={(e) => setBraidTitle(e.target.value)}
-                className="w-full rounded-lg border border-slate-800 bg-slate-900 px-3 py-2 text-xs text-white focus:border-cyan-500 focus:outline-none"
+                className="w-full rounded-lg border border-[#393939] bg-[#161616] px-3 py-2 text-xs text-[#f4f4f4] focus:border-[#8a3ffc] focus:outline-none"
               />
             </div>
 
@@ -244,7 +244,7 @@ export function BraidSandbox({ onBraidSaved }: BraidSandboxProps) {
                 rows={3}
                 value={researcherNotes}
                 onChange={(e) => setResearcherNotes(e.target.value)}
-                className="w-full rounded-lg border border-slate-800 bg-slate-900 px-3 py-2 text-xs text-white focus:border-cyan-500 focus:outline-none"
+                className="w-full rounded-lg border border-[#393939] bg-[#161616] px-3 py-2 text-xs text-[#f4f4f4] focus:border-[#8a3ffc] focus:outline-none"
               />
             </div>
 
@@ -252,7 +252,7 @@ export function BraidSandbox({ onBraidSaved }: BraidSandboxProps) {
               variant="default"
               onClick={handleSaveToDatabase}
               disabled={crossings.length === 0 || isSaving}
-              className="w-full font-bold shadow-[0_0_20px_rgba(6,182,212,0.4)]"
+              className="w-full font-bold shadow-sm"
             >
               <Save className="mr-2 h-4 w-4" />
               {isSaving ? 'Logging to MongoDB...' : 'Save to Scientific Repository'}

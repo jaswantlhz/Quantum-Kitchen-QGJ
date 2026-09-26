@@ -1,21 +1,40 @@
 @import "tailwindcss";
 
 :root {
-  --background: #06080e;
-  --foreground: #f1f5f9;
-  --card-bg: rgba(10, 14, 26, 0.85);
-  --card-border: rgba(30, 41, 59, 0.8);
-  --canvas-bg: #070a14;
-  --canvas-grid: rgba(30, 41, 59, 0.4);
+  --background: #121212;
+  --foreground: #f4f4f4;
+  --card-bg: #1c1c1c;
+  --card-border: #333333;
+  --canvas-bg: #161616;
+  --canvas-grid: rgba(255, 255, 255, 0.05);
+
+  /* IBM Qiskit & Carbon Color Tokens */
+  --qiskit-purple: #8a3ffc;
+  --qiskit-purple-dark: #6929c4;
+  --qiskit-teal: #009d9a;
+  --qiskit-magenta: #ee5396;
+  --qiskit-blue: #0f62fe;
+  --qiskit-gold: #f1c21b;
+  --qiskit-green: #24a148;
+  --qiskit-red: #da1e28;
 }
 
 html.light {
-  --background: #f1f5f9;
-  --foreground: #0f172a;
-  --card-bg: rgba(255, 255, 255, 0.95);
-  --card-border: rgba(203, 213, 225, 0.9);
+  --background: #f4f4f4;
+  --foreground: #161616;
+  --card-bg: #ffffff;
+  --card-border: #e0e0e0;
   --canvas-bg: #ffffff;
-  --canvas-grid: rgba(226, 232, 240, 0.8);
+  --canvas-grid: rgba(0, 0, 0, 0.05);
+
+  --qiskit-purple: #6929c4;
+  --qiskit-purple-dark: #491d8b;
+  --qiskit-teal: #007d79;
+  --qiskit-magenta: #d12771;
+  --qiskit-blue: #0043ce;
+  --qiskit-gold: #b28600;
+  --qiskit-green: #198038;
+  --qiskit-red: #ba1b23;
 }
 
 @theme inline {
@@ -30,23 +49,25 @@ body {
   color: var(--foreground);
   font-family: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
   overflow-x: hidden;
-  transition: background-color 0.25s ease, color 0.25s ease;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 /* ========================================================
-   LIGHT THEME OVERRIDES (Clean Quantum Kitchen / Solarpunk)
+   LIGHT THEME OVERRIDES (IBM Qiskit White Lab)
    ======================================================== */
 html.light body {
-  background: #f1f5f9 !important;
-  color: #0f172a !important;
+  background: #f4f4f4 !important;
+  color: #161616 !important;
 }
 
 html.light .bg-\[\#06080e\],
 html.light .bg-\[\#07090e\],
 html.light .bg-\[\#070a0e\],
 html.light .bg-\[\#060811\],
-html.light .bg-\[\#070a12\] {
-  background-color: #f8fafc !important;
+html.light .bg-\[\#070a12\],
+html.light .bg-\[\#121212\],
+html.light .bg-\[\#161616\] {
+  background-color: #ffffff !important;
 }
 
 html.light .bg-slate-950\/80,
@@ -55,9 +76,10 @@ html.light .bg-slate-950\/95,
 html.light .bg-slate-950\/60,
 html.light .bg-slate-950\/70,
 html.light .bg-slate-950\/40,
-html.light .bg-slate-950 {
-  background-color: rgba(255, 255, 255, 0.96) !important;
-  color: #0f172a !important;
+html.light .bg-slate-950,
+html.light .bg-\[\#1c1c1c\] {
+  background-color: #ffffff !important;
+  color: #161616 !important;
 }
 
 html.light .bg-slate-900,
@@ -65,83 +87,87 @@ html.light .bg-slate-900\/60,
 html.light .bg-slate-900\/80,
 html.light .bg-slate-900\/50,
 html.light .bg-slate-900\/40,
-html.light .bg-slate-900\/90 {
-  background-color: #f1f5f9 !important;
+html.light .bg-slate-900\/90,
+html.light .bg-\[\#262626\] {
+  background-color: #f4f4f4 !important;
 }
 
 html.light .border-slate-800,
 html.light .border-slate-800\/80,
 html.light .border-slate-800\/60,
 html.light .border-slate-800\/40,
-html.light .border-slate-700 {
-  border-color: #cbd5e1 !important;
+html.light .border-slate-700,
+html.light .border-\[\#333333\],
+html.light .border-\[\#393939\] {
+  border-color: #e0e0e0 !important;
 }
 
 /* High contrast text in light theme */
 html.light .text-white,
 html.light .text-slate-100,
-html.light .text-slate-200 {
-  color: #0f172a !important;
+html.light .text-slate-200,
+html.light .text-\[\#f4f4f4\] {
+  color: #161616 !important;
 }
 
 html.light .text-slate-300 {
-  color: #1e293b !important;
+  color: #262626 !important;
 }
 
 html.light .text-slate-400,
 html.light .text-slate-500 {
-  color: #475569 !important;
+  color: #525252 !important;
 }
 
-/* Vivid readable accents in light mode */
+/* Qiskit readable accents in light mode */
 html.light .text-cyan-300,
 html.light .text-cyan-200 {
-  color: #0284c7 !important;
+  color: #007d79 !important;
 }
 
 html.light .text-pink-300,
 html.light .text-pink-200 {
-  color: #be185d !important;
+  color: #d12771 !important;
 }
 
 html.light .text-emerald-300,
 html.light .text-emerald-200 {
-  color: #047857 !important;
+  color: #198038 !important;
 }
 
 html.light .text-amber-300,
 html.light .text-amber-200 {
-  color: #b45309 !important;
+  color: #b28600 !important;
 }
 
 html.light .text-purple-300,
 html.light .text-purple-200 {
-  color: #6d28d9 !important;
+  color: #6929c4 !important;
 }
 
-/* Custom Scrollbar */
+/* Custom Scrollbar - Carbon Style */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #090d16;
+  background: #161616;
 }
 
 html.light ::-webkit-scrollbar-track {
-  background: #e2e8f0;
+  background: #f4f4f4;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #1e293b;
+  background: #393939;
   border-radius: 9999px;
 }
 
 html.light ::-webkit-scrollbar-thumb {
-  background: #94a3b8;
+  background: #c6c6c6;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #06b6d4;
+  background: #8a3ffc;
 }

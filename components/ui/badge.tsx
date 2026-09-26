@@ -8,18 +8,20 @@ const badgeVariants = cva(
     variants: {
       variant: {
         default:
-          "border-cyan-500/40 bg-cyan-950/60 text-cyan-300 shadow-[0_0_8px_rgba(6,182,212,0.3)]",
+          "border-[#8a3ffc]/50 bg-[#8a3ffc]/15 text-[#be95ff] dark:text-[#be95ff]",
         secondary:
-          "border-purple-500/40 bg-purple-950/60 text-purple-300 shadow-[0_0_8px_rgba(168,85,247,0.3)]",
+          "border-[#525252] bg-[#262626] text-[#c6c6c6]",
         magenta:
-          "border-pink-500/40 bg-pink-950/60 text-pink-300 shadow-[0_0_8px_rgba(236,72,153,0.3)]",
+          "border-[#ee5396]/50 bg-[#ee5396]/15 text-[#ee5396]",
+        teal:
+          "border-[#009d9a]/50 bg-[#009d9a]/15 text-[#009d9a]",
         emerald:
-          "border-emerald-500/40 bg-emerald-950/60 text-emerald-300 shadow-[0_0_8px_rgba(16,185,129,0.3)]",
+          "border-[#24a148]/50 bg-[#24a148]/15 text-[#42be65]",
         amber:
-          "border-amber-500/40 bg-amber-950/60 text-amber-300 shadow-[0_0_8px_rgba(245,158,11,0.3)]",
+          "border-[#f1c21b]/50 bg-[#f1c21b]/15 text-[#f1c21b]",
         destructive:
-          "border-rose-500/40 bg-rose-950/60 text-rose-300 shadow-[0_0_8px_rgba(244,63,94,0.3)]",
-        outline: "text-slate-300 border-slate-700 bg-transparent",
+          "border-[#da1e28]/50 bg-[#da1e28]/15 text-[#fa4d56]",
+        outline: "text-slate-300 border-[#525252] bg-transparent",
       },
     },
     defaultVariants: {
