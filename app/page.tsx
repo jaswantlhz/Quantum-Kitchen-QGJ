@@ -205,66 +205,67 @@ export default function QuantumKitchenPage() {
           })}
         </div>
 
-        {/* 3-Column Cyberpunk Kitchen Counter */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-          {/* Column 1: Order Ticket & Customer Hologram */}
-          <div className="lg:col-span-4 space-y-4">
-            <OrderTicket recipe={activeRecipe} flavorProfile={currentFlavors} />
+        {/* Vertical Pipeline Layout */}
+        <div className="space-y-6">
+          {/* Stage 1: Active Order Rail (Horizontal) */}
+          <OrderTicket recipe={activeRecipe} flavorProfile={currentFlavors} />
 
-            {/* Stabilizer Shop */}
-            <StabilizerShop
-              upgrades={upgrades}
-              credits={credits}
-              onBuyUpgrade={handleBuyUpgrade}
-            />
-          </div>
+          {/* Stage 2: The Prep (Tactile Braid Loom - Centerpiece) */}
+          <BraidCanvas
+            recipe={activeRecipe}
+            engine={engine}
+            onStateUpdate={refreshState}
+            stabilizerLevel={stabilizerLevel}
+          />
 
-          {/* Column 2: The Prep (Tactile Braid Pegboard Canvas) */}
-          <div className="lg:col-span-5 space-y-4">
-            <BraidCanvas
-              recipe={activeRecipe}
-              engine={engine}
-              onStateUpdate={refreshState}
-              stabilizerLevel={stabilizerLevel}
-            />
-          </div>
+          {/* Stage 3: The Cook & The Pantry (Side-by-Side Bottom Deck) */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+            {/* Anyon Fusion Reactor Chamber */}
+            <div className="lg:col-span-6 flex flex-col space-y-3">
+              <MixingBowl
+                successEnergy={successEnergy}
+                glitchRate={decoherenceGlitch}
+                stabilizerLevel={stabilizerLevel}
+                onCook={handleCookDish}
+                isCooking={isCooking}
+                hasCrossings={engine.crossings.length > 0}
+              />
+            </div>
 
-          {/* Column 3: The Cook (Anyon Fusion Bowl & Probabilities) */}
-          <div className="lg:col-span-3 space-y-4">
-            <MixingBowl
-              successEnergy={successEnergy}
-              glitchRate={decoherenceGlitch}
-              stabilizerLevel={stabilizerLevel}
-              onCook={handleCookDish}
-              isCooking={isCooking}
-              hasCrossings={engine.crossings.length > 0}
-            />
+            {/* Quantum Pantry Upgrades */}
+            <div className="lg:col-span-6 flex flex-col space-y-3">
+              <StabilizerShop
+                upgrades={upgrades}
+                credits={credits}
+                onBuyUpgrade={handleBuyUpgrade}
+              />
 
-            {/* Compact Physics Guide Trigger */}
-            <div className="flex items-center justify-between rounded-xl border border-slate-800/80 bg-slate-950/60 p-3">
-              <span className="text-xs font-semibold text-slate-300 flex items-center gap-1.5">
-                ⚛️ Anyon Physics Note
-              </span>
-              <InfoDialog
-                title="Topological Anyon Physics"
-                description="Braids act as universal quantum gates on Fibonacci anyons (τ):"
-                tooltip="Anyon Physics Guide"
-              >
-                <div className="space-y-2 text-xs">
-                  <div className="p-2.5 rounded-lg bg-cyan-950/40 border border-cyan-500/20">
-                    <b className="text-cyan-300">Lane 1 (R-Matrix):</b> Phase shift rotating quantum amplitude vector [α, β].
-                  </div>
-                  <div className="p-2.5 rounded-lg bg-purple-950/40 border border-purple-500/20">
-                    <b className="text-purple-300">Lane 2 (F-Matrix):</b> Basis transformation mixing states via golden ratio:
-                    <div className="font-mono text-cyan-400 text-[10px] mt-1">
-                      τ = (√5 - 1) / 2 ≈ 0.618034
+              {/* Compact Physics Guide Trigger */}
+              <div className="flex items-center justify-between rounded-xl border border-slate-800/80 bg-slate-950/60 p-3">
+                <span className="text-xs font-semibold text-slate-300 flex items-center gap-1.5">
+                  ⚛️ Anyon Physics Note
+                </span>
+                <InfoDialog
+                  title="Topological Anyon Physics"
+                  description="Braids act as universal quantum gates on Fibonacci anyons (τ):"
+                  tooltip="Anyon Physics Guide"
+                >
+                  <div className="space-y-2 text-xs">
+                    <div className="p-2.5 rounded-lg bg-cyan-950/40 border border-cyan-500/20">
+                      <b className="text-cyan-300">Lane 1 (R-Matrix):</b> Phase shift rotating quantum amplitude vector [α, β].
+                    </div>
+                    <div className="p-2.5 rounded-lg bg-purple-950/40 border border-purple-500/20">
+                      <b className="text-purple-300">Lane 2 (F-Matrix):</b> Basis transformation mixing states via golden ratio:
+                      <div className="font-mono text-cyan-400 text-[10px] mt-1">
+                        τ = (√5 - 1) / 2 ≈ 0.618034
+                      </div>
+                    </div>
+                    <div className="p-2.5 rounded-lg bg-emerald-950/40 border border-emerald-500/20 text-emerald-300 font-mono text-[11px]">
+                      Anyon Fusion: τ ⊗ τ = 1 ⊕ τ
                     </div>
                   </div>
-                  <div className="p-2.5 rounded-lg bg-emerald-950/40 border border-emerald-500/20 text-emerald-300 font-mono text-[11px]">
-                    Anyon Fusion: τ ⊗ τ = 1 ⊕ τ
-                  </div>
-                </div>
-              </InfoDialog>
+                </InfoDialog>
+              </div>
             </div>
           </div>
         </div>

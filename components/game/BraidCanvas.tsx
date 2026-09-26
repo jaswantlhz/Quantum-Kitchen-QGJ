@@ -391,60 +391,60 @@ export function BraidCanvas({
       </div>
 
       {/* Main Pegboard Canvas */}
-      <div className="relative my-2.5 flex justify-center w-full">
+      <div className="relative my-3 flex justify-center w-full overflow-x-auto py-1">
         <canvas
           ref={canvasRef}
-          width={Math.max(380, numStrands * 95)}
-          height={320}
-          className="rounded-xl border border-slate-300 dark:border-slate-800/80 bg-slate-50 dark:bg-[#060811] shadow-inner"
+          width={Math.max(500, numStrands * 115)}
+          height={330}
+          className="rounded-xl border border-slate-300 dark:border-slate-800/80 bg-slate-50 dark:bg-[#060811] shadow-inner max-w-full"
         />
+      </div>
 
-        {/* Dynamic Crossing Controls for All N-1 Lanes */}
-        <div className="absolute inset-x-0 bottom-3 flex justify-around px-4 pointer-events-auto">
-          {Array.from({ length: numStrands - 1 }, (_, i) => {
-            const laneNum = i + 1;
-            const isPhase = laneNum % 2 === 1;
+      {/* Dynamic Crossing Controls for All N-1 Lanes */}
+      <div className="w-full flex items-center justify-center gap-3 flex-wrap py-2.5 border-t border-slate-800/60 mb-1">
+        {Array.from({ length: numStrands - 1 }, (_, i) => {
+          const laneNum = i + 1;
+          const isPhase = laneNum % 2 === 1;
 
-            return (
-              <div
-                key={`lane-ctrl-${laneNum}`}
-                className={`flex flex-col items-center gap-1 rounded-xl border p-1.5 backdrop-blur-md shadow-lg ${
-                  isPhase
-                    ? 'border-cyan-500/40 bg-white/95 dark:bg-slate-900/90'
-                    : 'border-purple-500/40 bg-white/95 dark:bg-slate-900/90'
+          return (
+            <div
+              key={`lane-ctrl-${laneNum}`}
+              className={`flex flex-col items-center gap-1.5 rounded-xl border p-2 backdrop-blur-md shadow-md min-w-[130px] ${
+                isPhase
+                  ? 'border-cyan-500/40 bg-white/95 dark:bg-slate-900/90'
+                  : 'border-purple-500/40 bg-white/95 dark:bg-slate-900/90'
+              }`}
+            >
+              <span
+                className={`text-[10px] uppercase font-bold tracking-wider ${
+                  isPhase ? 'text-cyan-600 dark:text-cyan-400' : 'text-purple-600 dark:text-purple-400'
                 }`}
               >
-                <span
-                  className={`text-[9px] uppercase font-bold tracking-wider ${
-                    isPhase ? 'text-cyan-600 dark:text-cyan-400' : 'text-purple-600 dark:text-purple-400'
-                  }`}
+                Lane {laneNum} (σ{laneNum === 1 ? '₁' : laneNum === 2 ? '₂' : laneNum === 3 ? '₃' : laneNum})
+              </span>
+              <div className="flex gap-1.5 w-full">
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => handleCrossing(laneNum, true)}
+                  className="h-7 flex-1 px-2 text-[11px] font-bold border-cyan-500/40 hover:bg-cyan-500/20"
+                  title={`Lane ${laneNum} Over crossing`}
                 >
-                  Lane {laneNum} (σ{laneNum === 1 ? '₁' : laneNum === 2 ? '₂' : laneNum === 3 ? '₃' : laneNum})
-                </span>
-                <div className="flex gap-1">
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={() => handleCrossing(laneNum, true)}
-                    className="h-6 px-2 text-[10px] font-bold border-cyan-500/40 hover:bg-cyan-500/20"
-                    title={`Lane ${laneNum} Over crossing`}
-                  >
-                    Over (σ{laneNum})
-                  </Button>
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    onClick={() => handleCrossing(laneNum, false)}
-                    className="h-6 px-2 text-[10px] font-bold border-cyan-500/40 hover:bg-cyan-500/20"
-                    title={`Lane ${laneNum} Under crossing`}
-                  >
-                    Under (σ{laneNum}⁻¹)
-                  </Button>
-                </div>
+                  Over (σ{laneNum})
+                </Button>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => handleCrossing(laneNum, false)}
+                  className="h-7 flex-1 px-2 text-[11px] font-bold border-cyan-500/40 hover:bg-cyan-500/20"
+                  title={`Lane ${laneNum} Under crossing`}
+                >
+                  Under (σ{laneNum}⁻¹)
+                </Button>
               </div>
-            );
-          })}
-        </div>
+            </div>
+          );
+        })}
       </div>
 
       {/* Footer Controls / Hint */}

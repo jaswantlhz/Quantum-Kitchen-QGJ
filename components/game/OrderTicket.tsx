@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { Recipe } from '@/lib/game/recipes';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { InfoDialog } from '@/components/ui/info-dialog';
 import { Lightbulb, ChevronDown, ChevronUp } from 'lucide-react';
@@ -23,49 +23,45 @@ export function OrderTicket({ recipe, flavorProfile }: OrderTicketProps) {
 
   return (
     <Card className="border-pink-500/30 bg-slate-950/80 shadow-[0_0_30px_rgba(236,72,153,0.15)]">
-      <CardHeader className="p-4 border-b border-slate-800/60 pb-3">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <span className="text-2xl">{recipe.dishIcon}</span>
-            <div>
-              <div className="flex items-center gap-2">
-                <CardTitle className="text-base text-pink-300 font-extrabold tracking-wide">
-                  {recipe.name}
-                </CardTitle>
-                {/* 'i' Info icon for Customer Story / Lore */}
-                <InfoDialog
-                  title={`${recipe.customer} — Order Notes`}
-                  description={recipe.dialogue}
-                  tooltip="Customer order dialogue"
-                >
-                  <div className="rounded-lg bg-pink-950/30 border border-pink-500/30 p-2.5 text-xs text-pink-200">
-                    <p className="font-semibold text-pink-300 mb-1">Customer Profile:</p>
-                    <p>{recipe.description}</p>
-                  </div>
-                </InfoDialog>
-              </div>
+      <CardContent className="p-4 sm:p-5 flex flex-col xl:flex-row items-start xl:items-center justify-between gap-5">
+        {/* Left: Recipe Identity & Dialogue Lore */}
+        <div className="flex items-center gap-3.5 min-w-[280px]">
+          <span className="text-3xl sm:text-4xl drop-shadow-md shrink-0">{recipe.dishIcon}</span>
+          <div>
+            <div className="flex items-center gap-2">
+              <h2 className="text-base sm:text-lg text-pink-300 font-extrabold tracking-wide">
+                {recipe.name}
+              </h2>
+              {/* 'i' Info icon for Customer Story / Lore */}
+              <InfoDialog
+                title={`${recipe.customer} — Order Notes`}
+                description={recipe.dialogue}
+                tooltip="Customer order dialogue"
+              >
+                <div className="rounded-lg bg-pink-950/30 border border-pink-500/30 p-2.5 text-xs text-pink-200">
+                  <p className="font-semibold text-pink-300 mb-1">Customer Profile:</p>
+                  <p>{recipe.description}</p>
+                </div>
+              </InfoDialog>
+              <Badge variant="magenta" className="text-[11px] font-mono">
+                +{recipe.rewardCredits} CR
+              </Badge>
+            </div>
 
-              <div className="flex items-center gap-1.5 mt-0.5 flex-wrap">
-                <span className="font-mono text-[10px] text-pink-400/80 uppercase">
-                  {recipe.orderCode} • {recipe.customer.split('(')[0].trim()}
-                </span>
-                <Badge variant="outline" className="text-[9px] py-0 px-1.5 border-pink-500/40 text-pink-300 font-mono">
-                  {recipe.strandCount} Strands ({recipe.mealCategory})
-                </Badge>
-              </div>
+            <div className="flex items-center gap-2 mt-1 flex-wrap">
+              <span className="font-mono text-xs text-pink-400/80 uppercase">
+                {recipe.orderCode} • {recipe.customer.split('(')[0].trim()}
+              </span>
+              <Badge variant="outline" className="text-[10px] py-0 px-2 border-pink-500/40 text-pink-300 font-mono">
+                {recipe.strandCount} Strands ({recipe.mealCategory})
+              </Badge>
             </div>
           </div>
-
-          <Badge variant="magenta" className="text-[11px] font-mono">
-            +{recipe.rewardCredits} CR
-          </Badge>
         </div>
-      </CardHeader>
 
-      <CardContent className="p-4 space-y-3 pt-3">
-        {/* Flavor Profile Bars Header with 'i' Info Button */}
-        <div className="space-y-2">
-          <div className="flex items-center justify-between text-[11px] font-bold text-slate-400 uppercase tracking-wider">
+        {/* Center: 4 Flavor Target Meters */}
+        <div className="flex-1 w-full max-w-2xl space-y-2">
+          <div className="flex items-center justify-between text-xs font-bold text-slate-400 uppercase tracking-wider">
             <div className="flex items-center gap-1.5">
               <span>Flavor Targets</span>
               <InfoDialog
@@ -89,90 +85,92 @@ export function OrderTicket({ recipe, flavorProfile }: OrderTicketProps) {
                 </div>
               </InfoDialog>
             </div>
-            <span className="text-pink-400 font-mono">Fidelity: {flavorProfile.coherence}%</span>
+            <span className="text-pink-400 font-mono font-bold">Fidelity: {flavorProfile.coherence}%</span>
           </div>
 
-          {/* Sweetness */}
-          <div className="space-y-1">
-            <div className="flex justify-between text-xs">
-              <span className="text-pink-300">🍬 Sweet</span>
-              <span className="font-mono text-slate-400">
-                {flavorProfile.sweetness}% / <span className="text-pink-400 font-bold">{recipe.targetFlavor.sweetness}%</span>
-              </span>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            {/* Sweetness */}
+            <div className="space-y-1 rounded-lg bg-slate-900/60 p-2 border border-slate-800/60">
+              <div className="flex justify-between text-[11px]">
+                <span className="text-pink-300">🍬 Sweet</span>
+                <span className="font-mono text-slate-400">
+                  {flavorProfile.sweetness}% / <span className="text-pink-400 font-bold">{recipe.targetFlavor.sweetness}%</span>
+                </span>
+              </div>
+              <div className="h-1.5 w-full bg-slate-950 rounded-full overflow-hidden">
+                <div
+                  className="h-full bg-pink-500 transition-all duration-300"
+                  style={{ width: `${flavorProfile.sweetness}%` }}
+                />
+              </div>
             </div>
-            <div className="h-1.5 w-full bg-slate-900 rounded-full overflow-hidden">
-              <div
-                className="h-full bg-pink-500 transition-all duration-300"
-                style={{ width: `${flavorProfile.sweetness}%` }}
-              />
-            </div>
-          </div>
 
-          {/* Sourness */}
-          <div className="space-y-1">
-            <div className="flex justify-between text-xs">
-              <span className="text-emerald-300">🍋 Sour</span>
-              <span className="font-mono text-slate-400">
-                {flavorProfile.sourness}% / <span className="text-emerald-400 font-bold">{recipe.targetFlavor.sourness}%</span>
-              </span>
+            {/* Sourness */}
+            <div className="space-y-1 rounded-lg bg-slate-900/60 p-2 border border-slate-800/60">
+              <div className="flex justify-between text-[11px]">
+                <span className="text-emerald-300">🍋 Sour</span>
+                <span className="font-mono text-slate-400">
+                  {flavorProfile.sourness}% / <span className="text-emerald-400 font-bold">{recipe.targetFlavor.sourness}%</span>
+                </span>
+              </div>
+              <div className="h-1.5 w-full bg-slate-950 rounded-full overflow-hidden">
+                <div
+                  className="h-full bg-emerald-500 transition-all duration-300"
+                  style={{ width: `${flavorProfile.sourness}%` }}
+                />
+              </div>
             </div>
-            <div className="h-1.5 w-full bg-slate-900 rounded-full overflow-hidden">
-              <div
-                className="h-full bg-emerald-500 transition-all duration-300"
-                style={{ width: `${flavorProfile.sourness}%` }}
-              />
-            </div>
-          </div>
 
-          {/* Spiciness */}
-          <div className="space-y-1">
-            <div className="flex justify-between text-xs">
-              <span className="text-amber-300">🌶️ Spicy</span>
-              <span className="font-mono text-slate-400">
-                {flavorProfile.spiciness}% / <span className="text-amber-400 font-bold">{recipe.targetFlavor.spiciness}%</span>
-              </span>
+            {/* Spiciness */}
+            <div className="space-y-1 rounded-lg bg-slate-900/60 p-2 border border-slate-800/60">
+              <div className="flex justify-between text-[11px]">
+                <span className="text-amber-300">🌶️ Spicy</span>
+                <span className="font-mono text-slate-400">
+                  {flavorProfile.spiciness}% / <span className="text-amber-400 font-bold">{recipe.targetFlavor.spiciness}%</span>
+                </span>
+              </div>
+              <div className="h-1.5 w-full bg-slate-950 rounded-full overflow-hidden">
+                <div
+                  className="h-full bg-amber-500 transition-all duration-300"
+                  style={{ width: `${flavorProfile.spiciness}%` }}
+                />
+              </div>
             </div>
-            <div className="h-1.5 w-full bg-slate-900 rounded-full overflow-hidden">
-              <div
-                className="h-full bg-amber-500 transition-all duration-300"
-                style={{ width: `${flavorProfile.spiciness}%` }}
-              />
-            </div>
-          </div>
 
-          {/* Umami */}
-          <div className="space-y-1">
-            <div className="flex justify-between text-xs">
-              <span className="text-purple-300">🍄 Umami</span>
-              <span className="font-mono text-slate-400">
-                {flavorProfile.umami}% / <span className="text-purple-400 font-bold">{recipe.targetFlavor.umami}%</span>
-              </span>
-            </div>
-            <div className="h-1.5 w-full bg-slate-900 rounded-full overflow-hidden">
-              <div
-                className="h-full bg-purple-500 transition-all duration-300"
-                style={{ width: `${flavorProfile.umami}%` }}
-              />
+            {/* Umami */}
+            <div className="space-y-1 rounded-lg bg-slate-900/60 p-2 border border-slate-800/60">
+              <div className="flex justify-between text-[11px]">
+                <span className="text-purple-300">🍄 Umami</span>
+                <span className="font-mono text-slate-400">
+                  {flavorProfile.umami}% / <span className="text-purple-400 font-bold">{recipe.targetFlavor.umami}%</span>
+                </span>
+              </div>
+              <div className="h-1.5 w-full bg-slate-950 rounded-full overflow-hidden">
+                <div
+                  className="h-full bg-purple-500 transition-all duration-300"
+                  style={{ width: `${flavorProfile.umami}%` }}
+                />
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Collapsible Chef's Hint */}
-        <div className="pt-1">
+        {/* Right: Collapsible Chef's Hint */}
+        <div className="w-full xl:w-auto shrink-0 flex flex-col items-end">
           <button
             type="button"
             onClick={() => setShowHint(!showHint)}
-            className="flex items-center justify-between w-full rounded-lg border border-slate-800 bg-slate-900/60 px-2.5 py-1.5 text-[11px] text-slate-300 hover:text-cyan-300 hover:border-slate-700 transition-colors cursor-pointer"
+            className="flex items-center justify-between gap-2 w-full xl:w-44 rounded-lg border border-slate-800 bg-slate-900/60 px-3 py-2 text-xs text-slate-300 hover:text-cyan-300 hover:border-slate-700 transition-colors cursor-pointer"
           >
             <span className="flex items-center gap-1.5 font-semibold">
               <Lightbulb className="h-3.5 w-3.5 text-amber-400" />
-              Chef&apos;s Knot Hint
+              Chef&apos;s Hint
             </span>
             {showHint ? <ChevronUp className="h-3.5 w-3.5" /> : <ChevronDown className="h-3.5 w-3.5" />}
           </button>
 
           {showHint && (
-            <div className="mt-1.5 rounded-lg border border-cyan-500/20 bg-cyan-950/20 p-2 font-mono text-[11px] text-cyan-200 animate-in fade-in-50 duration-200">
+            <div className="mt-2 w-full xl:w-56 rounded-lg border border-cyan-500/20 bg-cyan-950/40 p-2.5 font-mono text-xs text-cyan-200 shadow-lg animate-in fade-in-50 duration-200">
               {recipe.hintBraid}
             </div>
           )}
