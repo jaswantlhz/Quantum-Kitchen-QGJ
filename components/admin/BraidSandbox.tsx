@@ -180,9 +180,14 @@ export function BraidSandbox({ onBraidSaved }: BraidSandboxProps) {
             </div>
           </div>
 
-          {/* SVG Diagram Canvas */}
-          <div className="flex justify-center p-2 rounded-lg bg-[#161616] border border-[#333333]">
-            <BraidDiagramSvg crossings={crossings} strandCount={strandCount} width={Math.max(380, strandCount * 65)} height={240} />
+          {/* SVG Diagram Canvas (Horizontal Circuit Orientation) */}
+          <div className="flex justify-start p-2 rounded-lg bg-[#161616] border border-[#333333] overflow-x-auto">
+            <BraidDiagramSvg
+              crossings={crossings}
+              strandCount={strandCount}
+              width={Math.max(460, 120 + (crossings.length + 1) * 55)}
+              height={Math.max(190, (strandCount + 1) * 42)}
+            />
           </div>
 
           {/* Braid Word Preview */}

@@ -136,12 +136,12 @@ export default function AdminPage() {
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
               {/* Left Column: Braid Telemetry Table */}
               <div className="lg:col-span-7 space-y-4">
-                <Card className="border-[#333333] bg-[#1c1c1c] p-4 shadow-sm">
+                <Card className="border border-slate-200 dark:border-[#333333] bg-white dark:bg-[#1c1c1c] p-4 shadow-sm">
                   <div className="flex items-center justify-between mb-3">
-                    <span className="text-xs font-bold text-slate-300 uppercase tracking-wider">
+                    <span className="text-xs font-bold text-slate-800 dark:text-slate-300 uppercase tracking-wider">
                       Archived Braid Experiments
                     </span>
-                    <span className="text-[11px] text-slate-400">
+                    <span className="text-[11px] text-slate-600 dark:text-slate-400">
                       Total records: <strong className="text-[#8a3ffc]">{braids.length}</strong>
                     </span>
                   </div>
@@ -156,20 +156,21 @@ export default function AdminPage() {
               {/* Right Column: Deep Quantum Inspector & SVG Knot Projection */}
               <div className="lg:col-span-5 space-y-4">
                 {selectedBraid && (
-                  <Card className="border-[#333333] bg-[#1c1c1c] p-4 shadow-sm">
+                  <Card className="border border-slate-200 dark:border-[#333333] bg-white dark:bg-[#1c1c1c] p-4 shadow-sm">
                     <div className="flex items-center justify-between mb-2">
-                      <span className="text-[11px] font-bold text-[#be95ff] uppercase tracking-wider">
+                      <span className="text-[11px] font-bold text-[#6929c4] dark:text-[#be95ff] uppercase tracking-wider">
                         Topological 2D Knot Projection
                       </span>
                       <span className="font-mono text-[10px] text-slate-500">
                         SVG Vector Engine
                       </span>
                     </div>
-                    <div className="flex justify-center p-2 rounded-lg bg-[#161616] border border-[#333333]">
+                    <div className="flex justify-start p-2 rounded-lg bg-[#f8fafc] dark:bg-[#161616] border border-slate-200 dark:border-[#333333] overflow-x-auto">
                       <BraidDiagramSvg
                         crossings={selectedBraid.crossings}
-                        width={340}
-                        height={200}
+                        strandCount={selectedBraid.strandCount}
+                        width={Math.max(380, 100 + selectedBraid.crossings.length * 45)}
+                        height={190}
                       />
                     </div>
                   </Card>
