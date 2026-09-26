@@ -68,14 +68,14 @@ export default function QuantumKitchenPage() {
   const handleCookDish = () => {
     setIsCooking(true);
     setTimeout(() => {
-      const result = engine.evaluateFusion(stabilizerLevel);
+      const result = engine.evaluateFusion(stabilizerLevel, activeRecipe.targetFlavor);
       setLastFusionResult(result);
       setIsCooking(false);
       setFusionModalOpen(true);
 
-      // Award credits on success
+      // Award credits on success with Umami multiplier
       if (result.dishOutcome === 'perfect') {
-        setCredits((c) => c + activeRecipe.rewardCredits);
+        setCredits((c) => c + Math.round(activeRecipe.rewardCredits * (result.umamiMultiplier || 1)));
       } else if (result.dishOutcome === 'good') {
         setCredits((c) => c + Math.round(activeRecipe.rewardCredits * 0.6));
       } else {
@@ -85,18 +85,19 @@ export default function QuantumKitchenPage() {
   };
 
   const handleNextRecipe = () => {
-    engine.reset();
-    setRecipeIndex((i) => (i + 1) % COSMIC_RECIPES.length);
+    const nextIndex = (recipeIndex + 1) % COSMIC_RECIPES.length;
+    setRecipeIndex(nextIndex);
+    engine.reset(COSMIC_RECIPES[nextIndex].strandCount);
     refreshState();
   };
 
   const handleRetry = () => {
-    engine.reset();
+    engine.reset(activeRecipe.strandCount);
     refreshState();
   };
 
   return (
-    <div className="min-h-screen bg-[#06080e] text-slate-100 flex flex-col justify-between selection:bg-cyan-500 selection:text-black">
+    <div className="min-h-screen bg-background text-foreground flex flex-col justify-between selection:bg-cyan-500 selection:text-black transition-colors duration-200">
       {/* Top Cyberpunk Diner Nav */}
       <header className="border-b border-cyan-500/20 bg-slate-950/80 backdrop-blur-md px-4 py-3 sticky top-0 z-40">
         <div className="mx-auto max-w-7xl flex items-center justify-between">
@@ -186,7 +187,7 @@ export default function QuantumKitchenPage() {
                 onClick={() => {
                   if (idx !== recipeIndex) {
                     setRecipeIndex(idx);
-                    engine.reset();
+                    engine.reset(r.strandCount);
                     refreshState();
                   }
                 }}

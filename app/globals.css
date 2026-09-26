@@ -3,11 +3,19 @@
 :root {
   --background: #06080e;
   --foreground: #f1f5f9;
+  --card-bg: rgba(10, 14, 26, 0.85);
+  --card-border: rgba(30, 41, 59, 0.8);
+  --canvas-bg: #070a14;
+  --canvas-grid: rgba(30, 41, 59, 0.4);
 }
 
 html.light {
-  --background: #f4f7fb;
+  --background: #f1f5f9;
   --foreground: #0f172a;
+  --card-bg: rgba(255, 255, 255, 0.95);
+  --card-border: rgba(203, 213, 225, 0.9);
+  --canvas-bg: #ffffff;
+  --canvas-grid: rgba(226, 232, 240, 0.8);
 }
 
 @theme inline {
@@ -22,13 +30,23 @@ body {
   color: var(--foreground);
   font-family: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
   overflow-x: hidden;
-  transition: background-color 0.2s ease, color 0.2s ease;
+  transition: background-color 0.25s ease, color 0.25s ease;
 }
 
-/* Light Mode Overrides for clean Quantum Lab aesthetic */
+/* ========================================================
+   LIGHT THEME OVERRIDES (Clean Quantum Kitchen / Solarpunk)
+   ======================================================== */
 html.light body {
-  background: #f4f7fb;
-  color: #0f172a;
+  background: #f1f5f9 !important;
+  color: #0f172a !important;
+}
+
+html.light .bg-\[\#06080e\],
+html.light .bg-\[\#07090e\],
+html.light .bg-\[\#070a0e\],
+html.light .bg-\[\#060811\],
+html.light .bg-\[\#070a12\] {
+  background-color: #f8fafc !important;
 }
 
 html.light .bg-slate-950\/80,
@@ -38,7 +56,7 @@ html.light .bg-slate-950\/60,
 html.light .bg-slate-950\/70,
 html.light .bg-slate-950\/40,
 html.light .bg-slate-950 {
-  background-color: rgba(255, 255, 255, 0.92) !important;
+  background-color: rgba(255, 255, 255, 0.96) !important;
   color: #0f172a !important;
 }
 
@@ -48,22 +66,21 @@ html.light .bg-slate-900\/80,
 html.light .bg-slate-900\/50,
 html.light .bg-slate-900\/40,
 html.light .bg-slate-900\/90 {
-  background-color: rgba(235, 240, 248, 0.85) !important;
+  background-color: #f1f5f9 !important;
 }
 
 html.light .border-slate-800,
 html.light .border-slate-800\/80,
 html.light .border-slate-800\/60,
-html.light .border-slate-800\/40 {
-  border-color: rgba(203, 213, 225, 0.8) !important;
+html.light .border-slate-800\/40,
+html.light .border-slate-700 {
+  border-color: #cbd5e1 !important;
 }
 
-html.light .text-slate-400,
-html.light .text-slate-500 {
-  color: #475569 !important;
-}
-
-html.light .text-white {
+/* High contrast text in light theme */
+html.light .text-white,
+html.light .text-slate-100,
+html.light .text-slate-200 {
   color: #0f172a !important;
 }
 
@@ -71,7 +88,38 @@ html.light .text-slate-300 {
   color: #1e293b !important;
 }
 
-/* Custom Scrollbar for Cyberpunk aesthetics */
+html.light .text-slate-400,
+html.light .text-slate-500 {
+  color: #475569 !important;
+}
+
+/* Vivid readable accents in light mode */
+html.light .text-cyan-300,
+html.light .text-cyan-200 {
+  color: #0284c7 !important;
+}
+
+html.light .text-pink-300,
+html.light .text-pink-200 {
+  color: #be185d !important;
+}
+
+html.light .text-emerald-300,
+html.light .text-emerald-200 {
+  color: #047857 !important;
+}
+
+html.light .text-amber-300,
+html.light .text-amber-200 {
+  color: #b45309 !important;
+}
+
+html.light .text-purple-300,
+html.light .text-purple-200 {
+  color: #6d28d9 !important;
+}
+
+/* Custom Scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;

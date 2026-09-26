@@ -45,9 +45,14 @@ export function OrderTicket({ recipe, flavorProfile }: OrderTicketProps) {
                 </InfoDialog>
               </div>
 
-              <span className="font-mono text-[10px] text-pink-400/80 uppercase">
-                {recipe.orderCode} • {recipe.customer.split('(')[0].trim()}
-              </span>
+              <div className="flex items-center gap-1.5 mt-0.5 flex-wrap">
+                <span className="font-mono text-[10px] text-pink-400/80 uppercase">
+                  {recipe.orderCode} • {recipe.customer.split('(')[0].trim()}
+                </span>
+                <Badge variant="outline" className="text-[9px] py-0 px-1.5 border-pink-500/40 text-pink-300 font-mono">
+                  {recipe.strandCount} Strands ({recipe.mealCategory})
+                </Badge>
+              </div>
             </div>
           </div>
 

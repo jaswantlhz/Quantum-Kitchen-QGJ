@@ -4,13 +4,24 @@ export interface QuantumState {
   history: BraidCrossing[];  // History of braid actions
 }
 
+export type ApplianceType =
+  | 'none'
+  | 'chop'      // Chopping board: boosts phase rotation frequency (R-matrix)
+  | 'blend'     // Blender: maximum superposition mixing (F-matrix)
+  | 'pan'       // Frying pan: sears and caramelizes, spicy boost
+  | 'wash'      // Washing: cleans decoherence glitches
+  | 'deep_fry'  // Deep frying: golden-ratio crunch & locks odds
+  | 'boil';     // Boiling pot: extracts savory broths & base umami
+
 export interface BraidCrossing {
   id: string;
-  lane: number;      // 1 or 2 (between strands 1-2, or 2-3)
-  isOver: boolean;   // true = over (sigma_i), false = under (sigma_i^-1)
-  strandA: number;   // Strand index on left before crossing
-  strandB: number;   // Strand index on right before crossing
-  depth: number;     // Step index / y-position
+  lane: number;          // 1, 2, ..., N-1
+  isOver: boolean;       // true = sigma_i, false = sigma_i^-1
+  strandA: number;       // Strand index on left before crossing
+  strandB: number;       // Strand index on right before crossing
+  depth: number;         // Step index / y-position
+  appliance?: ApplianceType;
+  isMerged?: boolean;    // If true, merges the two strands into a composite line
   timestamp: number;
 }
 
@@ -21,6 +32,10 @@ export interface FusionResult {
   dishName: string;
   dishDescription: string;
   flavorProfile: FlavorProfile;
+  umamiMultiplier: number;
+  platedScore: number;
+  grade: 'S+' | 'A' | 'B' | 'C';
+  compositeMeal?: string;     // e.g. "Cosmic Club Sandwich", "Solar Vegetable Soup"
 }
 
 export interface FlavorProfile {
@@ -52,6 +67,7 @@ export interface BraidRecord {
   recipeId: string;
   dishName: string;
   braidWord: string;
+  strandCount?: number;
   crossings: BraidCrossing[];
   stateVector: [number, number];
   probabilities: {
@@ -60,6 +76,9 @@ export interface BraidRecord {
   };
   blochAngles: BlochCoordinates;
   flavorProfile: FlavorProfile;
+  umamiMultiplier?: number;
+  platedScore?: number;
+  grade?: 'S+' | 'A' | 'B' | 'C';
   notes?: string;
   tags?: string[];
 }

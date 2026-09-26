@@ -1,58 +1,86 @@
-import { BraidCrossing, FusionResult, FlavorProfile, BlochCoordinates, UnitaryMatrix2x2 } from './braidTypes';
+import {
+  BraidCrossing,
+  FusionResult,
+  FlavorProfile,
+  BlochCoordinates,
+  UnitaryMatrix2x2,
+  ApplianceType,
+} from './braidTypes';
 
 /**
  * QuantumBraidEngine:
- * Full implementation of the Fibonacci Anyon Braid Simulator from message.py
- * with extensions for multi-strand knot theory, SU(2) unitary matrices,
- * Bloch sphere geometry, and non-Abelian flavor profile synthesis.
+ * Generalized N-Strand Fibonacci Anyon Braid Simulator with
+ * appliance station transformations, line merging, and Umami multipliers.
  */
 export class QuantumBraidEngine {
   public quantumState: [number, number]; // [State_0, State_1]
   public tau: number;                     // Golden ratio conjugate (sqrt(5) - 1) / 2
   public crossings: BraidCrossing[];
   public accumulatedPhase: number;
+  public strandCount: number;             // Arbitrary N strands (2, 3, 4, 5, 6, 7+)
+  public activeAppliances: Record<number, ApplianceType>; // lane -> ApplianceType
 
-  constructor(initialState: [number, number] = [1.0, 0.0]) {
+  constructor(strandCount: number = 3, initialState: [number, number] = [1.0, 0.0]) {
     this.quantumState = [...initialState];
     this.tau = (Math.sqrt(5.0) - 1.0) / 2.0; // ~0.6180339887
     this.crossings = [];
     this.accumulatedPhase = 0;
+    this.strandCount = Math.max(2, strandCount);
+    this.activeAppliances = {};
   }
 
   /**
    * Resets engine back to ground state |0>
    */
-  public reset(initialState: [number, number] = [1.0, 0.0]): void {
+  public reset(strandCount?: number, initialState: [number, number] = [1.0, 0.0]): void {
     this.quantumState = [...initialState];
     this.crossings = [];
     this.accumulatedPhase = 0;
+    if (strandCount !== undefined) {
+      this.strandCount = Math.max(2, strandCount);
+    }
+  }
+
+  public setAppliance(lane: number, appliance: ApplianceType) {
+    this.activeAppliances[lane] = appliance;
   }
 
   /**
-   * Apply braid crossing exactly following message.py
-   * @param laneIndex 1 or 2 (between adjacent anyon strands)
-   * @param isOver true = sigma_i (over), false = sigma_i^-1 (under)
+   * Apply generalized braid crossing for arbitrary lane in 1 .. N-1
    */
   public applyBraidCrossing(
     laneIndex: number,
     isOver: boolean,
     strandA: number = 0,
-    strandB: number = 1
+    strandB: number = 1,
+    applianceOverride?: ApplianceType,
+    isMerged: boolean = false
   ): BraidCrossing {
     const newState: [number, number] = [0.0, 0.0];
+    const appliance = applianceOverride || this.activeAppliances[laneIndex] || 'none';
 
-    if (laneIndex === 1) {
-      // Crossing 1 introduces a quantum phase shift (R-Matrix rotation)
-      const phase = isOver ? 1.0 : -1.0;
+    // Odd lanes (1, 3, 5...) act primarily as R-Matrix phase rotations
+    // Even lanes (2, 4, 6...) act primarily as F-Matrix basis superpositions
+    const isPhaseLane = laneIndex % 2 === 1;
+
+    let phaseMultiplier = 1.0;
+    let superpositionBoost = 1.0;
+
+    // Appliance station physics transformations
+    if (appliance === 'chop') {
+      phaseMultiplier = 1.5; // Chopping board accelerates phase rotation
+    } else if (appliance === 'blend') {
+      superpositionBoost = 1.4; // Blender maximizes state superposition
+    }
+
+    if (isPhaseLane) {
+      const phase = (isOver ? 1.0 : -1.0) * phaseMultiplier;
       this.accumulatedPhase += phase;
 
-      // Mathematically rotates the quantum phase
       newState[0] = this.quantumState[0] * Math.cos(phase) - this.quantumState[1] * Math.sin(phase);
       newState[1] = this.quantumState[0] * Math.sin(phase) + this.quantumState[1] * Math.cos(phase);
     } else {
-      // Lane 2: Basis change (F-Matrix transformation)
-      // Mixes states together, creating true quantum superposition
-      const s = Math.sqrt(this.tau);
+      const s = Math.sqrt(this.tau) * superpositionBoost;
 
       if (isOver) {
         newState[0] = (this.tau * this.quantumState[0]) + (s * this.quantumState[1]);
@@ -63,7 +91,12 @@ export class QuantumBraidEngine {
       }
     }
 
-    // Normalize the vector to maintain quantum probability conservation (|alpha|^2 + |beta|^2 = 1.0)
+    // Line merger bonus: merging locks state closer to super-particle channel
+    if (isMerged) {
+      newState[0] = Math.abs(newState[0]) * 1.15;
+    }
+
+    // Normalize vector to maintain quantum probability conservation (|alpha|^2 + |beta|^2 = 1.0)
     const magnitude = Math.sqrt(newState[0] ** 2 + newState[1] ** 2);
     if (magnitude > 0) {
       this.quantumState[0] = newState[0] / magnitude;
@@ -77,6 +110,8 @@ export class QuantumBraidEngine {
       strandA,
       strandB,
       depth: this.crossings.length,
+      appliance,
+      isMerged,
       timestamp: Date.now(),
     };
 
@@ -85,20 +120,38 @@ export class QuantumBraidEngine {
   }
 
   /**
-   * Generates formal knot theory braid word e.g. "σ₁ · σ₂⁻¹ · σ₁"
+   * Generates formal knot theory braid word e.g. "σ₁ · σ₂⁻¹ · σ₃"
    */
   public getBraidWord(): string {
     if (this.crossings.length === 0) return 'e (Identity)';
+    const subscriptDigits = ['₀', '₁', '₂', '₃', '₄', '₅', '₆', '₇', '₈', '₉'];
     return this.crossings
       .map((c) => {
-        const sub = c.lane === 1 ? '₁' : c.lane === 2 ? '₂' : '₃';
-        return c.isOver ? `σ${sub}` : `σ${sub}⁻¹`;
+        const sub = String(c.lane)
+          .split('')
+          .map((d) => subscriptDigits[Number(d)] || d)
+          .join('');
+        const mergeMark = c.isMerged ? '⚡' : '';
+        return c.isOver ? `σ${sub}${mergeMark}` : `σ${sub}⁻¹${mergeMark}`;
       })
       .join(' · ');
   }
 
   /**
-   * Measure final quantum probabilities (as in message.py)
+   * Calculates the progressive Umami Multiplier Ladder
+   * 1.0x -> 1.2x (3 moves) -> 1.5x (5 moves) -> 2.0x (7 moves) -> 3.14x (Pi transcendence)
+   */
+  public getUmamiMultiplier(): number {
+    const moves = this.crossings.length;
+    if (moves >= 9) return 3.14;
+    if (moves >= 7) return 2.0;
+    if (moves >= 5) return 1.5;
+    if (moves >= 3) return 1.2;
+    return 1.0;
+  }
+
+  /**
+   * Measure final quantum probabilities with stabilizer & washing station bonuses
    */
   public measureFinalState(stabilizerBonus: number = 0): {
     successEnergy: number;
@@ -107,9 +160,12 @@ export class QuantumBraidEngine {
     let prob0 = this.quantumState[0] ** 2;
     let prob1 = this.quantumState[1] ** 2;
 
-    // Apply stabilizer power (compresses glitch rate toward target state)
-    if (stabilizerBonus > 0) {
-      prob0 = Math.min(1.0, prob0 + (1 - prob0) * stabilizerBonus);
+    // Check if any washing station was used (cleans glitches by 20%)
+    const hasWash = this.crossings.some((c) => c.appliance === 'wash');
+    const totalBonus = stabilizerBonus + (hasWash ? 0.2 : 0);
+
+    if (totalBonus > 0) {
+      prob0 = Math.min(1.0, prob0 + (1 - prob0) * totalBonus);
       prob1 = Math.max(0.0, 1.0 - prob0);
     }
 
@@ -126,8 +182,6 @@ export class QuantumBraidEngine {
     const alpha = this.quantumState[0];
     const beta = this.quantumState[1];
 
-    // |psi> = cos(theta/2)|0> + e^(i phi) sin(theta/2)|1>
-    // For real amplitudes, phi is 0 or pi
     const theta = 2 * Math.acos(Math.max(-1, Math.min(1, Math.abs(alpha))));
     const phi = beta < 0 ? Math.PI : (this.accumulatedPhase % (2 * Math.PI) + 2 * Math.PI) % (2 * Math.PI);
 
@@ -147,33 +201,34 @@ export class QuantumBraidEngine {
       return { sweetness: 10, sourness: 10, spiciness: 0, umami: 0, coherence: 10 };
     }
 
-    let lane1Count = 0;
-    let lane2Count = 0;
     let alternationScore = 0;
+    let panCount = 0;
+    let boilCount = 0;
 
     for (let i = 0; i < totalMoves; i++) {
-      if (this.crossings[i].lane === 1) lane1Count++;
-      if (this.crossings[i].lane === 2) lane2Count++;
-      if (i > 0 && this.crossings[i].lane !== this.crossings[i - 1].lane) {
+      const c = this.crossings[i];
+      if (c.appliance === 'pan') panCount++;
+      if (c.appliance === 'boil') boilCount++;
+      if (i > 0 && c.lane !== this.crossings[i - 1].lane) {
         alternationScore++;
       }
     }
 
     const { successEnergy } = this.measureFinalState();
 
-    // Sweetness: phase accumulation & forward R-rotations
+    // Sweetness: forward phase accumulation
     const sweetness = Math.min(100, Math.round((Math.sin(this.accumulatedPhase * 0.7) * 0.5 + 0.5) * 80 + 20));
 
     // Sourness: rapid alternation of basis transforms
-    const sourness = Math.min(100, Math.round((alternationScore / Math.max(1, totalMoves)) * 90 + 10));
+    const sourness = Math.min(100, Math.round((alternationScore / Math.max(1, totalMoves)) * 85 + 15));
 
-    // Spiciness: repeated twists on same lane
-    const consecutiveTwists = Math.max(lane1Count, lane2Count);
-    const spiciness = Math.min(100, Math.round((consecutiveTwists / Math.max(1, totalMoves)) * 100));
+    // Spiciness: single lane twists + frying pan searing
+    const spiciness = Math.min(100, Math.round((panCount * 25) + (Math.abs(this.accumulatedPhase) * 12)));
 
-    // Umami: superposition balance (|alpha| approx |beta|)
+    // Umami: superposition balance (|alpha| approx |beta|) + boiling pot simmer
     const superpositionBalance = 1 - Math.abs(this.quantumState[0] - this.quantumState[1]);
-    const umami = Math.min(100, Math.round(superpositionBalance * 85 + 15));
+    const umamiBase = superpositionBalance * 75 + 25 + (boilCount * 20);
+    const umami = Math.min(100, Math.round(umamiBase));
 
     // Coherence: final success energy
     const coherence = Math.round(successEnergy * 100);
@@ -188,7 +243,7 @@ export class QuantumBraidEngine {
     let u00 = 1, u01 = 0, u10 = 0, u11 = 1;
 
     for (const c of this.crossings) {
-      if (c.lane === 1) {
+      if (c.lane % 2 === 1) {
         const p = c.isOver ? 1.0 : -1.0;
         const cosP = Math.cos(p);
         const sinP = Math.sin(p);
@@ -217,24 +272,61 @@ export class QuantumBraidEngine {
   }
 
   /**
-   * Final fusion evaluation
+   * Final culinary fusion evaluation with Umami multiplier & plated scoring algorithm
    */
-  public evaluateFusion(stabilizerLevel: number = 0): FusionResult {
+  public evaluateFusion(
+    stabilizerLevel: number = 0,
+    targetFlavors?: { sweetness: number; sourness: number; spiciness: number; umami: number }
+  ): FusionResult {
     const { successEnergy, decoherenceGlitch } = this.measureFinalState(stabilizerLevel * 0.15);
     const flavors = this.getFlavorProfile();
+    const umamiMultiplier = this.getUmamiMultiplier();
+
+    // Check if composite meal was formed via line merging
+    const hasMerges = this.crossings.some((c) => c.isMerged);
+    const hasBoil = this.crossings.some((c) => c.appliance === 'boil');
+
+    // Calculate flavor match score (0 - 100)
+    let flavorMatch = 80;
+    if (targetFlavors) {
+      const diffSweet = Math.abs(flavors.sweetness - targetFlavors.sweetness);
+      const diffSour = Math.abs(flavors.sourness - targetFlavors.sourness);
+      const diffSpice = Math.abs(flavors.spiciness - targetFlavors.spiciness);
+      const diffUmami = Math.abs(flavors.umami - targetFlavors.umami);
+      const avgDiff = (diffSweet + diffSour + diffSpice + diffUmami) / 4;
+      flavorMatch = Math.max(0, 100 - avgDiff);
+    }
+
+    // Algorithmic Plated Score Formula
+    const baseScore = flavors.coherence * 0.5 + flavorMatch * 0.3 + 20; // 20 base freshness
+    const platedScore = Math.round(baseScore * umamiMultiplier);
+
+    let grade: 'S+' | 'A' | 'B' | 'C' = 'C';
+    if (platedScore >= 240) grade = 'S+';
+    else if (platedScore >= 170) grade = 'A';
+    else if (platedScore >= 110) grade = 'B';
 
     let dishOutcome: 'perfect' | 'good' | 'glitch' = 'glitch';
     let dishName = 'Burnt Quantum Ash';
-    let dishDescription = 'Decoherence glitch! The strands canceled into the trivial Identity particle.';
+    let dishDescription = 'Decoherence glitch! Strands annihilated into the trivial Identity particle.';
+    let compositeMeal = 'Scorched Remnant';
 
-    if (successEnergy >= 0.75) {
+    if (successEnergy >= 0.7) {
       dishOutcome = 'perfect';
-      dishName = 'Cosmic Soufflé';
-      dishDescription = 'Flawlessly braided non-Abelian topology with rich golden-ratio superposition!';
-    } else if (successEnergy >= 0.4) {
+      if (hasMerges) {
+        dishName = hasBoil ? 'Cosmic Fusion Ramen Soup' : 'Multi-Strand Nebula Sandwich';
+        compositeMeal = hasBoil ? 'Savory Soup' : 'Layered Sandwich';
+        dishDescription = `Flawless composite braid! All ${this.strandCount} ingredient strands converged into an exquisite plated dish!`;
+      } else {
+        dishName = 'Cosmic Soufflé';
+        compositeMeal = 'Superposition Soufflé';
+        dishDescription = 'Flawlessly braided non-Abelian topology with high golden-ratio coherence!';
+      }
+    } else if (successEnergy >= 0.35) {
       dishOutcome = 'good';
-      dishName = 'Sparkly Plasma Soda';
-      dishDescription = 'Lively quantum carbonation with subtle phase fluctuations.';
+      dishName = hasMerges ? 'Solar Garden Salad' : 'Sparkly Plasma Soda';
+      compositeMeal = hasMerges ? 'Tossed Salad' : 'Plasma Drink';
+      dishDescription = 'Pleasant topological fusion with lively quantum carbonation.';
     }
 
     return {
@@ -244,6 +336,10 @@ export class QuantumBraidEngine {
       dishName,
       dishDescription,
       flavorProfile: flavors,
+      umamiMultiplier,
+      platedScore,
+      grade,
+      compositeMeal,
     };
   }
 }
