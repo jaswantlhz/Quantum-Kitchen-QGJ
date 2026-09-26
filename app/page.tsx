@@ -14,6 +14,7 @@ import { StabilizerShop } from '@/components/game/StabilizerShop';
 import { DishModal } from '@/components/game/DishModal';
 import { HowToPlayModal } from '@/components/game/HowToPlayModal';
 import { ChefCompanion } from '@/components/game/ChefCompanion';
+import { CreditsModal } from '@/components/game/CreditsModal';
 import { GhostCrossingHint } from '@/lib/quantum/bloubAdvisorEngine';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -24,6 +25,7 @@ import {
   VolumeX,
   Atom,
   ChefHat,
+  Sparkles,
 } from 'lucide-react';
 
 export default function QuantumKitchenPage() {
@@ -122,11 +124,39 @@ export default function QuantumKitchenPage() {
                 </Badge>
                 {/* Dedicated How to Play Modal */}
                 <HowToPlayModal />
+                {/* Project Credits Modal */}
+                <CreditsModal />
               </div>
             </div>
           </div>
 
-          <div className="flex items-center gap-2.5">
+          <div className="flex items-center gap-2 sm:gap-2.5">
+            {/* Direct Landing Link */}
+            <Link href="/landing">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="h-8 text-xs font-semibold gap-1 text-slate-300 hover:text-white cursor-pointer"
+                title="View Game Lore & Overview"
+              >
+                <Sparkles className="h-3.5 w-3.5 text-[#009d9a]" />
+                <span className="hidden md:inline">Landing</span>
+              </Button>
+            </Link>
+
+            {/* Direct Credits Link */}
+            <Link href="/credits">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="h-8 text-xs font-semibold gap-1 text-slate-300 hover:text-white cursor-pointer"
+                title="View Attributions & Credits"
+              >
+                <span className="text-[#ee5396]">♥</span>
+                <span className="hidden md:inline">Credits</span>
+              </Button>
+            </Link>
+
             {/* Credits Counter */}
             <div className="flex items-center gap-1.5 rounded-lg border border-[#393939] bg-[#262626] px-3 py-1.5 font-mono text-xs text-[#f1c21b] shadow-sm">
               <span>🪙</span>
@@ -142,7 +172,7 @@ export default function QuantumKitchenPage() {
               size="sm"
               variant="outline"
               onClick={toggleSound}
-              className="h-8 px-2.5 border-[#393939] text-slate-300 hover:text-white"
+              className="h-8 px-2.5 border-[#393939] text-slate-300 hover:text-white cursor-pointer"
               title={isMuted ? 'Unmute Audio' : 'Mute Audio'}
             >
               {isMuted ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4 text-[#8a3ffc]" />}
@@ -150,7 +180,7 @@ export default function QuantumKitchenPage() {
 
             {/* Link to Scientist Admin Portal */}
             <Link href="/admin">
-              <Button size="sm" variant="default" className="h-8 text-xs font-bold tracking-wide">
+              <Button size="sm" variant="default" className="h-8 text-xs font-bold tracking-wide cursor-pointer">
                 <Atom className="mr-1.5 h-3.5 w-3.5" /> Scientist Portal
               </Button>
             </Link>
@@ -289,15 +319,23 @@ export default function QuantumKitchenPage() {
       />
 
       {/* Cyberpunk Footer */}
-      <footer className="border-t border-slate-800/60 bg-slate-950/40 px-4 py-3 text-center text-xs text-slate-500">
+      <footer className="border-t border-slate-200 dark:border-[#333333] bg-white/80 dark:bg-[#121212]/95 backdrop-blur-md px-4 py-3 text-center text-xs text-slate-500">
         <div className="mx-auto max-w-7xl flex flex-col sm:flex-row items-center justify-between gap-2">
           <span>Quantum Kitchen: Cosmic Threads • Fibonacci Anyon Simulator</span>
-          <div className="flex items-center gap-4">
-            <Link href="/admin" className="hover:text-cyan-400 transition-colors">
-              Scientist Admin Dashboard
+          <div className="flex items-center gap-3">
+            <Link href="/landing" className="hover:text-black dark:hover:text-white transition-colors">
+              Landing
             </Link>
-            <span className="text-slate-700">•</span>
-            <span>Zero login required</span>
+            <span className="text-slate-400 dark:text-slate-700">•</span>
+            <Link href="/admin" className="hover:text-[#009d9a] transition-colors">
+              Scientist Portal
+            </Link>
+            <span className="text-slate-400 dark:text-slate-700">•</span>
+            <Link href="/credits" className="hover:text-[#ee5396] transition-colors">
+              Credits
+            </Link>
+            <span className="text-slate-400 dark:text-slate-700">•</span>
+            <span>MIT License</span>
           </div>
         </div>
       </footer>

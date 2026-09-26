@@ -30,17 +30,18 @@
 
 In 2D topological quantum computing, quantum information is encoded not in local fragile states, but in the **global topological braiding history of quasiparticles called non-Abelian anyons**.
 
-In **Quantum Kitchen**, ingredient strands behave as **Fibonacci Anyons ($\tau$)** with the universal fusion rule:
-$$\tau \otimes \tau = 1 \oplus \tau$$
+In **Quantum Kitchen**, ingredient strands behave as **Fibonacci Anyons (τ)** with the universal fusion rule:
+
+> **τ ⊗ τ = 1 ⊕ τ**
 
 Where:
-* **$1$ (Identity Channel)**: The strands annihilate into trivial quantum vacuum (burnt ash).
-* **$\tau$ (Non-Trivial Channel)**: The strands preserve their non-Abelian quantum state (delicious composite dishes).
-* **Golden Ratio ($\tau = \frac{\sqrt{5}-1}{2} \approx 0.618034$)**: The fundamental topological quantum invariant governing superposition and state transitions.
+* **1 (Identity Channel)**: The strands annihilate into trivial quantum vacuum (burnt ash).
+* **τ (Non-Trivial Channel)**: The strands preserve their non-Abelian quantum state (delicious composite dishes).
+* **Golden Ratio (τ = (√5 - 1) / 2 ≈ 0.618034)**: The fundamental topological quantum invariant governing superposition and state transitions.
 
-Braiding strands exchanges anyon positions in 2D space-time, generating unitary transformations in the **Braid Group $B_N$**:
-* **Odd Lanes ($1, 3, 5\dots$)**: Apply the **$R$-Matrix** (diagonal phase rotation $e^{\pm i \phi}$).
-* **Even Lanes ($2, 4, 6\dots$)**: Apply the **$F$-Matrix** (basis transformation mixing quantum states via the golden ratio).
+Braiding strands exchanges anyon positions in 2D space-time, generating unitary transformations in the **Braid Group B_N**:
+* **Odd Lanes (1, 3, 5...)**: Apply the **R-Matrix** (diagonal phase rotation e^(±iφ)).
+* **Even Lanes (2, 4, 6...)**: Apply the **F-Matrix** (basis transformation mixing quantum states via the golden ratio).
 
 ---
 
@@ -58,33 +59,33 @@ Braiding strands exchanges anyon positions in 2D space-time, generating unitary 
 
 ### 1. The Active Order Ticket
 Each cosmic recipe specifies a target flavor vector:
-* **Sweetness**: Driven by forward accumulated quantum phase $\phi$.
-* **Sourness / Tartness**: Driven by rapid alternation between $R$ and $F$ transformation bases.
+* **Sweetness**: Driven by forward accumulated quantum phase φ.
+* **Sourness / Tartness**: Driven by rapid alternation between R and F transformation bases.
 * **Spiciness / Heat**: Driven by single-lane twists and frying pan searing.
-* **Umami**: Driven by balanced state superposition ($|\alpha| \approx |\beta|$) and boiling pot simmer.
+* **Umami**: Driven by balanced state superposition (|α| ≈ |β|) and boiling pot simmer.
 
 ### 2. Weaving on the Quantum Loom
-* **Weave Over ($\sigma_i$)**: Weaves strand $i+1$ over strand $i$.
-* **Weave Under ($\sigma_i^{-1}$)**: Weaves strand $i+1$ under strand $i$ (the topological inverse).
-* **Identity Cancellation Warning**: Braiding $\sigma_i$ followed immediately by $\sigma_i^{-1}$ cancels out ($\sigma_i \cdot \sigma_i^{-1} = 1$) without altering the quantum phase.
+* **Weave Over (σᵢ)**: Weaves strand i+1 over strand i.
+* **Weave Under (σᵢ⁻¹)**: Weaves strand i+1 under strand i (the topological inverse).
+* **Identity Cancellation Warning**: Braiding σᵢ followed immediately by σᵢ⁻¹ cancels out (σᵢ · σᵢ⁻¹ = 1) without altering the quantum phase.
 
 ### 3. Kitchen Stations & Appliances
 Selecting a station before weaving transforms the underlying physics:
-* 🔪 **Chop Board**: Accelerates phase rotation ($1.5\times$ phase multiplier $\to$ boosts Sweetness).
-* 🌪️ **Blender**: Maximizes state superposition ($1.4\times$ boost $\to$ boosts Tartness).
+* 🔪 **Chop Board**: Accelerates phase rotation (1.5x phase multiplier → boosts Sweetness).
+* 🌪️ **Blender**: Maximizes state superposition (1.4x boost → boosts Tartness).
 * 🍳 **Sear Pan**: Applies thermal excitation (ramps up Spiciness).
 * 💧 **Wash Basin**: Purifies decoherence glitches and thermal noise.
 * 🍲 **Boil Pot**: Simmers balanced entanglement for deep Umami.
 
-### 4. Mixer Merging ($\lightning$)
+### 4. Mixer Merging (⚡)
 Activating **Mixer Merge** before a crossing fuses adjacent strands into a single composite thread (like layered sandwiches or cosmic ramen), drastically amplifying the final plated score.
 
 ### 5. The Umami Multiplier Ladder
 Compound credit payouts by building long, coherent braids:
-* **3 Crossings**: $1.2\times$ Multiplier
-* **5 Crossings**: $1.5\times$ Multiplier
-* **7 Crossings**: $2.0\times$ Multiplier
-* **9+ Crossings**: $3.14\times$ ($\pi$) Transcendence
+* **3 Crossings**: 1.2x Multiplier
+* **5 Crossings**: 1.5x Multiplier
+* **7 Crossings**: 2.0x Multiplier
+* **9+ Crossings**: 3.14x (π) Transcendence
 
 ### 6. Thermal Noise & Cryo-Stabilizers
 Complex braids with many strands accumulate thermal decoherence. If jitter exceeds tolerance, wave function collapse reduces dishes into *Burnt Quantum Ash*. Upgrade **Cryo-Stabilizers** in the Pantry to safeguard flavor fidelity.
@@ -283,10 +284,10 @@ Appliances alter the mathematical transformations applied during a crossing.
 ### 5. How to Customize Bloub AI Sous-Chef Hints & Expressions
 Bloub's intelligence is powered by [`lib/quantum/bloubAdvisorEngine.ts`](file:///f:/my-files/QGJ/qgj/lib/quantum/bloubAdvisorEngine.ts).
 
-* **1-Step Lookahead Optimizer**: `findOptimalNextMove()` simulates permutations $(\text{lane}, \text{isOver})$ on a cloned virtual quantum engine to find the exact weave that maximizes flavor alignment.
+* **1-Step Lookahead Optimizer**: `findOptimalNextMove()` simulates permutations (lane, isOver) on a cloned virtual quantum engine to find the exact weave that maximizes flavor alignment.
 * **Expression Mapping**: `BloubExpressionId` maps advice states to the animated SVGs in [`public/bloub_svg/`](file:///f:/my-files/QGJ/qgj/public/bloub_svg):
   * `attentif`: Optimal move preview / active concentration
-  * `confus`: Identity cancel warning ($\sigma_i \cdot \sigma_i^{-1} = 1$)
+  * `confus`: Identity cancel warning (σᵢ · σᵢ⁻¹ = 1)
   * `curieux`: Active reactor fusion
   * `excite`: 3-Star dish victory / high fidelity
   * `mefiant`: Untapped outer strand warning
@@ -302,10 +303,10 @@ To add new custom advice rules, edit `generateBloubAdvice()` in [`lib/quantum/bl
 
 Navigate to `/admin` or click **Scientist Portal** in the top navigation bar to access advanced quantum diagnostic tools:
 
-1. **Braid Word Generator**: View standard Artin knot theory notation (e.g. $\sigma_1 \cdot \sigma_2^{-1} \cdot \sigma_3$).
-2. **2x2 Unitary Matrix ($U$)**: Inspect the real and imaginary parts of the combined unitary operator:
-   $$\begin{pmatrix} u_{00} & u_{01} \\ u_{10} & u_{11} \end{pmatrix}$$
-3. **Bloch Sphere Coordinates**: View 3D spherical angles $(\theta, \phi)$ and cartesian coordinates $(x, y, z)$.
+1. **Braid Word Generator**: View standard Artin knot theory notation (e.g. σ₁ · σ₂⁻¹ · σ₃).
+2. **2x2 Unitary Matrix (U)**: Inspect the real and imaginary parts of the combined unitary operator:
+   * Matrix Elements: `u00`, `u01`, `u10`, `u11`
+3. **Bloch Sphere Coordinates**: View 3D spherical angles (θ, φ) and cartesian coordinates (x, y, z).
 4. **Dataset Export**: Export all historical and saved braid sessions as structured **CSV** or **JSON** for training machine learning models or verifying quantum knot theory algorithms.
 
 ---

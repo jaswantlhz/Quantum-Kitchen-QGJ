@@ -13,9 +13,14 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Quantum Kitchen: Cosmic Threads — Anyon Braiding & Science Portal",
+  title: "Quantum Kitchen: Cosmic Threads — Anyon Braiding & Quantum Simulator",
   description:
-    "Weave topological braids with Fibonacci anyons in a cozy cyberpunk diner. Features full scientist admin telemetry and dataset exports.",
+    "An interactive non-Abelian Fibonacci anyon topological quantum simulator disguised as a fast-paced cosmic restaurant. Features High-DPI canvas braiding, procedural audio, and an AI Sous-Chef companion.",
+  icons: {
+    icon: "/icon.svg",
+    shortcut: "/icon.svg",
+    apple: "/icon.svg",
+  },
 };
 
 export default function RootLayout({

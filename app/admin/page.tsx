@@ -13,6 +13,7 @@ import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
+import { CreditsModal } from '@/components/game/CreditsModal';
 import {
   Atom,
   FlaskConical,
@@ -93,7 +94,19 @@ export default function AdminPage() {
           </div>
         </div>
 
-        <div className="flex items-center gap-2.5">
+        <div className="flex items-center gap-2 sm:gap-2.5">
+          <Link href="/landing">
+            <Button variant="ghost" size="sm" className="h-8 text-xs text-slate-400 hover:text-white cursor-pointer">
+              Landing
+            </Button>
+          </Link>
+
+          <Link href="/credits">
+            <Button variant="ghost" size="sm" className="h-8 text-xs text-slate-400 hover:text-white cursor-pointer">
+              <span className="text-[#ee5396] mr-1">♥</span> Credits
+            </Button>
+          </Link>
+
           <ThemeToggle />
 
           <Button
@@ -101,14 +114,14 @@ export default function AdminPage() {
             size="sm"
             onClick={fetchBraids}
             disabled={loading}
-            className="h-8 border-[#393939] text-xs"
+            className="h-8 border-[#393939] text-xs cursor-pointer"
           >
             <RefreshCw className={`mr-1.5 h-3.5 w-3.5 ${loading ? 'animate-spin' : ''}`} />
             Refresh
           </Button>
 
           <Link href="/">
-            <Button size="sm" variant="default" className="h-8 text-xs font-bold">
+            <Button size="sm" variant="default" className="h-8 text-xs font-bold cursor-pointer">
               <ChefHat className="mr-1.5 h-3.5 w-3.5" /> Return to Kitchen
             </Button>
           </Link>

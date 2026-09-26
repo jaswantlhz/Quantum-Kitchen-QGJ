@@ -1,0 +1,23 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Rounded IBM Carbon Background Tile -->
+  <rect width="64" height="64" rx="14" fill="#161616" stroke="#393939" stroke-width="2"/>
+  
+  <!-- Subtle Technical Grid Dots -->
+  <circle cx="16" cy="16" r="1" fill="#393939"/>
+  <circle cx="48" cy="16" r="1" fill="#393939"/>
+  <circle cx="16" cy="48" r="1" fill="#393939"/>
+  <circle cx="48" cy="48" r="1" fill="#393939"/>
+
+  <!-- Golden Anyon Fusion Particle Bead -->
+  <circle cx="32" cy="14" r="3.5" fill="#f1c21b" stroke="#ffffff" stroke-width="1"/>
+  
+  <!-- Interlacing Topological Anyon Strands (Chef Hat Braid) -->
+  <!-- Strand 1: Cosmic Purple (#be95ff) -->
+  <path d="M16 46C16 34 22 24 32 18C42 24 48 34 48 46" stroke="#be95ff" stroke-width="3.5" stroke-linecap="round"/>
+  
+  <!-- Strand 2: Qiskit Teal (#009d9a) with Bridge Weave Cutout -->
+  <path d="M22 46C22 36 26 28 32 24C38 28 42 36 42 46" stroke="#009d9a" stroke-width="3" stroke-linecap="round"/>
+
+  <!-- Base Brim Ribbon -->
+  <rect x="14" y="46" width="36" height="5" rx="2.5" fill="#8a3ffc" stroke="#393939" stroke-width="1"/>
+</svg>

@@ -169,7 +169,7 @@ export function HowToPlayModal({
                       <CheckCircle2 className="h-3.5 w-3.5 text-[#24a148]" /> Arbitrary Strands
                     </span>
                     <p className="text-slate-400">
-                      Recipes support 2, 3, 4, 5, or more strands. More strands open up deeper braid groups ($B_N$)
+                      Recipes support 2, 3, 4, 5, or more strands. More strands open up deeper braid groups (B_N)
                       and higher dimensional quantum Hilbert spaces!
                     </p>
                   </div>
@@ -185,26 +185,26 @@ export function HowToPlayModal({
                   </h4>
                   <p className="text-slate-300">
                     Just like an <b>IBM Quantum Composer circuit</b>, strands advance horizontally from left
-                    (ingredient dispensers) to right (fusion chamber). Time and braiding operations flow along $X$.
+                    (ingredient dispensers) to right (fusion chamber). Time and braiding operations flow along the horizontal axis.
                   </p>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                   <div className="p-3 rounded-lg border border-[#8a3ffc]/30 bg-[#262626]">
                     <span className="font-bold text-white font-mono text-xs block mb-1">
-                      Over Crossing: σ_i
+                      Over Crossing: σᵢ
                     </span>
                     <p className="text-slate-400">
-                      Swaps wire rail $i$ with rail $i+1$, passing the lower strand <b>over</b> the upper strand.
-                      Applies the topological $R$-matrix phase rotation.
+                      Swaps wire rail <i>i</i> with rail <i>i+1</i>, passing the lower strand <b>over</b> the upper strand.
+                      Applies the topological R-matrix phase rotation.
                     </p>
                   </div>
                   <div className="p-3 rounded-lg border border-[#009d9a]/30 bg-[#262626]">
                     <span className="font-bold text-white font-mono text-xs block mb-1">
-                      Under Crossing: σ_i⁻¹
+                      Under Crossing: σᵢ⁻¹
                     </span>
                     <p className="text-slate-400">
-                      Swaps wire rail $i$ with rail $i+1$, passing the lower strand <b>under</b> the upper strand.
+                      Swaps wire rail <i>i</i> with rail <i>i+1</i>, passing the lower strand <b>under</b> the upper strand.
                       Applies inverse phase rotation.
                     </p>
                   </div>
@@ -240,7 +240,7 @@ export function HowToPlayModal({
                     <b className="text-white">🔪 Chop Board:</b> Accelerates quantum phase rotation and boosts Sweetness.
                   </div>
                   <div className="p-2.5 rounded-lg bg-[#262626] border border-[#333333]">
-                    <b className="text-white">🌪️ Blender:</b> Maximizes quantum superposition through the Fibonacci $F$-matrix.
+                    <b className="text-white">🌪️ Blender:</b> Maximizes quantum superposition through the Fibonacci F-matrix.
                   </div>
                   <div className="p-2.5 rounded-lg bg-[#262626] border border-[#333333]">
                     <b className="text-white">🍳 Sear Pan:</b> Applies thermal excitation to ramp up Spiciness.
