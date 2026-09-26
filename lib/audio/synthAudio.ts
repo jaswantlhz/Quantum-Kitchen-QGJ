@@ -177,6 +177,36 @@ class QuantumAudioEngine {
     osc.start(now);
     osc.stop(now + 0.4);
   }
+
+  /**
+   * Playful mascot chirp / bloop when Quark speaks or is poked
+   */
+  public playMascotChirp(pitchVariant: number = 0) {
+    if (this.isMuted) return;
+    this.initContext();
+    if (!this.ctx || !this.masterGain) return;
+
+    const now = this.ctx.currentTime;
+    const baseFreq = 587.33 * Math.pow(1.059, pitchVariant); // D5 base with pitch variation
+
+    const osc = this.ctx.createOscillator();
+    const gain = this.ctx.createGain();
+
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(baseFreq, now);
+    osc.frequency.exponentialRampToValueAtTime(baseFreq * 1.5, now + 0.08);
+    osc.frequency.exponentialRampToValueAtTime(baseFreq * 1.2, now + 0.16);
+
+    gain.gain.setValueAtTime(0.001, now);
+    gain.gain.linearRampToValueAtTime(0.18, now + 0.02);
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.22);
+
+    osc.connect(gain);
+    gain.connect(this.masterGain);
+
+    osc.start(now);
+    osc.stop(now + 0.25);
+  }
 }
 
 export const soundFx = new QuantumAudioEngine();

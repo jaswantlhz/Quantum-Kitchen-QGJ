@@ -13,6 +13,12 @@ export function ThemeToggle() {
     const initial = saved || (document.documentElement.classList.contains('light') ? 'light' : 'dark');
     document.documentElement.classList.toggle('dark', initial === 'dark');
     document.documentElement.classList.toggle('light', initial === 'light');
+    if (initial !== 'dark') {
+      const animId = requestAnimationFrame(() => {
+        setTheme(initial);
+      });
+      return () => cancelAnimationFrame(animId);
+    }
   }, []);
 
   const toggleTheme = () => {

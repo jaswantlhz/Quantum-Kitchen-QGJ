@@ -20,12 +20,12 @@
 }
 
 html.light {
-  --background: #f4f4f4;
-  --foreground: #161616;
+  --background: #f8f9fa;
+  --foreground: #0f172a;
   --card-bg: #ffffff;
-  --card-border: #e0e0e0;
+  --card-border: #e2e8f0;
   --canvas-bg: #ffffff;
-  --canvas-grid: rgba(0, 0, 0, 0.05);
+  --canvas-grid: rgba(0, 0, 0, 0.04);
 
   --qiskit-purple: #6929c4;
   --qiskit-purple-dark: #491d8b;
@@ -53,11 +53,11 @@ body {
 }
 
 /* ========================================================
-   LIGHT THEME OVERRIDES (IBM Qiskit White Lab)
+   LIGHT THEME OVERRIDES (Warm Chef's Atelier & High Contrast)
    ======================================================== */
 html.light body {
-  background: #f4f4f4 !important;
-  color: #161616 !important;
+  background: #f8f9fa !important;
+  color: #0f172a !important;
 }
 
 html.light .bg-\[\#06080e\],
@@ -65,9 +65,14 @@ html.light .bg-\[\#07090e\],
 html.light .bg-\[\#070a0e\],
 html.light .bg-\[\#060811\],
 html.light .bg-\[\#070a12\],
-html.light .bg-\[\#121212\],
-html.light .bg-\[\#161616\] {
+html.light .bg-\[\#121212\] {
   background-color: #ffffff !important;
+}
+
+/* Canvas and containers in light mode */
+html.light .bg-\[\#161616\],
+html.light .bg-\[\#161616\]\/70 {
+  background-color: #f1f5f9 !important;
 }
 
 html.light .bg-slate-950\/80,
@@ -79,7 +84,8 @@ html.light .bg-slate-950\/40,
 html.light .bg-slate-950,
 html.light .bg-\[\#1c1c1c\] {
   background-color: #ffffff !important;
-  color: #161616 !important;
+  color: #0f172a !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
 }
 
 html.light .bg-slate-900,
@@ -89,7 +95,19 @@ html.light .bg-slate-900\/50,
 html.light .bg-slate-900\/40,
 html.light .bg-slate-900\/90,
 html.light .bg-\[\#262626\] {
-  background-color: #f4f4f4 !important;
+  background-color: #f1f5f9 !important;
+  color: #0f172a !important;
+}
+
+html.light header {
+  background-color: rgba(255, 255, 255, 0.98) !important;
+  border-color: #e2e8f0 !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+}
+
+html.light footer {
+  background-color: #f8f9fa !important;
+  border-color: #e2e8f0 !important;
 }
 
 html.light .border-slate-800,
@@ -98,8 +116,9 @@ html.light .border-slate-800\/60,
 html.light .border-slate-800\/40,
 html.light .border-slate-700,
 html.light .border-\[\#333333\],
-html.light .border-\[\#393939\] {
-  border-color: #e0e0e0 !important;
+html.light .border-\[\#393939\],
+html.light .border-\[\#525252\] {
+  border-color: #e2e8f0 !important;
 }
 
 /* High contrast text in light theme */
@@ -107,16 +126,27 @@ html.light .text-white,
 html.light .text-slate-100,
 html.light .text-slate-200,
 html.light .text-\[\#f4f4f4\] {
-  color: #161616 !important;
+  color: #0f172a !important;
 }
 
 html.light .text-slate-300 {
-  color: #262626 !important;
+  color: #1e293b !important;
 }
 
 html.light .text-slate-400,
 html.light .text-slate-500 {
-  color: #525252 !important;
+  color: #475569 !important;
+}
+
+/* Lane crossing buttons in light mode */
+html.light button[class*="border-\[\#525252\]"] {
+  border-color: #cbd5e1 !important;
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+}
+
+html.light button[class*="border-\[\#525252\]"]:hover {
+  background-color: #f8fafc !important;
 }
 
 /* Qiskit readable accents in light mode */
@@ -143,6 +173,18 @@ html.light .text-amber-200 {
 html.light .text-purple-300,
 html.light .text-purple-200 {
   color: #6929c4 !important;
+}
+
+html.light .text-\[\#be95ff\] {
+  color: #6929c4 !important;
+}
+
+html.light .bg-\[\#8a3ffc\]\/20 {
+  background-color: rgba(105, 41, 196, 0.12) !important;
+}
+
+html.light canvas {
+  border-color: #e0e0e0 !important;
 }
 
 /* Custom Scrollbar - Carbon Style */

@@ -25,8 +25,8 @@ export function OrderTicket({ recipe, flavorProfile }: OrderTicketProps) {
     <Card className="border-[#333333] bg-[#1c1c1c] shadow-sm">
       <CardContent className="p-4 sm:p-5 flex flex-col xl:flex-row items-start xl:items-center justify-between gap-5">
         {/* Left: Recipe Identity & Dialogue Lore */}
-        <div className="flex items-center gap-3.5 min-w-[280px]">
-          <span className="text-3xl sm:text-4xl drop-shadow-sm shrink-0">{recipe.dishIcon}</span>
+        <div className="flex items-center gap-4 min-w-[290px]">
+          <span className="text-4xl sm:text-5xl drop-shadow-sm shrink-0">{recipe.dishIcon}</span>
           <div>
             <div className="flex items-center gap-2">
               <h2 className="text-base sm:text-lg text-[#f4f4f4] font-bold tracking-wide">
@@ -63,36 +63,41 @@ export function OrderTicket({ recipe, flavorProfile }: OrderTicketProps) {
         <div className="flex-1 w-full max-w-2xl space-y-2">
           <div className="flex items-center justify-between text-xs font-bold text-slate-400 uppercase tracking-wider">
             <div className="flex items-center gap-1.5">
-              <span>Flavor Targets</span>
+              <span>Recipe Flavor Targets</span>
               <InfoDialog
-                title="Non-Abelian Flavor Guide"
-                description="Quantum braid properties directly dictate culinary flavor profiles:"
+                title="Flavor Profile Guide"
+                description="Weaving twists directly builds the recipe flavor profile:"
                 tooltip="Flavor Profile Guide"
               >
                 <div className="space-y-2 text-xs">
                   <div className="p-2 rounded bg-[#262626] border border-[#393939]">
-                    <b className="text-[#ee5396]">🍬 Sweetness (Phase Rotation):</b> Forward R-matrix phase rotations accumulate sweetness.
+                    <b className="text-[#ee5396]">🍬 Sweetness (Phase Rotation):</b> Forward twists and chopping accumulate sweetness.
                   </div>
                   <div className="p-2 rounded bg-[#262626] border border-[#393939]">
-                    <b className="text-[#009d9a]">🍋 Sourness (Commutation Shifts):</b> Alternating basis operations (σ₁σ₂ vs σ₂σ₁) spike sourness.
+                    <b className="text-[#009d9a]">🍋 Sourness (Commutation Shifts):</b> Alternating twists between adjacent lanes spikes sourness.
                   </div>
                   <div className="p-2 rounded bg-[#262626] border border-[#393939]">
                     <b className="text-[#da1e28]">🌶️ Spiciness (Twist Frequency):</b> Repeated consecutive twists in the same lane add heat.
                   </div>
                   <div className="p-2 rounded bg-[#262626] border border-[#393939]">
-                    <b className="text-[#be95ff]">🍄 Umami (Superposition Balance):</b> Equal superposition (|α| ≈ |β|) unlocks savory umami.
+                    <b className="text-[#be95ff]">🍄 Umami (Superposition Balance):</b> Balanced twists across all strands unlock savory umami.
                   </div>
                 </div>
               </InfoDialog>
             </div>
-            <span className="text-[#be95ff] font-mono font-bold">Fidelity: {flavorProfile.coherence}%</span>
+            <div className="flex items-center gap-1.5">
+              <span className="text-[#be95ff] font-mono font-bold text-xs">Flavor Match: {flavorProfile.coherence}%</span>
+              <span className="text-[10px] text-slate-400 font-mono">(Fidelity)</span>
+            </div>
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             {/* Sweetness */}
             <div className="space-y-1 rounded-lg bg-[#262626] p-2 border border-[#393939]">
-              <div className="flex justify-between text-[11px]">
-                <span className="text-[#ee5396]">🍬 Sweet</span>
+              <div className="flex justify-between text-[11px] items-center">
+                <span className="text-[#ee5396] font-semibold flex items-center gap-1">
+                  <span className="text-sm">🍬</span> Sweet
+                </span>
                 <span className="font-mono text-slate-400">
                   {flavorProfile.sweetness}% / <span className="text-[#ee5396] font-bold">{recipe.targetFlavor.sweetness}%</span>
                 </span>
@@ -107,8 +112,10 @@ export function OrderTicket({ recipe, flavorProfile }: OrderTicketProps) {
 
             {/* Sourness */}
             <div className="space-y-1 rounded-lg bg-[#262626] p-2 border border-[#393939]">
-              <div className="flex justify-between text-[11px]">
-                <span className="text-[#009d9a]">🍋 Sour</span>
+              <div className="flex justify-between text-[11px] items-center">
+                <span className="text-[#009d9a] font-semibold flex items-center gap-1">
+                  <span className="text-sm">🍋</span> Sour
+                </span>
                 <span className="font-mono text-slate-400">
                   {flavorProfile.sourness}% / <span className="text-[#009d9a] font-bold">{recipe.targetFlavor.sourness}%</span>
                 </span>
@@ -123,8 +130,10 @@ export function OrderTicket({ recipe, flavorProfile }: OrderTicketProps) {
 
             {/* Spiciness */}
             <div className="space-y-1 rounded-lg bg-[#262626] p-2 border border-[#393939]">
-              <div className="flex justify-between text-[11px]">
-                <span className="text-[#da1e28]">🌶️ Spicy</span>
+              <div className="flex justify-between text-[11px] items-center">
+                <span className="text-[#da1e28] font-semibold flex items-center gap-1">
+                  <span className="text-sm">🌶️</span> Spicy
+                </span>
                 <span className="font-mono text-slate-400">
                   {flavorProfile.spiciness}% / <span className="text-[#da1e28] font-bold">{recipe.targetFlavor.spiciness}%</span>
                 </span>
@@ -139,8 +148,10 @@ export function OrderTicket({ recipe, flavorProfile }: OrderTicketProps) {
 
             {/* Umami */}
             <div className="space-y-1 rounded-lg bg-[#262626] p-2 border border-[#393939]">
-              <div className="flex justify-between text-[11px]">
-                <span className="text-[#be95ff]">🍄 Umami</span>
+              <div className="flex justify-between text-[11px] items-center">
+                <span className="text-[#be95ff] font-semibold flex items-center gap-1">
+                  <span className="text-sm">🍄</span> Umami
+                </span>
                 <span className="font-mono text-slate-400">
                   {flavorProfile.umami}% / <span className="text-[#be95ff] font-bold">{recipe.targetFlavor.umami}%</span>
                 </span>
