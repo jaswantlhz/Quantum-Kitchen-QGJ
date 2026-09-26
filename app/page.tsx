@@ -14,6 +14,8 @@ import { StabilizerShop } from '@/components/game/StabilizerShop';
 import { DishModal } from '@/components/game/DishModal';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { ThemeToggle } from '@/components/ui/theme-toggle';
+import { InfoDialog } from '@/components/ui/info-dialog';
 import {
   Volume2,
   VolumeX,
@@ -115,20 +117,38 @@ export default function QuantumKitchenPage() {
                 <Badge variant="default" className="text-[9px] font-mono tracking-widest hidden sm:inline-flex">
                   FIBONACCI ANYONS
                 </Badge>
+                {/* How to Play Info Modal */}
+                <InfoDialog
+                  title="How to Play: Cosmic Threads"
+                  description="Welcome to the Cosmic Diner! Master non-Abelian topological braiding to serve quantum super-particle delicacies."
+                  tooltip="How to Play Guide"
+                >
+                  <div className="space-y-2 text-xs">
+                    <div className="p-2.5 rounded-lg bg-cyan-950/40 border border-cyan-500/30">
+                      <b className="text-cyan-300">1. The Prep (Braiding):</b> Swipe or click lane crossings to weave particle strands around each other.
+                    </div>
+                    <div className="p-2.5 rounded-lg bg-pink-950/40 border border-pink-500/30">
+                      <b className="text-pink-300">2. Non-Abelian Flavor Rules:</b> Order matters! A twist in Lane 1 followed by Lane 2 produces a completely different quantum state and flavor than the reverse.
+                    </div>
+                    <div className="p-2.5 rounded-lg bg-purple-950/40 border border-purple-500/30">
+                      <b className="text-purple-300">3. The Cook (Fusion Bowl):</b> Collide strands in the mixing bowl. Perfect braids fuse into lucrative super-particle desserts; uncrossed strands cancel into identity ash!
+                    </div>
+                  </div>
+                </InfoDialog>
               </div>
-              <p className="text-[11px] text-slate-400">
-                Weave topological braids down the pegboard to synthesize non-Abelian cosmic delicacies.
-              </p>
             </div>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2.5">
             {/* Credits Counter */}
             <div className="flex items-center gap-1.5 rounded-xl border border-amber-500/30 bg-amber-950/30 px-3 py-1.5 font-mono text-xs text-amber-300 shadow-[0_0_10px_rgba(245,158,11,0.2)]">
               <span>🪙</span>
               <span className="font-extrabold">{credits}</span>
               <span className="text-[10px] text-amber-400/80">CR</span>
             </div>
+
+            {/* Theme Toggle (Light / Dark) */}
+            <ThemeToggle />
 
             {/* Audio Toggle */}
             <Button
@@ -144,7 +164,7 @@ export default function QuantumKitchenPage() {
             {/* Link to Scientist Admin Portal */}
             <Link href="/admin">
               <Button size="sm" variant="default" className="h-8 text-xs font-bold tracking-wide">
-                <Atom className="mr-1.5 h-3.5 w-3.5" /> Scientist Portal (/admin)
+                <Atom className="mr-1.5 h-3.5 w-3.5" /> Scientist Portal
               </Button>
             </Link>
           </div>
@@ -219,17 +239,31 @@ export default function QuantumKitchenPage() {
               hasCrossings={engine.crossings.length > 0}
             />
 
-            {/* Mini Theory Card */}
-            <div className="rounded-xl border border-slate-800/80 bg-slate-950/60 p-4 text-[11px] text-slate-400 space-y-2">
-              <span className="font-bold text-cyan-300 block uppercase tracking-wider">
-                Topological Physics Note
+            {/* Compact Physics Guide Trigger */}
+            <div className="flex items-center justify-between rounded-xl border border-slate-800/80 bg-slate-950/60 p-3">
+              <span className="text-xs font-semibold text-slate-300 flex items-center gap-1.5">
+                ⚛️ Anyon Physics Note
               </span>
-              <p className="leading-relaxed">
-                Braids act as quantum gates: Lane 1 applies phase rotation (<b>R-matrix</b>), while Lane 2 performs golden-ratio superposition (<b>F-matrix</b>).
-              </p>
-              <div className="font-mono text-cyan-400 text-[10px]">
-                τ = (√5 - 1) / 2 ≈ 0.618034
-              </div>
+              <InfoDialog
+                title="Topological Anyon Physics"
+                description="Braids act as universal quantum gates on Fibonacci anyons (τ):"
+                tooltip="Anyon Physics Guide"
+              >
+                <div className="space-y-2 text-xs">
+                  <div className="p-2.5 rounded-lg bg-cyan-950/40 border border-cyan-500/20">
+                    <b className="text-cyan-300">Lane 1 (R-Matrix):</b> Phase shift rotating quantum amplitude vector [α, β].
+                  </div>
+                  <div className="p-2.5 rounded-lg bg-purple-950/40 border border-purple-500/20">
+                    <b className="text-purple-300">Lane 2 (F-Matrix):</b> Basis transformation mixing states via golden ratio:
+                    <div className="font-mono text-cyan-400 text-[10px] mt-1">
+                      τ = (√5 - 1) / 2 ≈ 0.618034
+                    </div>
+                  </div>
+                  <div className="p-2.5 rounded-lg bg-emerald-950/40 border border-emerald-500/20 text-emerald-300 font-mono text-[11px]">
+                    Anyon Fusion: τ ⊗ τ = 1 ⊕ τ
+                  </div>
+                </div>
+              </InfoDialog>
             </div>
           </div>
         </div>

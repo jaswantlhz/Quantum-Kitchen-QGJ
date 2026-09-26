@@ -7,7 +7,8 @@ import { Recipe } from '@/lib/game/recipes';
 import { soundFx } from '@/lib/audio/synthAudio';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { RotateCcw, Undo2, Sparkles, HelpCircle } from 'lucide-react';
+import { InfoDialog } from '@/components/ui/info-dialog';
+import { RotateCcw, Undo2, Sparkles } from 'lucide-react';
 
 interface BraidCanvasProps {
   recipe: Recipe;
@@ -365,13 +366,22 @@ export function BraidCanvas({
         </div>
       </div>
 
-      {/* Footer Instructions / Hint */}
+      {/* Footer Controls / Hint */}
       <div className="flex w-full items-center justify-between text-[11px] text-slate-400 border-t border-slate-800/80 pt-2 px-1">
-        <div className="flex items-center gap-1.5">
-          <HelpCircle className="h-3.5 w-3.5 text-cyan-400" />
-          <span>Non-Abelian Rule: σ₁σ₂ ≠ σ₂σ₁. Order alters the quantum phase!</span>
+        <div className="flex items-center gap-2">
+          <InfoDialog
+            title="Non-Abelian Braiding Rule"
+            description="In topological quantum computing, anyon operations do not commute: σ₁σ₂ ≠ σ₂σ₁. Swapping the order of operations fundamentally changes the resulting quantum state and culinary flavor!"
+            tooltip="Non-Abelian Rule"
+          >
+            <div className="rounded bg-slate-900 border border-slate-800 p-2.5 font-mono text-xs text-cyan-300">
+              σ₁ (Lane 1): R-matrix phase shift<br />
+              σ₂ (Lane 2): F-matrix basis change (superposition)
+            </div>
+          </InfoDialog>
+          <span className="text-[11px] text-slate-400 font-mono">Braid Physics Info</span>
         </div>
-        <span className="font-mono text-slate-500">
+        <span className="font-mono text-cyan-400 font-bold">
           Crossings: {crossings.length}
         </span>
       </div>
