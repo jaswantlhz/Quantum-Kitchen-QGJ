@@ -95,9 +95,9 @@ export default function AdminPage() {
         </div>
 
         <div className="flex items-center gap-2 sm:gap-2.5">
-          <Link href="/landing">
+          <Link href="/">
             <Button variant="ghost" size="sm" className="h-8 text-xs text-slate-400 hover:text-white cursor-pointer">
-              Landing
+              Home
             </Button>
           </Link>
 
@@ -120,7 +120,7 @@ export default function AdminPage() {
             Refresh
           </Button>
 
-          <Link href="/">
+          <Link href="/play">
             <Button size="sm" variant="default" className="h-8 text-xs font-bold cursor-pointer">
               <ChefHat className="mr-1.5 h-3.5 w-3.5" /> Return to Kitchen
             </Button>

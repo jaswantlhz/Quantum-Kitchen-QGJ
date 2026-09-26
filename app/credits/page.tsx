@@ -11,13 +11,12 @@ import {
   Palette,
   Volume2,
   Code2,
-  ExternalLink,
-  BookOpen,
   ChefHat,
-  ArrowLeft,
   Activity,
   Layers,
   Sparkles,
+  Gamepad2,
+  Home,
 } from 'lucide-react';
 import { BloubBot } from '@/components/game/BloubBot';
 
@@ -28,8 +27,8 @@ export default function CreditsPage() {
       <header className="sticky top-0 z-50 w-full border-b border-slate-200 dark:border-[#333333] bg-white/80 dark:bg-[#161616]/80 backdrop-blur-md">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <Link href="/" className="flex items-center gap-2">
-              <div className="h-8 w-8 rounded-lg bg-[#8a3ffc]/15 border border-[#8a3ffc]/40 flex items-center justify-center">
+            <Link href="/" className="flex items-center gap-2 group">
+              <div className="h-8 w-8 rounded-lg bg-[#8a3ffc]/15 border border-[#8a3ffc]/40 flex items-center justify-center group-hover:border-[#8a3ffc] transition-colors">
                 <Atom className="h-5 w-5 text-[#8a3ffc]" />
               </div>
               <span className="font-bold tracking-tight text-sm sm:text-base text-slate-900 dark:text-white">
@@ -42,13 +41,14 @@ export default function CreditsPage() {
           </div>
 
           <div className="flex items-center gap-2 sm:gap-3">
-            <Link href="/landing">
+            <Link href="/">
               <Button
                 variant="ghost"
                 size="sm"
-                className="h-8 text-xs text-slate-600 dark:text-slate-400 hover:text-black dark:hover:text-white cursor-pointer"
+                className="h-8 gap-1 text-xs text-slate-600 dark:text-slate-400 hover:text-black dark:hover:text-white cursor-pointer"
               >
-                Landing
+                <Home className="h-3.5 w-3.5 text-[#009d9a]" />
+                <span>Home</span>
               </Button>
             </Link>
 
@@ -65,13 +65,13 @@ export default function CreditsPage() {
 
             <ThemeToggle />
 
-            <Link href="/">
+            <Link href="/play">
               <Button
                 size="sm"
                 className="h-8 px-3 bg-[#8a3ffc] hover:bg-[#6929c4] text-white font-bold text-xs shadow-sm cursor-pointer"
               >
-                <ChefHat className="mr-1.5 h-3.5 w-3.5" />
-                Return to Game
+                <Gamepad2 className="mr-1.5 h-3.5 w-3.5" />
+                Play Game
               </Button>
             </Link>
           </div>
@@ -103,16 +103,16 @@ export default function CreditsPage() {
             </p>
 
             <div className="flex flex-wrap items-center gap-3 pt-2">
-              <Link href="/">
+              <Link href="/play">
                 <Button size="sm" className="h-9 px-4 bg-[#8a3ffc] hover:bg-[#6929c4] text-white font-bold text-xs cursor-pointer">
-                  <ChefHat className="mr-1.5 h-4 w-4" />
+                  <Gamepad2 className="mr-1.5 h-4 w-4" />
                   Launch Kitchen Game
                 </Button>
               </Link>
-              <Link href="/landing">
+              <Link href="/">
                 <Button variant="outline" size="sm" className="h-9 px-4 text-xs font-semibold border-slate-300 dark:border-[#525252] cursor-pointer">
-                  <Layers className="mr-1.5 h-4 w-4 text-[#009d9a]" />
-                  View Landing Overview
+                  <Home className="mr-1.5 h-4 w-4 text-[#009d9a]" />
+                  Home Overview
                 </Button>
               </Link>
             </div>
@@ -261,15 +261,15 @@ export default function CreditsPage() {
           </p>
 
           <div className="pt-2 flex flex-wrap items-center justify-between gap-4">
-            <Link href="/">
+            <Link href="/play">
               <Button size="sm" className="h-9 px-4 bg-[#8a3ffc] hover:bg-[#6929c4] text-white font-bold text-xs cursor-pointer">
-                <ChefHat className="mr-1.5 h-4 w-4" />
+                <Gamepad2 className="mr-1.5 h-4 w-4" />
                 Back to Kitchen
               </Button>
             </Link>
-            <Link href="/landing">
+            <Link href="/">
               <Button variant="ghost" size="sm" className="h-9 text-xs text-slate-600 dark:text-slate-400 hover:text-black dark:hover:text-white cursor-pointer">
-                ← Back to Landing Page
+                ← Back to Home
               </Button>
             </Link>
           </div>
@@ -285,10 +285,10 @@ export default function CreditsPage() {
             <span>Attributions & Lineage</span>
           </div>
           <div className="flex items-center gap-4">
-            <Link href="/landing" className="hover:text-black dark:hover:text-white transition-colors">
-              Landing
-            </Link>
             <Link href="/" className="hover:text-black dark:hover:text-white transition-colors">
+              Home
+            </Link>
+            <Link href="/play" className="hover:text-black dark:hover:text-white transition-colors">
               Play Game
             </Link>
             <Link href="/admin" className="hover:text-black dark:hover:text-white transition-colors">
