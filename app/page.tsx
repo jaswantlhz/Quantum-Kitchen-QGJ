@@ -12,6 +12,9 @@ import { OrderTicket } from '@/components/game/OrderTicket';
 import { MixingBowl } from '@/components/game/MixingBowl';
 import { StabilizerShop } from '@/components/game/StabilizerShop';
 import { DishModal } from '@/components/game/DishModal';
+import { HowToPlayModal } from '@/components/game/HowToPlayModal';
+import { ChefCompanion } from '@/components/game/ChefCompanion';
+import { GhostCrossingHint } from '@/lib/quantum/bloubAdvisorEngine';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
@@ -32,6 +35,7 @@ export default function QuantumKitchenPage() {
   const [isCooking, setIsCooking] = useState(false);
   const [fusionModalOpen, setFusionModalOpen] = useState(false);
   const [lastFusionResult, setLastFusionResult] = useState<FusionResult | null>(null);
+  const [ghostCrossing, setGhostCrossing] = useState<GhostCrossingHint | null>(null);
 
   // Trigger state update
   const [, setTick] = useState(0);
@@ -113,27 +117,11 @@ export default function QuantumKitchenPage() {
                     COSMIC THREADS
                   </span>
                 </h1>
-                <Badge variant="default" className="text-[9px] font-mono tracking-widest hidden sm:inline-flex">
-                  FIBONACCI ANYONS
+                <Badge variant="default" className="text-[10px] font-mono tracking-wider hidden sm:inline-flex">
+                  COSMIC FLAVOR THREADS (ANYONS)
                 </Badge>
-                {/* How to Play Info Modal */}
-                <InfoDialog
-                  title="How to Play: Cosmic Threads"
-                  description="Welcome to the Cosmic Diner! Master non-Abelian topological braiding to serve quantum super-particle delicacies."
-                  tooltip="How to Play Guide"
-                >
-                  <div className="space-y-2 text-xs">
-                    <div className="p-2.5 rounded-lg bg-[#262626] border border-[#393939]">
-                      <b className="text-[#009d9a]">1. The Prep (Braiding):</b> Swipe or click lane crossings to weave particle strands around each other.
-                    </div>
-                    <div className="p-2.5 rounded-lg bg-[#262626] border border-[#393939]">
-                      <b className="text-[#ee5396]">2. Non-Abelian Flavor Rules:</b> Order matters! A twist in Lane 1 followed by Lane 2 produces a completely different quantum state and flavor than the reverse.
-                    </div>
-                    <div className="p-2.5 rounded-lg bg-[#262626] border border-[#393939]">
-                      <b className="text-[#be95ff]">3. The Cook (Fusion Bowl):</b> Collide strands in the mixing bowl. Perfect braids fuse into lucrative super-particle desserts; uncrossed strands cancel into identity ash!
-                    </div>
-                  </div>
-                </InfoDialog>
+                {/* Dedicated How to Play Modal */}
+                <HowToPlayModal />
               </div>
             </div>
           </div>
@@ -189,15 +177,15 @@ export default function QuantumKitchenPage() {
                     refreshState();
                   }
                 }}
-                className={`flex items-center gap-2 rounded-lg px-3.5 py-1.5 text-xs font-medium transition-all shrink-0 cursor-pointer ${
+                className={`flex items-center gap-2.5 rounded-xl px-3.5 py-2 text-xs font-semibold transition-all shrink-0 cursor-pointer ${
                   isActive
                     ? 'border border-[#8a3ffc] bg-[#8a3ffc]/20 text-[#be95ff]'
-                    : 'border border-[#333333] bg-[#1c1c1c] text-slate-400 hover:text-[#f4f4f4] hover:bg-[#262626]'
+                    : 'border border-slate-200 dark:border-[#333333] bg-white dark:bg-[#1c1c1c] text-slate-700 dark:text-slate-400 hover:text-black dark:hover:text-[#f4f4f4] hover:bg-slate-100 dark:hover:bg-[#262626]'
                 }`}
               >
-                <span>{r.dishIcon}</span>
-                <span>{r.name}</span>
-                <span className="font-mono text-[10px] text-slate-500">({r.orderCode})</span>
+                <span className="text-xl sm:text-2xl drop-shadow-xs">{r.dishIcon}</span>
+                <span className="font-bold">{r.name}</span>
+                <span className="font-mono text-[10px] text-slate-400">({r.orderCode})</span>
               </button>
             );
           })}
@@ -214,6 +202,8 @@ export default function QuantumKitchenPage() {
             engine={engine}
             onStateUpdate={refreshState}
             stabilizerLevel={stabilizerLevel}
+            ghostCrossing={ghostCrossing}
+            onClearGhostCrossing={() => setGhostCrossing(null)}
           />
 
           {/* Stage 3: The Cook & The Pantry (Side-by-Side Bottom Deck) */}
@@ -281,6 +271,21 @@ export default function QuantumKitchenPage() {
         blochAngles={engine.getBlochCoordinates()}
         onNextRecipe={handleNextRecipe}
         onRetry={handleRetry}
+      />
+
+      {/* Interactive Sous-Chef Companion with Smart Lookahead Suggestions */}
+      <ChefCompanion
+        recipe={activeRecipe}
+        currentFlavors={currentFlavors}
+        successEnergy={successEnergy}
+        crossings={engine.crossings}
+        decoherenceGlitch={decoherenceGlitch}
+        isCooking={isCooking}
+        lastFusionResult={lastFusionResult}
+        stabilizerLevel={stabilizerLevel}
+        credits={credits}
+        onShowGhostMove={setGhostCrossing}
+        activeGhostMove={ghostCrossing}
       />
 
       {/* Cyberpunk Footer */}
