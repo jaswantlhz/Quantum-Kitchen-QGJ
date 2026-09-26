@@ -53,6 +53,8 @@ function useIsClient() {
   );
 }
 
+import { animateModalIn, animateModalOut } from "@/lib/animation/gsapUtils";
+
 const DialogContent = ({
   children,
   className,
@@ -62,6 +64,14 @@ const DialogContent = ({
 }) => {
   const ctx = React.useContext(DialogContext);
   const isClient = useIsClient();
+  const cardRef = React.useRef<HTMLDivElement>(null);
+  const backdropRef = React.useRef<HTMLDivElement>(null);
+
+  React.useEffect(() => {
+    if (ctx?.open && cardRef.current && backdropRef.current) {
+      animateModalIn(cardRef.current, backdropRef.current);
+    }
+  }, [ctx?.open]);
 
   if (!ctx?.open || !isClient) return null;
 
@@ -69,13 +79,15 @@ const DialogContent = ({
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
       {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-black/80 backdrop-blur-md animate-in fade-in-0 duration-200"
+        ref={backdropRef}
+        className="fixed inset-0 bg-black/80 backdrop-blur-md"
         onClick={() => ctx.onOpenChange(false)}
       />
       {/* Modal Card */}
       <div
+        ref={cardRef}
         className={cn(
-          "relative z-[101] w-full max-w-lg rounded-xl border border-[#393939] bg-[#1c1c1c] p-6 shadow-2xl animate-in zoom-in-95 duration-200 my-auto",
+          "relative z-[101] w-full max-w-lg rounded-xl border border-[#393939] bg-[#1c1c1c] p-6 shadow-2xl my-auto",
           className
         )}
       >

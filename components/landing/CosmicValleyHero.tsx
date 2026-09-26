@@ -1,7 +1,6 @@
-'use client';
-
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import Link from 'next/link';
+import gsap from 'gsap';
 import { ChunkyGameTitle } from './ChunkyGameTitle';
 import { BloubBot } from '@/components/game/BloubBot';
 import { Play, Sparkles, Volume2, VolumeX, Atom, BookOpen } from 'lucide-react';
@@ -17,6 +16,46 @@ export function CosmicValleyHero({
   isMuted = false,
   onToggleMute,
 }: CosmicValleyHeroProps) {
+  const titleContainerRef = useRef<HTMLDivElement>(null);
+  const pillBadgeRef = useRef<HTMLDivElement>(null);
+  const mascotCliffRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    // Gentle sine-wave levitation for the 3D title
+    if (titleContainerRef.current) {
+      gsap.to(titleContainerRef.current, {
+        y: -12,
+        duration: 2.4,
+        ease: 'sine.inOut',
+        repeat: -1,
+        yoyo: true,
+      });
+    }
+
+    // Gentle bobbing for top-right floating badge
+    if (pillBadgeRef.current) {
+      gsap.to(pillBadgeRef.current, {
+        y: -6,
+        duration: 1.8,
+        ease: 'sine.inOut',
+        repeat: -1,
+        yoyo: true,
+        delay: 0.4,
+      });
+    }
+
+    // Soft breathing for mascot on cliff
+    if (mascotCliffRef.current) {
+      gsap.to(mascotCliffRef.current, {
+        y: -4,
+        duration: 2.0,
+        ease: 'sine.inOut',
+        repeat: -1,
+        yoyo: true,
+        delay: 0.2,
+      });
+    }
+  }, []);
   return (
     <div className="relative w-full min-h-[90vh] lg:min-h-screen flex flex-col justify-between overflow-hidden bg-gradient-to-b from-[#134b70] via-[#206a88] via-[#528994] to-[#f89b4f] select-none">
       {/* 1. Sky & Sun Glow Layer */}
@@ -66,7 +105,7 @@ export function CosmicValleyHero({
       </div>
 
       {/* 2. Top-Right Floating Pill Badge (Matching Reference) */}
-      <div className="relative z-30 pt-20 px-4 sm:px-8 max-w-7xl mx-auto w-full flex justify-end">
+      <div ref={pillBadgeRef} className="relative z-30 pt-20 px-4 sm:px-8 max-w-7xl mx-auto w-full flex justify-end">
         <Link
           href="/play"
           className="group flex items-center gap-3 bg-[#11221b]/85 hover:bg-[#162d24] border-2 border-[#3eb47a]/60 hover:border-[#72f1b8] rounded-2xl p-2.5 sm:px-4 sm:py-2.5 shadow-[0_10px_25px_rgba(0,0,0,0.5)] backdrop-blur-md transition-all hover:scale-105 active:scale-95 cursor-pointer"
@@ -88,7 +127,7 @@ export function CosmicValleyHero({
       </div>
 
       {/* 3. Center Game Logo & Primary Pill Action */}
-      <div className="relative z-20 flex-1 flex flex-col items-center justify-center px-4 py-8 space-y-6">
+      <div ref={titleContainerRef} className="relative z-20 flex-1 flex flex-col items-center justify-center px-4 py-8 space-y-6">
         <ChunkyGameTitle />
 
         {/* Center Pill Button (Matching Reference "WATCH TRAILER" / "PLAY GAME") */}
@@ -166,7 +205,7 @@ export function CosmicValleyHero({
           </svg>
 
           {/* Characters Sitting on Cliff Edge Gazing at Horizon */}
-          <div className="absolute top-12 sm:top-14 right-16 sm:right-24 flex items-end gap-2">
+          <div ref={mascotCliffRef} className="absolute top-12 sm:top-14 right-16 sm:right-24 flex items-end gap-2">
             {/* Small Side Mascot Companion */}
             <div className="h-7 w-7 rounded-full bg-[#f1c21b] border-2 border-[#7a5300] shadow-md flex items-center justify-center text-[11px] font-bold text-black transform rotate-12">
               τ

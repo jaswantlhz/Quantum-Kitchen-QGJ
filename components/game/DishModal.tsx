@@ -24,6 +24,9 @@ interface DishModalProps {
   onRetry: () => void;
 }
 
+import gsap from 'gsap';
+import { animateNumberCounter } from '@/lib/animation/gsapUtils';
+
 export function DishModal({
   open,
   onOpenChange,
@@ -36,8 +39,24 @@ export function DishModal({
   onNextRecipe,
   onRetry,
 }: DishModalProps) {
+  const [displayScore, setDisplayScore] = React.useState(0);
+  const plateRef = React.useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     if (!open || !result) return;
+
+    // GSAP score counter & plate spring pop
+    setDisplayScore(0);
+    const scoreObj = { val: 0 };
+    animateNumberCounter(scoreObj, result.platedScore, setDisplayScore, 0.9);
+
+    if (plateRef.current) {
+      gsap.fromTo(
+        plateRef.current,
+        { scale: 0.6, rotation: -15, opacity: 0 },
+        { scale: 1, rotation: 0, opacity: 1, duration: 0.6, ease: 'back.out(1.8)', delay: 0.1 }
+      );
+    }
 
     if (result.dishOutcome === 'perfect' || result.dishOutcome === 'good') {
       soundFx.playSuccessChime();
@@ -99,7 +118,7 @@ export function DishModal({
       <DialogContent className="max-w-md border border-[#333333] bg-[#1c1c1c] shadow-lg">
         <DialogHeader className="text-center">
           {/* Ceramic Serving Plate Presentation */}
-          <div className="relative mx-auto my-2 flex h-24 w-24 items-center justify-center rounded-full border-2 border-[#525252] bg-[#161616] shadow-sm">
+          <div ref={plateRef} className="relative mx-auto my-2 flex h-24 w-24 items-center justify-center rounded-full border-2 border-[#525252] bg-[#161616] shadow-sm">
             {/* Fine Concentric Ceramic Rim */}
             <div className="absolute inset-1.5 rounded-full border border-[#393939]" />
             <span className="text-4xl drop-shadow-sm">{recipe.dishIcon}</span>
@@ -153,7 +172,7 @@ export function DishModal({
             </div>
             <div className="flex items-center gap-2">
               <span className="font-mono text-base font-bold text-[#f1c21b]">
-                {result.platedScore} <span className="text-xs text-slate-400">PTS</span>
+                {displayScore} <span className="text-xs text-slate-400">PTS</span>
               </span>
               <Badge
                 variant={result.grade === 'S+' ? 'default' : result.grade === 'A' ? 'emerald' : 'outline'}
