@@ -294,7 +294,7 @@ export default function QuantumKitchenPlayPage() {
       />
 
       {/* Sleek Minimal Game Footer */}
-      <footer className="border-t border-[#333333] bg-[#121212]/95 px-4 py-2.5 text-center text-xs text-slate-500">
+      <footer className="border-t border-[#7b5d95]/30 bg-[#0a0712]/95 px-4 py-3 text-center text-xs text-[#9d9be5]/70">
         <div className="mx-auto max-w-7xl flex flex-col sm:flex-row items-center justify-between gap-2">
           <span>Quantum Kitchen • A Topological Cooking Game</span>
           <div className="flex items-center gap-3 font-medium">
@@ -302,11 +302,11 @@ export default function QuantumKitchenPlayPage() {
               Home
             </Link>
             <span>•</span>
-            <Link href="/admin" className="hover:text-[#00f0ff] transition-colors">
+            <Link href="/admin" className="hover:text-[#9d9be5] transition-colors">
               Scientist Lab
             </Link>
             <span>•</span>
-            <Link href="/credits" className="hover:text-[#ee5396] transition-colors">
+            <Link href="/credits" className="hover:text-[#9547a9] transition-colors">
               Credits
             </Link>
           </div>

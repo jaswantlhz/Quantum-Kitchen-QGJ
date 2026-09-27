@@ -42,7 +42,7 @@ export function CosmicVideoHero({
           playsInline
           preload="auto"
           onLoadedData={() => setVideoLoaded(true)}
-          className={`absolute inset-0 w-full h-full object-cover translate-y-16 sm:translate-y-20 lg:translate-y-24 transition-opacity duration-1000 ${videoLoaded ? 'opacity-100' : 'opacity-0'
+          className={`absolute inset-0 w-full h-[calc(100%+30px)] object-cover top-[150px] transition-opacity duration-1000 ${videoLoaded ? 'opacity-100' : 'opacity-0'
             }`}
           src={VIDEO_SRC}
         />
@@ -65,7 +65,7 @@ export function CosmicVideoHero({
               </svg>
             </div>
             <span className="font-bold text-xs tracking-wider uppercase text-[#f5f4ff] drop-shadow-[0_0_8px_rgba(157,155,229,0.4)]">
-              Quantum Kitchen
+              QUANTUM KITCHEN
             </span>
           </Link>
 
@@ -74,26 +74,26 @@ export function CosmicVideoHero({
             {onOpenManual && (
               <button
                 onClick={onOpenManual}
-                className="hover:text-[#f5f4ff] transition-colors cursor-pointer"
+                className="hover:text-[#f5f4ff] transition-colors cursor-pointer uppercase"
               >
-                How to Play
+                HOW TO PLAY
               </button>
             )}
-            <a href="#try-weave" className="hover:text-[#f5f4ff] transition-colors">
-              Try Weaving
+            <a href="#try-weave" className="hover:text-[#f5f4ff] transition-colors uppercase">
+              TRY WEAVING
             </a>
-            <a href="#dishes" className="hover:text-[#f5f4ff] transition-colors">
-              Cosmic Menu
+            <a href="#dishes" className="hover:text-[#f5f4ff] transition-colors uppercase">
+              COSMIC MENU
             </a>
-            <a href="#how-it-works" className="hover:text-[#f5f4ff] transition-colors">
-              Quantum Mechanics
+            <a href="#how-it-works" className="hover:text-[#f5f4ff] transition-colors uppercase">
+              QUANTUM MECHANICS
             </a>
-            <Link href="/admin" className="flex items-center gap-1.5 hover:text-[#f5f4ff] transition-colors">
+            <Link href="/admin" className="flex items-center gap-1.5 hover:text-[#f5f4ff] transition-colors uppercase">
               <span className="w-1.5 h-1.5 rounded-full bg-[#9d9be5] shadow-[0_0_8px_#9d9be5]" />
-              <span>Scientist Lab</span>
+              <span>SCIENTIST LAB</span>
             </Link>
-            <Link href="/credits" className="hover:text-[#f5f4ff] transition-colors">
-              Credits
+            <Link href="/credits" className="hover:text-[#f5f4ff] transition-colors uppercase">
+              CREDITS
             </Link>
           </div>
 
@@ -127,7 +127,7 @@ export function CosmicVideoHero({
       </header>
 
       {/* Hero Upper Content (Moved 5px down, tight spacing) */}
-      <div className="relative z-20 flex flex-col items-center text-center px-4 sm:px-6 pt-5 sm:pt-6 pb-3 translate-y-[5px]">
+      <div className="relative z-20 flex flex-col items-center text-center px-4 sm:px-6 pt-5 sm:pt-6 pb-3 translate-y-[50px]">
         <div className="max-w-4xl mx-auto flex flex-col items-center">
           {/* Header / Title in ONE SINGLE LINE with tight tracking */}
           <h1 className="whitespace-nowrap text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight uppercase leading-tight mb-2 select-none">
