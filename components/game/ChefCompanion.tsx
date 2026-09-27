@@ -115,14 +115,14 @@ export function ChefCompanion({
             <div className="flex items-center justify-between gap-2 border-b border-[#7b5d95]/35 pb-2 mb-2">
               <div className="flex items-center gap-2">
                 <span className="flex h-2.5 w-2.5 rounded-full bg-[#9d9be5] animate-pulse" />
-                <span className="font-bold text-sm text-[#f5f4ff] tracking-tight">
+                <span className="font-bold text-sm text-white tracking-tight">
                   Bloub
                 </span>
-                <span className="rounded bg-[#9547a9]/20 px-1.5 py-0.5 text-[9px] font-mono font-bold text-[#9d9be5] border border-[#9547a9]/40">
+                <span className="rounded bg-[#9547a9]/30 px-1.5 py-0.5 text-[9px] font-mono font-bold text-[#e0deff] border border-[#9547a9]/50 shadow-xs">
                   Sous-Chef AI
                 </span>
                 {!customTip && (
-                  <Badge variant={liveAdvice.badgeVariant} className="text-[10px] px-1.5 py-0 font-mono bg-[#423ea6]/30 text-[#9d9be5] border-[#7b5d95]/40">
+                  <Badge variant={liveAdvice.badgeVariant} className="text-[10px] px-1.5 py-0 font-mono bg-[#423ea6]/50 text-white border-[#9d9be5]/40 shadow-xs">
                     {liveAdvice.badgeLabel}
                   </Badge>
                 )}
@@ -133,16 +133,16 @@ export function ChefCompanion({
                   variant="ghost"
                   size="sm"
                   onClick={handleNextTip}
-                  className="h-6 px-2 text-[10px] text-[#9d9be5] hover:text-white hover:bg-[#7b5d95]/30 cursor-pointer"
+                  className="h-6 px-2 text-[10px] text-[#e0deff] hover:text-white hover:bg-[#7b5d95]/40 cursor-pointer"
                   title="Cycle quantum trivia & tips"
                 >
-                  <Lightbulb className="h-3 w-3 mr-1 text-[#9d9be5]" />
+                  <Lightbulb className="h-3 w-3 mr-1 text-[#e0deff]" />
                   Tip Me
                 </Button>
 
                 <button
                   onClick={() => setIsMinimized(true)}
-                  className="text-[#9d9be5]/70 hover:text-white p-1 rounded transition-colors cursor-pointer"
+                  className="text-[#e0deff]/80 hover:text-white p-1 rounded transition-colors cursor-pointer"
                   title="Minimize Sous-Chef"
                   aria-label="Minimize Bloub Sous-Chef"
                 >
@@ -152,7 +152,7 @@ export function ChefCompanion({
             </div>
 
             {/* Bubble Tip Content */}
-            <p className="text-[#9d9be5]/90 leading-relaxed font-sans pr-1 text-[13px] mb-2.5">
+            <p className="text-white font-medium leading-relaxed font-sans pr-1 text-[13px] mb-2.5 drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]">
               {activeText}
             </p>
 
