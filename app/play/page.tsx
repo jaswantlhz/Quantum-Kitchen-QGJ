@@ -16,6 +16,7 @@ import { HowToPlayModal } from '@/components/game/HowToPlayModal';
 import { ChefCompanion } from '@/components/game/ChefCompanion';
 import { GhostCrossingHint } from '@/lib/quantum/bloubAdvisorEngine';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
+import { DishIcon, QCreditIcon } from '@/components/game/GameIcons';
 import {
   Volume2,
   VolumeX,
@@ -157,7 +158,7 @@ export default function QuantumKitchenPlayPage() {
           </button>
 
           <div className="flex items-center gap-2 px-1 sm:px-2">
-            <span className="text-sm">{activeRecipe.dishIcon}</span>
+            <DishIcon name={activeRecipe.dishIcon || activeRecipe.name} className="w-4 h-4 shrink-0" />
             <span className="font-label text-xs sm:text-sm font-bold text-[#9d9be5] tracking-wider uppercase truncate max-w-[150px] sm:max-w-[240px]">
               {`Order ${recipeIndex + 1}/${COSMIC_RECIPES.length}: ${activeRecipe.name}`}
             </span>
@@ -179,7 +180,7 @@ export default function QuantumKitchenPlayPage() {
         <div className="flex items-center gap-2 sm:gap-3 shrink-0">
           {/* Gold Coin Badge */}
           <div className="flex items-center gap-1.5 px-3 py-1 bg-[#523e58]/70 border border-[#9547a9]/50 rounded-lg text-[#9d9be5] font-label text-xs font-bold shadow-xs">
-            <span>🪙</span>
+            <QCreditIcon className="w-3.5 h-3.5 text-[#9d9be5]" />
             <span className="tracking-wide text-white">{credits.toLocaleString()}</span>
             <span className="text-[11px] text-[#9d9be5]/90 font-medium">Q-Credits</span>
           </div>

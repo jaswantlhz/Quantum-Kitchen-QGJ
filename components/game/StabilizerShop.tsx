@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { KitchenUpgrade } from '@/lib/game/upgrades';
+import { UpgradeIcon, QCreditIcon } from '@/components/game/GameIcons';
 
 interface StabilizerShopProps {
   upgrades: KitchenUpgrade[];
@@ -42,8 +43,8 @@ export function StabilizerShop({ upgrades, credits, onBuyUpgrade }: StabilizerSh
               className="bg-[#523e58]/40 border border-[#7b5d95]/40 hover:border-[#9d9be5]/60 transition-all rounded-lg p-2.5 flex items-center justify-between group shadow-xs"
             >
               <div className="flex items-center gap-2.5 min-w-0 pr-1">
-                <div className="w-9 h-9 rounded-lg bg-[#523e58]/70 border border-[#7b5d95]/50 flex items-center justify-center text-lg shrink-0">
-                  {u.icon}
+                <div className="w-9 h-9 rounded-lg bg-[#523e58]/70 border border-[#7b5d95]/50 flex items-center justify-center shrink-0">
+                  <UpgradeIcon name={u.id || u.icon} className="w-5 h-5" />
                 </div>
                 <div className="min-w-0">
                   <div className="font-label text-xs font-semibold text-[#f5f4ff] truncate">
@@ -70,7 +71,7 @@ export function StabilizerShop({ upgrades, credits, onBuyUpgrade }: StabilizerSh
               <button
                 disabled={!canAfford || isMaxed}
                 onClick={() => onBuyUpgrade(u.id)}
-                className={`px-3 py-1.5 rounded-lg font-label text-xs font-semibold transition-all shrink-0 whitespace-nowrap cursor-pointer ${
+                className={`px-3 py-1.5 rounded-lg font-label text-xs font-semibold transition-all shrink-0 whitespace-nowrap cursor-pointer flex items-center gap-1 ${
                   isMaxed
                     ? 'bg-[#523e58]/30 border border-[#7b5d95]/30 text-[#7b5d95] cursor-not-allowed'
                     : canAfford
@@ -78,7 +79,14 @@ export function StabilizerShop({ upgrades, credits, onBuyUpgrade }: StabilizerSh
                     : 'bg-[#523e58]/50 border border-[#7b5d95]/40 text-[#7b5d95] opacity-50 cursor-not-allowed'
                 }`}
               >
-                {isMaxed ? 'MAXED' : `+${u.cost} 🪙`}
+                {isMaxed ? (
+                  'MAXED'
+                ) : (
+                  <>
+                    <span>+{u.cost}</span>
+                    <QCreditIcon className="w-3 h-3 text-white" />
+                  </>
+                )}
               </button>
             </div>
           );

@@ -7,6 +7,7 @@ import { Recipe } from '@/lib/game/recipes';
 import { drawIngredientSketch, INGREDIENTS } from '@/lib/game/ingredientSketches';
 import { soundFx } from '@/lib/audio/synthAudio';
 import { RotateCcw, Undo2, Zap, Flame } from 'lucide-react';
+import { ApplianceIcon } from '@/components/game/GameIcons';
 
 interface BraidCanvasProps {
   recipe: Recipe;
@@ -673,25 +674,25 @@ export function BraidCanvas({
             </span>
             {(
               [
-                { id: 'chop', label: 'Chop', emoji: '🔪', tooltip: 'Chop (Increases Sweetness)' },
-                { id: 'blend', label: 'Blend', emoji: '🌪️', tooltip: 'Blend (Balances Flavors)' },
-                { id: 'pan', label: 'Sear', emoji: '🍳', tooltip: 'Sear (Adds Spice & Heat)' },
-                { id: 'wash', label: 'Wash', emoji: '💧', tooltip: 'Wash (Purifies Mistakes)' },
-                { id: 'boil', label: 'Boil', emoji: '🍲', tooltip: 'Boil (Boosts Umami)' },
+                { id: 'chop', label: 'Chop', tooltip: 'Chop (Increases Sweetness)' },
+                { id: 'blend', label: 'Blend', tooltip: 'Blend (Balances Flavors)' },
+                { id: 'pan', label: 'Sear', tooltip: 'Sear (Adds Spice & Heat)' },
+                { id: 'wash', label: 'Wash', tooltip: 'Wash (Purifies Mistakes)' },
+                { id: 'boil', label: 'Boil', tooltip: 'Boil (Boosts Umami)' },
               ] as const
             ).map((app) => (
               <button
                 key={app.id}
                 type="button"
                 onClick={() => setSelectedAppliance(app.id)}
-                className={`flex items-center gap-1 px-2.5 py-1 rounded-lg font-label text-xs transition-all cursor-pointer ${
+                className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg font-label text-xs transition-all cursor-pointer ${
                   selectedAppliance === app.id
                     ? 'bg-[#423ea6] text-white shadow-xs font-bold ring-1 ring-[#9d9be5]/50'
                     : 'text-[#9d9be5]/80 hover:text-white hover:bg-[#7b5d95]/40'
                 }`}
                 title={app.tooltip}
               >
-                <span>{app.emoji}</span>
+                <ApplianceIcon tool={app.id} className="w-3.5 h-3.5 shrink-0" />
                 <span className="hidden sm:inline">{app.label}</span>
               </button>
             ))}

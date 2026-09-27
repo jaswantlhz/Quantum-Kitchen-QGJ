@@ -21,6 +21,7 @@ import {
   Zap,
   CheckCircle2,
   GitCommit,
+  Coins,
 } from 'lucide-react';
 
 interface HowToPlayModalProps {
@@ -295,7 +296,7 @@ export function HowToPlayModal({
                   </div>
                   <div className="p-3 rounded-lg border border-[#333333] bg-[#262626]">
                     <span className="font-bold text-white flex items-center gap-1.5 mb-1">
-                      🪙 Cosmic Credits & Shop
+                      <Coins className="w-4 h-4 text-[#9d9be5]" /> Cosmic Credits & Shop
                     </span>
                     <p className="text-slate-400">
                       Serve Flawless dishes to earn cosmic credits. Visit the pantry below to buy Cryo-Stabilizers

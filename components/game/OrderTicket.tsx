@@ -3,6 +3,7 @@
 import React from 'react';
 import { Recipe } from '@/lib/game/recipes';
 import { Target, Sparkles } from 'lucide-react';
+import { DishIcon } from '@/components/game/GameIcons';
 
 interface OrderTicketProps {
   recipe: Recipe;
@@ -36,7 +37,9 @@ export function OrderTicket({ recipe, flavorProfile }: OrderTicketProps) {
         {/* Dish Core Title */}
         <div className="flex items-center justify-between mt-1 mb-3.5">
           <div className="flex items-center gap-3">
-            <span className="text-3xl sm:text-4xl drop-shadow-sm">{recipe.dishIcon}</span>
+            <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-[#523e58]/70 border border-[#7b5d95]/50 flex items-center justify-center shrink-0 shadow-inner">
+              <DishIcon name={recipe.dishIcon || recipe.name} className="w-6 h-6" />
+            </div>
             <div>
               <h2 className="font-headline text-lg sm:text-xl font-bold text-[#f5f4ff] tracking-tight">
                 {recipe.name}

@@ -8,6 +8,7 @@ import { soundFx } from '@/lib/audio/synthAudio';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Sparkles, ArrowRight, RotateCcw, Flame, Award } from 'lucide-react';
 import { INGREDIENTS } from '@/lib/game/ingredientSketches';
+import { DishIcon, QCreditIcon } from '@/components/game/GameIcons';
 
 interface DishModalProps {
   open: boolean;
@@ -61,7 +62,7 @@ export function DishModal({
         particleCount: 90,
         spread: 75,
         origin: { y: 0.6 },
-        colors: ['#ff6b35', '#2ec4b6', '#ffd166', '#ff0054', '#70e000'],
+        colors: ['#9d9be5', '#9547a9', '#423ea6', '#7b5d95', '#ffffff'],
       });
     } else {
       soundFx.playGlitchSound();
@@ -112,16 +113,16 @@ export function DishModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-md border border-[#3b494b] bg-[#1a1c1f] text-[#e2e2e6] shadow-2xl rounded-2xl p-6">
+      <DialogContent className="max-w-md border border-[#7b5d95]/50 bg-[#523e58]/95 text-[#f5f4ff] shadow-2xl rounded-2xl p-6 backdrop-blur-2xl">
         <DialogHeader className="text-center">
           {/* Ceramic Serving Plate Presentation */}
-          <div ref={plateRef} className="relative mx-auto my-2 flex h-24 w-24 items-center justify-center rounded-full border-2 border-[#3b494b] bg-[#282a2d] shadow-md glow-cyan">
+          <div ref={plateRef} className="relative mx-auto my-2 flex h-24 w-24 items-center justify-center rounded-full border-2 border-[#7b5d95]/60 bg-[#1c142c] shadow-md">
             {/* Fine Concentric Ceramic Rim */}
-            <div className="absolute inset-1.5 rounded-full border border-[#00f0ff]/30" />
-            <span className="text-4xl drop-shadow-sm">{recipe.dishIcon}</span>
+            <div className="absolute inset-1.5 rounded-full border border-[#9d9be5]/30" />
+            <DishIcon name={recipe.dishIcon || recipe.name} className="w-11 h-11" />
 
             {/* Sketched Ingredient Garnish Strip */}
-            <div className="absolute -bottom-2 flex items-center justify-center -space-x-1 bg-[#1e2023] px-2.5 py-0.5 rounded-full border border-[#3b494b] shadow-sm">
+            <div className="absolute -bottom-2 flex items-center justify-center -space-x-1 bg-[#1c142c] px-2.5 py-0.5 rounded-full border border-[#7b5d95]/60 shadow-sm">
               {recipe.ingredients.map((ingKey) => {
                 const item = INGREDIENTS[ingKey];
                 if (!item) return null;
@@ -129,7 +130,7 @@ export function DishModal({
                   <span
                     key={ingKey}
                     title={item.label}
-                    className="inline-flex h-4 w-4 items-center justify-center rounded-full bg-[#161616] p-0.5"
+                    className="inline-flex h-4 w-4 items-center justify-center rounded-full bg-[#0a0712] p-0.5"
                     dangerouslySetInnerHTML={{ __html: item.sketchSvg }}
                   />
                 );
@@ -137,54 +138,57 @@ export function DishModal({
             </div>
 
             {/* Grade Badge Ribbon */}
-            <div className="absolute -top-1 -right-2 rounded-full border border-[#f0c119] bg-[#f0c119] px-2.5 py-0.5 text-[11px] font-black text-black shadow-xs font-label">
+            <div className="absolute -top-1 -right-2 rounded-full border border-[#9547a9] bg-[#9547a9] px-2.5 py-0.5 text-[11px] font-black text-white shadow-xs font-label">
               {result.grade}
             </div>
           </div>
 
           <div className="flex items-center justify-center gap-1.5 mt-2">
-            <span className="font-label text-xs px-2.5 py-0.5 rounded bg-[#00f0ff]/15 text-[#00f0ff] border border-[#00f0ff]/30 font-semibold">
+            <span className="font-label text-xs px-2.5 py-0.5 rounded bg-[#423ea6]/30 text-[#9d9be5] border border-[#7b5d95]/40 font-semibold">
               {result.compositeMeal || recipe.mealCategory || 'Entrée'}
             </span>
-            <span className="font-label text-xs px-2.5 py-0.5 rounded bg-[#f0c119]/15 text-[#f0c119] border border-[#f0c119]/30 font-semibold flex items-center gap-1">
-              <Flame className="h-3 w-3 text-[#f0c119]" />
+            <span className="font-label text-xs px-2.5 py-0.5 rounded bg-[#9547a9]/30 text-[#9d9be5] border border-[#9547a9]/40 font-semibold flex items-center gap-1">
+              <Flame className="h-3 w-3 text-[#9547a9]" />
               <span>{result.umamiMultiplier}x Umami</span>
             </span>
           </div>
 
-          <DialogTitle className="text-2xl font-bold tracking-tight text-[#dbfcff] font-headline mt-1.5">
+          <DialogTitle className="text-2xl font-bold tracking-tight text-[#f5f4ff] font-headline mt-1.5">
             {result.dishName || recipe.name}
           </DialogTitle>
-          <DialogDescription className="text-xs text-[#b9cacb] font-body">
+          <DialogDescription className="text-xs text-[#9d9be5]/80 font-body">
             {result.dishDescription || recipe.description}
           </DialogDescription>
         </DialogHeader>
 
         {/* Plated Score & Specs */}
-        <div className="space-y-3 rounded-xl border border-[#3b494b]/60 bg-[#1e2023] p-4 mt-2 shadow-xs">
-          <div className="flex items-center justify-between border-b border-[#3b494b]/50 pb-2">
-            <div className="flex items-center gap-1.5 text-xs text-[#b9cacb] font-semibold font-label">
-              <Award className="h-4 w-4 text-[#f0c119]" />
+        <div className="space-y-3 rounded-xl border border-[#7b5d95]/40 bg-[#1c142c]/80 p-4 mt-2 shadow-xs">
+          <div className="flex items-center justify-between border-b border-[#7b5d95]/35 pb-2">
+            <div className="flex items-center gap-1.5 text-xs text-[#9d9be5]/80 font-semibold font-label">
+              <Award className="h-4 w-4 text-[#9d9be5]" />
               <span>Plated Score</span>
             </div>
             <div className="flex items-center gap-2">
-              <span className="font-label text-lg font-bold text-[#f0c119]">
-                {displayScore} <span className="text-xs text-[#849495]">PTS</span>
+              <span className="font-label text-lg font-bold text-[#f5f4ff]">
+                {displayScore} <span className="text-xs text-[#9d9be5]/70">PTS</span>
               </span>
-              <span className="px-2 py-0.5 rounded bg-[#282a2d] border border-[#3b494b] font-label text-xs font-bold text-white">
+              <span className="px-2 py-0.5 rounded bg-[#523e58] border border-[#7b5d95]/50 font-label text-xs font-bold text-[#9d9be5]">
                 Grade {result.grade}
               </span>
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-2 text-xs">
-            <div className="rounded-lg bg-[#16181b] p-2.5 border border-[#3b494b]/50">
-              <span className="text-[#849495] block text-[10px] font-label uppercase">Braid Sequence</span>
-              <span className="font-label font-bold text-[#7df4ff] text-xs truncate block">{braidWord || 'Identity (e)'}</span>
+            <div className="rounded-lg bg-[#0a0712] p-2.5 border border-[#7b5d95]/35">
+              <span className="text-[#9d9be5]/70 block text-[10px] font-label uppercase">Braid Sequence</span>
+              <span className="font-label font-bold text-[#9d9be5] text-xs truncate block">{braidWord || 'Identity (e)'}</span>
             </div>
-            <div className="rounded-lg bg-[#16181b] p-2.5 border border-[#3b494b]/50">
-              <span className="text-[#849495] block text-[10px] font-label uppercase">Credits Rewarded</span>
-              <span className="font-label font-bold text-[#f0c119] text-xs">+🪙 {earnedCredits} CR</span>
+            <div className="rounded-lg bg-[#0a0712] p-2.5 border border-[#7b5d95]/35">
+              <span className="text-[#9d9be5]/70 block text-[10px] font-label uppercase">Credits Rewarded</span>
+              <span className="font-label font-bold text-[#9d9be5] text-xs flex items-center gap-1">
+                <span>+{earnedCredits}</span>
+                <QCreditIcon className="w-3.5 h-3.5 text-[#9d9be5]" />
+              </span>
             </div>
           </div>
 
