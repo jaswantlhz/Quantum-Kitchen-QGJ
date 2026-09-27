@@ -76,6 +76,12 @@ html.light {
 }
 
 @theme inline {
+  --color-celestial-indigo: #423EA6;
+  --color-celestial-orchid: #9547A9;
+  --color-celestial-mauve: #7B5D95;
+  --color-celestial-plum: #523E58;
+  --color-celestial-periwinkle: #9D9BE5;
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);

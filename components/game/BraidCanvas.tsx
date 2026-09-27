@@ -102,17 +102,24 @@ export function BraidCanvas({
     return ingredientsList.map((key) => INGREDIENTS[key]?.naturalColor || '#00f0ff');
   }, [ingredientsList]);
 
+  // Ref to always access latest strand order in callbacks
+  const strandOrderRef = useRef(strandOrder);
+  useEffect(() => {
+    strandOrderRef.current = strandOrder;
+  }, [strandOrder]);
+
   const updateEngineState = useCallback(() => {
     setCrossings([...engine.crossings]);
     onStateUpdate();
   }, [engine, onStateUpdate]);
 
   // Handle a new crossing action
-  const handleCrossing = (lane: number, isOver: boolean) => {
+  const handleCrossing = useCallback((lane: number, isOver: boolean) => {
     const idxA = lane - 1;
     const idxB = lane;
-    const strandA = strandOrder[idxA];
-    const strandB = strandOrder[idxB];
+    const currentOrder = strandOrderRef.current;
+    const strandA = currentOrder[idxA] ?? idxA;
+    const strandB = currentOrder[idxB] ?? idxB;
 
     // Swap in order
     setStrandOrder((prev) => {
@@ -131,9 +138,9 @@ export function BraidCanvas({
     }
     onClearGhostCrossing?.();
     updateEngineState();
-  };
+  }, [engine, selectedAppliance, mergeNext, onClearGhostCrossing, updateEngineState]);
 
-  const handleUndo = () => {
+  const handleUndo = useCallback(() => {
     if (engine.crossings.length === 0) return;
     const previous = [...engine.crossings];
     previous.pop();
@@ -153,14 +160,14 @@ export function BraidCanvas({
     setStrandOrder(restored);
     onClearGhostCrossing?.();
     updateEngineState();
-  };
+  }, [engine, numStrands, onClearGhostCrossing, updateEngineState]);
 
-  const handleReset = () => {
+  const handleReset = useCallback(() => {
     engine.reset(numStrands);
     setStrandOrder(Array.from({ length: numStrands }, (_, i) => i));
     onClearGhostCrossing?.();
     updateEngineState();
-  };
+  }, [engine, numStrands, onClearGhostCrossing, updateEngineState]);
 
   // Keyboard shortcut listener for instantaneous weaving
   useEffect(() => {
@@ -168,22 +175,49 @@ export function BraidCanvas({
       if (['INPUT', 'TEXTAREA', 'SELECT'].includes((e.target as HTMLElement)?.tagName)) return;
 
       const key = e.key;
+
+      // Undo: Ctrl+Z or standalone Z
       if ((e.ctrlKey || e.metaKey) && (key === 'z' || key === 'Z')) {
         e.preventDefault();
         handleUndo();
         return;
       }
 
-      const num = parseInt(key, 10);
-      if (!isNaN(num) && num >= 1 && num < numStrands) {
+      // Hotkeys for Tools
+      if (key === 'q' || key === 'Q') { setSelectedAppliance('chop'); return; }
+      if (key === 'w' || key === 'W') { setSelectedAppliance('blend'); return; }
+      if (key === 'e' || key === 'E') { setSelectedAppliance('pan'); return; }
+      if (key === 'r' || key === 'R') { setSelectedAppliance('wash'); return; }
+      if (key === 't' || key === 'T') { setSelectedAppliance('boil'); return; }
+      if (key === 'm' || key === 'M') { setMergeNext((prev) => !prev); return; }
+
+      // Weaving Lane Numbers (Supports normal numbers and Shift symbols !, @, #, $)
+      let targetLane: number | null = null;
+      let isUnder = e.shiftKey;
+
+      if (e.code === 'Digit1' || e.code === 'Numpad1' || key === '1' || key === '!') {
+        targetLane = 1;
+        if (key === '!') isUnder = true;
+      } else if (e.code === 'Digit2' || e.code === 'Numpad2' || key === '2' || key === '@') {
+        targetLane = 2;
+        if (key === '@') isUnder = true;
+      } else if (e.code === 'Digit3' || e.code === 'Numpad3' || key === '3' || key === '#') {
+        targetLane = 3;
+        if (key === '#') isUnder = true;
+      } else if (e.code === 'Digit4' || e.code === 'Numpad4' || key === '4' || key === '$') {
+        targetLane = 4;
+        if (key === '$') isUnder = true;
+      }
+
+      if (targetLane !== null && targetLane >= 1 && targetLane < numStrands) {
         e.preventDefault();
-        handleCrossing(num, !e.shiftKey);
+        handleCrossing(targetLane, !isUnder);
       }
     };
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [numStrands, strandOrder, selectedAppliance, mergeNext, engine]);
+  }, [numStrands, handleCrossing, handleUndo]);
 
   // Continuous Dynamic Animation Loop (Smooth Weaving, Flowing Photons, & Fusion Untangle-and-Run)
   useEffect(() => {
@@ -562,44 +596,44 @@ export function BraidCanvas({
   return (
     <div
       ref={containerRef}
-      className="relative flex flex-col items-center rounded-xl border border-[#3b494b] bg-[#1a1c1f] p-3 sm:p-4 shadow-md backdrop-blur-md"
+      className="relative flex flex-col items-center rounded-xl border border-[#7b5d95]/40 bg-[#523e58]/25 p-3 sm:p-4 shadow-md backdrop-blur-md"
     >
       {/* Top HUD bar with Braid Formula & Minimal Toolbar */}
-      <div className="flex w-full items-center justify-between border-b border-[#3b494b]/50 pb-2.5 gap-2">
+      <div className="flex w-full items-center justify-between border-b border-[#7b5d95]/35 pb-2.5 gap-2">
         <div className="flex items-center gap-2">
-          <span className="font-label text-[11px] uppercase tracking-wider text-[#849495] hidden sm:inline">
+          <span className="font-label text-[11px] uppercase tracking-wider text-[#9d9be5]/70 hidden sm:inline">
             Braid Sequence:
           </span>
-          <span className="font-label text-xs px-2.5 py-1 bg-[#282a2d] border border-[#3b494b] rounded text-[#7df4ff] tracking-wider font-bold">
+          <span className="font-label text-xs px-2.5 py-1 bg-[#523e58]/60 border border-[#7b5d95]/50 rounded text-[#9d9be5] tracking-wider font-bold">
             {engine.getBraidWord() || 'Start (Empty)'}
           </span>
-          <span className="font-label text-[10px] text-[#849495] hidden md:inline">
+          <span className="font-label text-[10px] text-[#9d9be5]/60 hidden md:inline">
             ({numStrands} Strands)
           </span>
         </div>
 
         {/* Live Umami Multiplier & Actions */}
         <div className="flex items-center gap-2">
-          <div className="flex items-center gap-1.5 rounded bg-[#282a2d] border border-[#f0c119]/30 px-2.5 py-1 text-xs font-label font-bold text-[#f0c119]">
-            <Flame className="h-3.5 w-3.5 text-[#f0c119]" />
+          <div className="flex items-center gap-1.5 rounded bg-[#523e58]/60 border border-[#9547a9]/40 px-2.5 py-1 text-xs font-label font-bold text-[#9d9be5]">
+            <Flame className="h-3.5 w-3.5 text-[#9547a9]" />
             <span>{umamiMultiplier}x Umami</span>
           </div>
 
-          <div className="flex items-center gap-1 bg-[#282a2d] border border-[#3b494b] p-0.5 rounded-lg">
+          <div className="flex items-center gap-1 bg-[#523e58]/60 border border-[#7b5d95]/50 p-0.5 rounded-lg">
             <button
               onClick={handleUndo}
               disabled={crossings.length === 0}
-              className="px-2.5 py-1 rounded text-[#b9cacb] hover:text-[#dbfcff] hover:bg-[#1e2023] transition-all flex items-center gap-1 font-label text-xs disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer active:scale-95"
+              className="px-2.5 py-1 rounded text-[#9d9be5] hover:text-white hover:bg-[#7b5d95]/50 transition-all flex items-center gap-1 font-label text-xs disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer active:scale-95"
               title="Undo Last Braid (Ctrl+Z)"
             >
               <Undo2 className="h-3.5 w-3.5" />
               <span>Undo</span>
             </button>
-            <div className="h-3.5 w-[1px] bg-[#3b494b]" />
+            <div className="h-3.5 w-[1px] bg-[#7b5d95]/40" />
             <button
               onClick={handleReset}
               disabled={crossings.length === 0}
-              className="px-2.5 py-1 rounded text-[#b9cacb] hover:text-[#ffb4ab] hover:bg-[#1e2023] transition-all flex items-center gap-1 font-label text-xs disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer active:scale-95"
+              className="px-2.5 py-1 rounded text-[#9d9be5] hover:text-[#ffb4ab] hover:bg-[#7b5d95]/50 transition-all flex items-center gap-1 font-label text-xs disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer active:scale-95"
               title="Reset Canvas"
             >
               <RotateCcw className="h-3.5 w-3.5" />
@@ -612,7 +646,7 @@ export function BraidCanvas({
       {/* Main Pegboard Canvas - Horizontal Quantum Wire Loom */}
       <div
         ref={scrollContainerRef}
-        className="relative my-2.5 flex justify-start w-full overflow-x-auto py-1 scroll-smooth quantum-grid-bg rounded-lg border border-[#3b494b]/60"
+        className="relative my-2.5 flex justify-start w-full overflow-x-auto py-1 scroll-smooth quantum-grid-bg rounded-lg border border-[#7b5d95]/40"
       >
         <canvas
           ref={canvasRef}
@@ -621,20 +655,20 @@ export function BraidCanvas({
       </div>
 
       {/* Floating Canvas Hint */}
-      <div className="flex items-center justify-between w-full px-1 pt-1 pb-2 font-label text-[10px] text-[#849495] border-b border-[#3b494b]/40">
+      <div className="flex items-center justify-between w-full px-1 pt-1 pb-2 font-label text-[10px] text-[#9d9be5]/70 border-b border-[#7b5d95]/30">
         <div className="flex items-center gap-1.5">
-          <span className="w-1.5 h-1.5 rounded-full bg-[#00f0ff]" />
+          <span className="w-1.5 h-1.5 rounded-full bg-[#9d9be5]" />
           <span>Click Over/Under buttons or press number keys (1, 2, 3) to weave strands</span>
         </div>
-        <span className="text-[#00f0ff] font-bold">Total Crossings: {crossings.length}</span>
+        <span className="text-[#9d9be5] font-bold">Total Crossings: {crossings.length}</span>
       </div>
 
-      {/* Unified Action Deck: Station Tools (Left) + Mixer Merge + Lane Weave Controls (Right) in ONE sleek row */}
-      <div className="flex flex-wrap items-center justify-between w-full px-3 py-2 rounded-lg border border-[#3b494b]/60 bg-[#1e2023] text-xs gap-3 mt-2 shadow-xs">
-        {/* Left Side: Station Tools & Line Merge Toggle */}
-        <div className="flex items-center gap-2 flex-wrap">
+      {/* Unified Action Deck: Station Tools + Mixer Merge + Lane Weave Controls in ONE grouped row */}
+      <div className="flex flex-wrap items-center justify-between w-full px-3 py-2 rounded-lg border border-[#7b5d95]/40 bg-[#523e58]/35 text-xs gap-3 mt-2 shadow-xs">
+        {/* Left Combined Cluster: Tools + Mixer Merge + Weave Operators */}
+        <div className="flex items-center gap-2.5 flex-wrap">
           <div className="flex items-center gap-1.5 overflow-x-auto">
-            <span className="font-label text-[10px] text-[#849495] uppercase tracking-wider mr-0.5 hidden xl:inline">
+            <span className="font-label text-[10px] text-[#9d9be5]/70 uppercase tracking-wider mr-0.5 hidden xl:inline">
               Tool:
             </span>
             {(
@@ -650,10 +684,10 @@ export function BraidCanvas({
                 key={app.id}
                 type="button"
                 onClick={() => setSelectedAppliance(app.id)}
-                className={`flex items-center gap-1 px-2.5 py-1 rounded font-label text-xs transition-all cursor-pointer ${
+                className={`flex items-center gap-1 px-2.5 py-1 rounded-lg font-label text-xs transition-all cursor-pointer ${
                   selectedAppliance === app.id
-                    ? 'bg-[#00f0ff] text-[#0c0e11] shadow-xs font-bold'
-                    : 'text-[#b9cacb] hover:text-white hover:bg-[#282a2d]'
+                    ? 'bg-[#423ea6] text-white shadow-xs font-bold ring-1 ring-[#9d9be5]/50'
+                    : 'text-[#9d9be5]/80 hover:text-white hover:bg-[#7b5d95]/40'
                 }`}
                 title={app.tooltip}
               >
@@ -666,74 +700,79 @@ export function BraidCanvas({
           <button
             type="button"
             onClick={() => setMergeNext(!mergeNext)}
-            className={`flex items-center gap-1 px-2.5 py-1 rounded font-label text-xs font-bold transition-all cursor-pointer shrink-0 ${
+            className={`flex items-center gap-1 px-2.5 py-1 rounded-lg font-label text-xs font-bold transition-all cursor-pointer shrink-0 ${
               mergeNext
-                ? 'bg-[#ffd556] text-black shadow-xs ring-1 ring-[#ffd556]'
-                : 'border border-[#ffd556]/40 text-[#ffd556] hover:bg-[#ffd556]/10'
+                ? 'bg-[#9547a9] text-white shadow-xs ring-1 ring-[#9d9be5]'
+                : 'border border-[#9547a9]/50 text-[#9d9be5] hover:bg-[#9547a9]/20'
             }`}
             title="Toggle line merger"
           >
             <Zap className="h-3 w-3" />
             <span>{mergeNext ? 'Merge ON' : 'Mixer Merge'}</span>
           </button>
+
+          {/* Sleek Vertical Divider */}
+          <div className="h-5 w-[1px] bg-[#7b5d95]/40" />
+
+          {/* Weave Lane Operators right next to Mixer Merge */}
+          <div className="flex items-center gap-2 flex-wrap">
+            <span className="font-label text-[10px] text-[#9d9be5]/70 uppercase tracking-wider hidden sm:inline">
+              Weave:
+            </span>
+            {Array.from({ length: numStrands - 1 }, (_, i) => {
+              const laneNum = i + 1;
+              const isOverRecommended = ghostCrossing?.lane === laneNum && ghostCrossing?.isOver === true;
+              const isUnderRecommended = ghostCrossing?.lane === laneNum && ghostCrossing?.isOver === false;
+
+              return (
+                <div
+                  key={`lane-ctrl-${laneNum}`}
+                  className={`flex items-center gap-1.5 rounded-lg border p-1 px-2 shadow-xs transition-all ${
+                    ghostCrossing?.lane === laneNum
+                      ? 'border-[#9d9be5] ring-1 ring-[#9d9be5] bg-[#9d9be5]/15'
+                      : 'border-[#7b5d95]/50 bg-[#523e58]/50'
+                  }`}
+                >
+                  <span className="font-label text-xs font-bold text-[#f5f4ff] pr-0.5">
+                    L{laneNum}
+                  </span>
+                  <div className="flex gap-1">
+                    <button
+                      type="button"
+                      onClick={() => handleCrossing(laneNum, true)}
+                      className={`h-6 px-2 rounded-md text-[11px] font-label font-bold cursor-pointer transition-all active:scale-95 flex items-center gap-0.5 ${
+                        isOverRecommended
+                          ? 'border border-[#9d9be5] bg-[#9d9be5] text-black shadow-xs font-black animate-pulse'
+                          : 'border border-[#9d9be5]/40 bg-[#9d9be5]/10 text-[#9d9be5] hover:bg-[#9d9be5] hover:text-black'
+                      }`}
+                      title={`Weave lane ${laneNum} Over (σ${laneNum}) - Press key ${laneNum}`}
+                    >
+                      <span>▲</span>
+                      <span>Over</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleCrossing(laneNum, false)}
+                      className={`h-6 px-2 rounded-md text-[11px] font-label font-bold cursor-pointer transition-all active:scale-95 flex items-center gap-0.5 ${
+                        isUnderRecommended
+                          ? 'border border-[#9547a9] bg-[#9547a9] text-white shadow-xs font-black animate-pulse'
+                          : 'border border-[#9547a9]/40 bg-[#9547a9]/10 text-[#9547a9] hover:bg-[#9547a9] hover:text-white'
+                      }`}
+                      title={`Weave lane ${laneNum} Under (σ${laneNum}⁻¹) - Press Shift+${laneNum}`}
+                    >
+                      <span>▼</span>
+                      <span>Under</span>
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
 
-        {/* Center Divider for wide viewports */}
-        <div className="hidden lg:block h-6 w-[1px] bg-[#3b494b]/60" />
-
-        {/* Right Side: Click to Weave Lane Buttons */}
-        <div className="flex items-center gap-2 flex-wrap">
-          <span className="font-label text-[10px] text-[#849495] uppercase tracking-wider hidden sm:inline">
-            Weave:
-          </span>
-          {Array.from({ length: numStrands - 1 }, (_, i) => {
-            const laneNum = i + 1;
-            const isOverRecommended = ghostCrossing?.lane === laneNum && ghostCrossing?.isOver === true;
-            const isUnderRecommended = ghostCrossing?.lane === laneNum && ghostCrossing?.isOver === false;
-
-            return (
-              <div
-                key={`lane-ctrl-${laneNum}`}
-                className={`flex items-center gap-1.5 rounded-md border p-1 px-2 shadow-xs transition-all ${
-                  ghostCrossing?.lane === laneNum
-                    ? 'border-[#00f0ff] ring-1 ring-[#00f0ff] bg-[#00f0ff]/10'
-                    : 'border-[#3b494b]/80 bg-[#16181b]'
-                }`}
-              >
-                <span className="font-label text-xs font-bold text-[#e2e2e6] pr-0.5">
-                  L{laneNum}
-                </span>
-                <div className="flex gap-1">
-                  <button
-                    type="button"
-                    onClick={() => handleCrossing(laneNum, true)}
-                    className={`h-6 px-2 rounded text-[11px] font-label font-bold cursor-pointer transition-all active:scale-95 flex items-center gap-0.5 ${
-                      isOverRecommended
-                        ? 'border border-[#00f0ff] bg-[#00f0ff] text-black shadow-xs font-black animate-pulse'
-                        : 'border border-[#00f0ff]/40 bg-[#00f0ff]/10 text-[#00f0ff] hover:bg-[#00f0ff] hover:text-black'
-                    }`}
-                    title={`Weave lane ${laneNum} Over (σ${laneNum}) - Press key ${laneNum}`}
-                  >
-                    <span>▲</span>
-                    <span>Over</span>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => handleCrossing(laneNum, false)}
-                    className={`h-6 px-2 rounded text-[11px] font-label font-bold cursor-pointer transition-all active:scale-95 flex items-center gap-0.5 ${
-                      isUnderRecommended
-                        ? 'border border-[#ff7eb6] bg-[#ff7eb6] text-black shadow-xs font-black animate-pulse'
-                        : 'border border-[#ff7eb6]/40 bg-[#ff7eb6]/10 text-[#ff7eb6] hover:bg-[#ff7eb6] hover:text-black'
-                    }`}
-                    title={`Weave lane ${laneNum} Under (σ${laneNum}⁻¹) - Press Shift+${laneNum}`}
-                  >
-                    <span>▼</span>
-                    <span>Under</span>
-                  </button>
-                </div>
-              </div>
-            );
-          })}
+        {/* Right Status Tag */}
+        <div className="flex items-center gap-2 text-[11px] font-mono text-[#9d9be5]/70 hidden md:flex">
+          <span>Keyboard: <kbd className="px-1.5 py-0.5 rounded bg-[#523e58]/60 border border-[#7b5d95]/50 text-[#9d9be5]">1</kbd> <kbd className="px-1.5 py-0.5 rounded bg-[#523e58]/60 border border-[#7b5d95]/50 text-[#9d9be5]">2</kbd> (Over) • <kbd className="px-1.5 py-0.5 rounded bg-[#523e58]/60 border border-[#7b5d95]/50 text-[#9d9be5]">Shift+1</kbd> (Under)</span>
         </div>
       </div>
     </div>
