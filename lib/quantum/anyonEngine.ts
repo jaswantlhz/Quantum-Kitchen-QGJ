@@ -276,15 +276,12 @@ export class QuantumBraidEngine {
    */
   public evaluateFusion(
     stabilizerLevel: number = 0,
-    targetFlavors?: { sweetness: number; sourness: number; spiciness: number; umami: number }
+    targetFlavors?: { sweetness: number; sourness: number; spiciness: number; umami: number },
+    recipeContext?: { name: string; mealCategory?: string; description?: string }
   ): FusionResult {
     const { successEnergy, decoherenceGlitch } = this.measureFinalState(stabilizerLevel * 0.15);
     const flavors = this.getFlavorProfile();
     const umamiMultiplier = this.getUmamiMultiplier();
-
-    // Check if composite meal was formed via line merging
-    const hasMerges = this.crossings.some((c) => c.isMerged);
-    const hasBoil = this.crossings.some((c) => c.appliance === 'boil');
 
     // Calculate flavor match score (0 - 100)
     let flavorMatch = 80;
@@ -306,27 +303,25 @@ export class QuantumBraidEngine {
     else if (platedScore >= 170) grade = 'A';
     else if (platedScore >= 110) grade = 'B';
 
+    const rName = recipeContext?.name || 'Quantum Dish';
+    const rCat = recipeContext?.mealCategory || 'Entrée';
+    const rDesc = recipeContext?.description || 'A delicious, perfectly balanced culinary creation.';
+
     let dishOutcome: 'perfect' | 'good' | 'glitch' = 'glitch';
-    let dishName = 'Burnt Quantum Ash';
-    let dishDescription = 'Decoherence glitch! Strands annihilated into the trivial Identity particle.';
-    let compositeMeal = 'Scorched Remnant';
+    let dishName = `Burnt ${rName}`;
+    let dishDescription = 'The dish overcooked slightly. Adjust your braid crossings to balance the flavors!';
+    let compositeMeal = 'Overcooked';
 
     if (successEnergy >= 0.7) {
       dishOutcome = 'perfect';
-      if (hasMerges) {
-        dishName = hasBoil ? 'Cosmic Fusion Ramen Soup' : 'Multi-Strand Nebula Sandwich';
-        compositeMeal = hasBoil ? 'Savory Soup' : 'Layered Sandwich';
-        dishDescription = `Flawless composite braid! All ${this.strandCount} ingredient strands converged into an exquisite plated dish!`;
-      } else {
-        dishName = 'Cosmic Soufflé';
-        compositeMeal = 'Superposition Soufflé';
-        dishDescription = 'Flawlessly braided non-Abelian topology with high golden-ratio coherence!';
-      }
+      dishName = rName;
+      compositeMeal = rCat;
+      dishDescription = `Cooked to golden perfection! ${rDesc}`;
     } else if (successEnergy >= 0.35) {
       dishOutcome = 'good';
-      dishName = hasMerges ? 'Solar Garden Salad' : 'Sparkly Plasma Soda';
-      compositeMeal = hasMerges ? 'Tossed Salad' : 'Plasma Drink';
-      dishDescription = 'Pleasant topological fusion with lively quantum carbonation.';
+      dishName = rName;
+      compositeMeal = rCat;
+      dishDescription = `Well plated with pleasant flavors and rich aroma.`;
     }
 
     return {

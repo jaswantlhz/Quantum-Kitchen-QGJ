@@ -18,7 +18,7 @@ export function CosmicCatChefHero({
   onToggleMute,
 }: CosmicCatChefHeroProps) {
   const titleRef = useRef<HTMLDivElement>(null);
-  const pillBadgeRef = useRef<HTMLDivElement>(null);
+  const pillBadgeRef = useRef<HTMLAnchorElement>(null);
   const catChefRef = useRef<HTMLDivElement>(null);
   const wokParticlesRef = useRef<SVGGElement>(null);
   const floatingTomatoRef = useRef<HTMLDivElement>(null);

@@ -6,8 +6,6 @@ import { FusionResult, BraidCrossing, BlochCoordinates } from '@/lib/quantum/bra
 import { Recipe } from '@/lib/game/recipes';
 import { soundFx } from '@/lib/audio/synthAudio';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { Sparkles, ArrowRight, RotateCcw, Flame, Award } from 'lucide-react';
 import { INGREDIENTS } from '@/lib/game/ingredientSketches';
 
@@ -46,7 +44,6 @@ export function DishModal({
     if (!open || !result) return;
 
     // GSAP score counter & plate spring pop
-    setDisplayScore(0);
     const scoreObj = { val: 0 };
     animateNumberCounter(scoreObj, result.platedScore, setDisplayScore, 0.9);
 
@@ -59,7 +56,7 @@ export function DishModal({
     }
 
     if (result.dishOutcome === 'perfect' || result.dishOutcome === 'good') {
-      soundFx.playSuccessChime();
+      soundFx.playBell();
       confetti({
         particleCount: 90,
         spread: 75,
@@ -115,16 +112,16 @@ export function DishModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-md border border-[#333333] bg-[#1c1c1c] shadow-lg">
+      <DialogContent className="max-w-md border border-[#3b494b] bg-[#1a1c1f] text-[#e2e2e6] shadow-2xl rounded-2xl p-6">
         <DialogHeader className="text-center">
           {/* Ceramic Serving Plate Presentation */}
-          <div ref={plateRef} className="relative mx-auto my-2 flex h-24 w-24 items-center justify-center rounded-full border-2 border-[#525252] bg-[#161616] shadow-sm">
+          <div ref={plateRef} className="relative mx-auto my-2 flex h-24 w-24 items-center justify-center rounded-full border-2 border-[#3b494b] bg-[#282a2d] shadow-md glow-cyan">
             {/* Fine Concentric Ceramic Rim */}
-            <div className="absolute inset-1.5 rounded-full border border-[#393939]" />
+            <div className="absolute inset-1.5 rounded-full border border-[#00f0ff]/30" />
             <span className="text-4xl drop-shadow-sm">{recipe.dishIcon}</span>
 
             {/* Sketched Ingredient Garnish Strip */}
-            <div className="absolute -bottom-2 flex items-center justify-center -space-x-1 bg-[#262626] px-2 py-0.5 rounded-full border border-[#393939] shadow-sm">
+            <div className="absolute -bottom-2 flex items-center justify-center -space-x-1 bg-[#1e2023] px-2.5 py-0.5 rounded-full border border-[#3b494b] shadow-sm">
               {recipe.ingredients.map((ingKey) => {
                 const item = INGREDIENTS[ingKey];
                 if (!item) return null;
@@ -140,114 +137,113 @@ export function DishModal({
             </div>
 
             {/* Grade Badge Ribbon */}
-            <div className="absolute -top-1 -right-2 rounded-full border border-[#f1c21b] bg-[#f1c21b] px-2 py-0.5 text-[10px] font-bold text-black">
+            <div className="absolute -top-1 -right-2 rounded-full border border-[#f0c119] bg-[#f0c119] px-2.5 py-0.5 text-[11px] font-black text-black shadow-xs font-label">
               {result.grade}
             </div>
           </div>
 
-          <div className="flex items-center justify-center gap-1.5 mt-1">
-            <Badge variant="default" className="text-[10px] font-mono">
-              {result.compositeMeal || recipe.mealCategory}
-            </Badge>
-            <Badge variant="secondary" className="text-[10px] font-mono flex items-center gap-1">
-              <Flame className="h-3 w-3 text-[#ff832b]" />
+          <div className="flex items-center justify-center gap-1.5 mt-2">
+            <span className="font-label text-xs px-2.5 py-0.5 rounded bg-[#00f0ff]/15 text-[#00f0ff] border border-[#00f0ff]/30 font-semibold">
+              {result.compositeMeal || recipe.mealCategory || 'Entrée'}
+            </span>
+            <span className="font-label text-xs px-2.5 py-0.5 rounded bg-[#f0c119]/15 text-[#f0c119] border border-[#f0c119]/30 font-semibold flex items-center gap-1">
+              <Flame className="h-3 w-3 text-[#f0c119]" />
               <span>{result.umamiMultiplier}x Umami</span>
-            </Badge>
+            </span>
           </div>
 
-          <DialogTitle className="text-2xl font-bold tracking-wide text-[#f4f4f4] mt-1">
-            {result.dishName}
+          <DialogTitle className="text-2xl font-bold tracking-tight text-[#dbfcff] font-headline mt-1.5">
+            {result.dishName || recipe.name}
           </DialogTitle>
-          <DialogDescription className="text-xs text-slate-300">
-            {result.dishDescription}
+          <DialogDescription className="text-xs text-[#b9cacb] font-body">
+            {result.dishDescription || recipe.description}
           </DialogDescription>
         </DialogHeader>
 
         {/* Plated Score & Specs */}
-        <div className="space-y-3 rounded-lg border border-[#393939] bg-[#262626] p-4">
-          <div className="flex items-center justify-between border-b border-[#393939] pb-2">
-            <div className="flex items-center gap-1.5 text-xs text-slate-400 font-semibold">
-              <Award className="h-4 w-4 text-[#f1c21b]" />
+        <div className="space-y-3 rounded-xl border border-[#3b494b]/60 bg-[#1e2023] p-4 mt-2 shadow-xs">
+          <div className="flex items-center justify-between border-b border-[#3b494b]/50 pb-2">
+            <div className="flex items-center gap-1.5 text-xs text-[#b9cacb] font-semibold font-label">
+              <Award className="h-4 w-4 text-[#f0c119]" />
               <span>Plated Score</span>
             </div>
             <div className="flex items-center gap-2">
-              <span className="font-mono text-base font-bold text-[#f1c21b]">
-                {displayScore} <span className="text-xs text-slate-400">PTS</span>
+              <span className="font-label text-lg font-bold text-[#f0c119]">
+                {displayScore} <span className="text-xs text-[#849495]">PTS</span>
               </span>
-              <Badge
-                variant={result.grade === 'S+' ? 'default' : result.grade === 'A' ? 'emerald' : 'outline'}
-                className="font-mono text-xs font-bold"
-              >
+              <span className="px-2 py-0.5 rounded bg-[#282a2d] border border-[#3b494b] font-label text-xs font-bold text-white">
                 Grade {result.grade}
-              </Badge>
+              </span>
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-2 text-xs">
-            <div className="rounded-lg bg-[#161616] p-2 border border-[#333333]">
-              <span className="text-slate-400 block text-[10px]">Braid Word</span>
-              <span className="font-mono font-bold text-[#be95ff]">{braidWord}</span>
+            <div className="rounded-lg bg-[#16181b] p-2.5 border border-[#3b494b]/50">
+              <span className="text-[#849495] block text-[10px] font-label uppercase">Braid Sequence</span>
+              <span className="font-label font-bold text-[#7df4ff] text-xs truncate block">{braidWord || 'Identity (e)'}</span>
             </div>
-            <div className="rounded-lg bg-[#161616] p-2 border border-[#333333]">
-              <span className="text-slate-400 block text-[10px]">Credits Rewarded</span>
-              <span className="font-mono font-bold text-[#f1c21b]">+🪙 {earnedCredits} CR</span>
+            <div className="rounded-lg bg-[#16181b] p-2.5 border border-[#3b494b]/50">
+              <span className="text-[#849495] block text-[10px] font-label uppercase">Credits Rewarded</span>
+              <span className="font-label font-bold text-[#f0c119] text-xs">+🪙 {earnedCredits} CR</span>
             </div>
           </div>
 
           {/* Flavor breakdown */}
           <div className="space-y-1.5 pt-1">
-            <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">
-              Plated Flavor Harmony
+            <span className="text-[11px] font-bold text-[#849495] uppercase tracking-wider block font-label">
+              Plated Flavor Profile
             </span>
-            <div className="grid grid-cols-4 gap-1.5 text-center font-mono text-[11px]">
-              <div className="rounded bg-[#161616] border border-[#333333] p-1.5">
-                <span className="block text-[10px] text-[#ee5396]">Sweet</span>
-                <span className="font-bold text-[#f4f4f4]">{result.flavorProfile.sweetness}%</span>
+            <div className="grid grid-cols-4 gap-1.5 text-center font-label text-xs">
+              <div className="rounded bg-[#16181b] border border-[#3b494b]/40 p-1.5">
+                <span className="block text-[10px] text-[#00f0ff] font-semibold">Sweet</span>
+                <span className="font-bold text-white">{result.flavorProfile.sweetness}%</span>
               </div>
-              <div className="rounded bg-[#161616] border border-[#333333] p-1.5">
-                <span className="block text-[10px] text-[#009d9a]">Sour</span>
-                <span className="font-bold text-[#f4f4f4]">{result.flavorProfile.sourness}%</span>
+              <div className="rounded bg-[#16181b] border border-[#3b494b]/40 p-1.5">
+                <span className="block text-[10px] text-[#7df4ff] font-semibold">Sour</span>
+                <span className="font-bold text-white">{result.flavorProfile.sourness}%</span>
               </div>
-              <div className="rounded bg-[#161616] border border-[#333333] p-1.5">
-                <span className="block text-[10px] text-[#da1e28]">Spicy</span>
-                <span className="font-bold text-[#f4f4f4]">{result.flavorProfile.spiciness}%</span>
+              <div className="rounded bg-[#16181b] border border-[#3b494b]/40 p-1.5">
+                <span className="block text-[10px] text-[#d4bbff] font-semibold">Spicy</span>
+                <span className="font-bold text-white">{result.flavorProfile.spiciness}%</span>
               </div>
-              <div className="rounded bg-[#161616] border border-[#333333] p-1.5">
-                <span className="block text-[10px] text-[#be95ff]">Umami</span>
-                <span className="font-bold text-[#f4f4f4]">{result.flavorProfile.umami}%</span>
+              <div className="rounded bg-[#16181b] border border-[#3b494b]/40 p-1.5">
+                <span className="block text-[10px] text-[#f0c119] font-semibold">Umami</span>
+                <span className="font-bold text-white">{result.flavorProfile.umami}%</span>
               </div>
             </div>
           </div>
 
-          <div className="rounded-lg border border-[#393939] bg-[#161616] p-2 text-[11px] text-[#c6c6c6] flex items-center gap-1.5">
-            <Sparkles className="h-3.5 w-3.5 text-[#8a3ffc] shrink-0" />
-            <span>Telemetry logged to <b>Scientist Portal (/admin)</b> for research!</span>
+          <div className="rounded-lg border border-[#3b494b]/40 bg-[#16181b] p-2 text-[11px] text-[#b9cacb] flex items-center gap-1.5">
+            <Sparkles className="h-3.5 w-3.5 text-[#00f0ff] shrink-0" />
+            <span>Telemetry logged to <b>Scientist Portal (/admin)</b> for analysis.</span>
           </div>
         </div>
 
         {/* Action Buttons */}
-        <div className="flex gap-2 pt-2">
-          <Button
-            variant="outline"
+        <div className="flex gap-2.5 pt-3">
+          <button
+            type="button"
             onClick={() => {
               onOpenChange(false);
               onRetry();
             }}
-            className="flex-1"
+            className="flex-1 py-2.5 px-4 rounded-lg border border-[#3b494b] bg-[#282a2d] text-[#e2e2e6] hover:bg-[#333538] hover:text-white font-label text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 active:scale-95"
           >
-            <RotateCcw className="mr-1.5 h-4 w-4" /> Retry
-          </Button>
+            <RotateCcw className="h-3.5 w-3.5" />
+            <span>Retry</span>
+          </button>
 
-          <Button
-            variant="default"
+          <button
+            type="button"
             onClick={() => {
               onOpenChange(false);
               onNextRecipe();
             }}
-            className="flex-1 font-bold"
+            className="flex-1 py-2.5 px-4 rounded-lg bg-[#00f0ff] text-[#0c0e11] hover:bg-[#7df4ff] glow-cyan-btn font-label text-xs font-bold transition-all cursor-pointer flex items-center justify-center gap-1.5 active:scale-95 shadow-md"
           >
-            Next Recipe <ArrowRight className="ml-1.5 h-4 w-4" />
-          </Button>
+            <span>Next Recipe</span>
+            <ArrowRight className="h-3.5 w-3.5" />
+          </button>
         </div>
       </DialogContent>
     </Dialog>

@@ -2,11 +2,6 @@
 
 import React from 'react';
 import { KitchenUpgrade } from '@/lib/game/upgrades';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { InfoDialog } from '@/components/ui/info-dialog';
-import { ShoppingBag, Check } from 'lucide-react';
 
 interface StabilizerShopProps {
   upgrades: KitchenUpgrade[];
@@ -16,83 +11,78 @@ interface StabilizerShopProps {
 
 export function StabilizerShop({ upgrades, credits, onBuyUpgrade }: StabilizerShopProps) {
   return (
-    <Card className="border-[#333333] bg-[#1c1c1c] shadow-sm">
-      <CardHeader className="p-3.5 border-b border-[#333333] pb-2.5">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <ShoppingBag className="h-4 w-4 text-[#8a3ffc]" />
-            <CardTitle className="text-sm font-bold text-[#f4f4f4]">Quantum Pantry</CardTitle>
-            <InfoDialog
-              title="Quantum Pantry Upgrades"
-              description="Stabilizers dampen ambient thermal decoherence and lock quantum odds towards the desired Super-Particle fusion channel."
-              tooltip="Pantry Guide"
-            />
-          </div>
-          <Badge variant="amber" className="font-mono text-xs font-bold">
-            🪙 {credits} CR
-          </Badge>
+    <div className="bg-[#1a1c1f] border border-[#3b494b] rounded-xl p-3.5 sm:p-4 shadow-md">
+      {/* Title Bar */}
+      <div className="flex items-center justify-between mb-3 pb-2 border-b border-[#3b494b]/40">
+        <div className="flex items-center gap-2">
+          <span className="font-label text-xs uppercase tracking-wider text-[#00f0ff] font-bold">
+            Kitchen Upgrades
+          </span>
+          <span className="text-[#3b494b] text-xs">•</span>
+          <span className="font-label text-xs text-[#b9cacb]">
+            Permanent Cooking Boosts
+          </span>
         </div>
-      </CardHeader>
+        <span className="font-label text-[11px] text-[#849495] hidden sm:inline">
+          Invest Q-Credits to improve yields
+        </span>
+      </div>
 
-      <CardContent className="p-4">
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          {upgrades.map((u) => {
-            const isMaxed = u.level >= u.maxLevel;
-            const canAfford = credits >= u.cost && !isMaxed;
+      {/* Upgrade Cards Horizontal Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
+        {upgrades.map((u, i) => {
+          const isMaxed = u.level >= u.maxLevel;
+          const canAfford = credits >= u.cost && !isMaxed;
+          const colorTheme = i % 3 === 0 ? '#00f0ff' : i % 3 === 1 ? '#d4bbff' : '#f0c119';
 
-            return (
-              <div
-                key={u.id}
-                className="flex items-center justify-between rounded-lg border border-[#393939] bg-[#262626] p-2.5 hover:border-[#525252] transition-colors"
-              >
-                <div className="flex items-center gap-2.5 min-w-0 pr-2">
-                  <span className="text-xl shrink-0">{u.icon}</span>
-                  <div className="min-w-0">
-                    <div className="flex items-center gap-1.5">
-                      <span className="text-xs font-bold text-[#f4f4f4] truncate">{u.name}</span>
-                      <InfoDialog
-                        title={u.name}
-                        description={u.description}
-                        tooltip="Equipment Details"
-                      >
-                        <div className="rounded bg-[#161616] border border-[#393939] p-2 text-xs text-[#24a148] font-mono">
-                          Active Effect: {u.effectLabel}
-                        </div>
-                      </InfoDialog>
-                    </div>
-                    <div className="flex items-center gap-1.5 mt-0.5 flex-wrap">
-                      <span className="text-[10px] text-[#24a148] font-mono font-medium truncate">
-                        {u.effectLabel}
-                      </span>
-                      <span className="text-[9px] text-slate-400 font-mono shrink-0">
-                        (Tier {u.level}/{u.maxLevel})
-                      </span>
-                    </div>
+          return (
+            <div
+              key={u.id}
+              className="bg-[#1e2023] border border-[#3b494b]/60 hover:border-[#00f0ff]/50 transition-all rounded-lg p-2.5 flex items-center justify-between group shadow-xs"
+            >
+              <div className="flex items-center gap-2.5 min-w-0 pr-1">
+                <div className="w-9 h-9 rounded bg-[#282a2d] border border-[#3b494b] flex items-center justify-center text-lg shrink-0">
+                  {u.icon}
+                </div>
+                <div className="min-w-0">
+                  <div className="font-label text-xs font-semibold text-[#e2e2e6] truncate">
+                    {u.name}
+                  </div>
+                  {/* Level pip indicators */}
+                  <div className="flex items-center gap-1 mt-1">
+                    {Array.from({ length: u.maxLevel }, (_, lvl) => (
+                      <span
+                        key={lvl}
+                        className="w-2.5 h-1 rounded-xs"
+                        style={{
+                          backgroundColor: lvl < u.level ? colorTheme : '#3b494b',
+                        }}
+                      />
+                    ))}
+                    <span className="font-label text-[10px] text-[#849495] ml-1">
+                      {isMaxed ? 'MAX' : `Lv. ${u.level}/${u.maxLevel}`}
+                    </span>
                   </div>
                 </div>
-
-                <div className="shrink-0">
-                  <Button
-                    size="sm"
-                    variant={isMaxed ? 'outline' : canAfford ? 'default' : 'ghost'}
-                    disabled={!canAfford || isMaxed}
-                    onClick={() => onBuyUpgrade(u.id)}
-                    className="h-7 px-3 text-xs font-bold"
-                  >
-                    {isMaxed ? (
-                      <span className="flex items-center text-emerald-400 text-[11px]">
-                        <Check className="mr-1 h-3 w-3" /> Max
-                      </span>
-                    ) : (
-                      `🪙 ${u.cost}`
-                    )}
-                  </Button>
-                </div>
               </div>
-            );
-          })}
-        </div>
-      </CardContent>
-    </Card>
+
+              <button
+                disabled={!canAfford || isMaxed}
+                onClick={() => onBuyUpgrade(u.id)}
+                className={`px-2.5 py-1.5 rounded font-label text-xs font-semibold transition-all shrink-0 whitespace-nowrap ${
+                  isMaxed
+                    ? 'bg-[#1a1c1f] border border-[#3b494b]/30 text-[#849495] cursor-not-allowed'
+                    : canAfford
+                    ? 'bg-[#282a2d] hover:bg-[#333538] border border-[#00f0ff]/40 text-[#00f0ff] active:scale-95 cursor-pointer glow-cyan-btn'
+                    : 'bg-[#282a2d] border border-[#3b494b] text-[#849495] opacity-50 cursor-not-allowed'
+                }`}
+              >
+                {isMaxed ? 'MAXED' : `+${u.cost} 🪙`}
+              </button>
+            </div>
+          );
+        })}
+      </div>
+    </div>
   );
 }

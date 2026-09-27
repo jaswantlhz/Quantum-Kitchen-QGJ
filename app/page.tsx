@@ -1,10 +1,12 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { CosmicCatChefHero } from '@/components/landing/CosmicCatChefHero';
+import { CosmicVideoHero } from '@/components/landing/CosmicVideoHero';
+import { InteractiveBraidTeaser } from '@/components/landing/InteractiveBraidTeaser';
 import { HowToPlayModal } from '@/components/game/HowToPlayModal';
 import { soundFx } from '@/lib/audio/synthAudio';
+import { COSMIC_RECIPES } from '@/lib/game/recipes';
 import {
   Volume2,
   VolumeX,
@@ -14,238 +16,269 @@ import {
   Activity,
   Play,
   Sparkles,
-  GitCommit,
   Flame,
   ShieldCheck,
   ChevronDown,
+  Layers,
+  Zap,
+  Award,
+  BookOpen,
 } from 'lucide-react';
-import { INGREDIENTS } from '@/lib/game/ingredientSketches';
 
 export default function GameLandingPage() {
   const [howToPlayOpen, setHowToPlayOpen] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
+
+  useEffect(() => {
+    const handleFirstInteraction = () => {
+      soundFx.startBGM();
+      window.removeEventListener('click', handleFirstInteraction);
+      window.removeEventListener('keydown', handleFirstInteraction);
+      window.removeEventListener('touchstart', handleFirstInteraction);
+    };
+
+    // Try starting BGM immediately
+    soundFx.startBGM();
+
+    window.addEventListener('click', handleFirstInteraction);
+    window.addEventListener('keydown', handleFirstInteraction);
+    window.addEventListener('touchstart', handleFirstInteraction);
+
+    return () => {
+      window.removeEventListener('click', handleFirstInteraction);
+      window.removeEventListener('keydown', handleFirstInteraction);
+      window.removeEventListener('touchstart', handleFirstInteraction);
+    };
+  }, []);
 
   const toggleSound = () => {
     const nextMuted = !isMuted;
     setIsMuted(nextMuted);
     soundFx.setMuted(nextMuted);
     if (!nextMuted) {
+      soundFx.startBGM();
       soundFx.playPluck(1, true);
     }
   };
 
   return (
-    <div className="min-h-screen bg-[#070913] text-[#f4f4f4] flex flex-col selection:bg-[#be95ff] selection:text-[#0d0922] font-sans">
-      {/* 1. Floating Pill Navigation Header (Matching Chumbi Valley Pill Bar) */}
-      <header className="fixed top-0 left-0 right-0 z-50 px-4 sm:px-8 py-3.5 flex items-center justify-between">
-        {/* Left: Small Logo Pill */}
-        <Link
-          href="/"
-          className="flex items-center gap-2 px-3.5 py-2 rounded-full bg-[#111328]/85 border border-white/20 hover:border-[#be95ff]/60 shadow-[0_8px_25px_rgba(0,0,0,0.5)] backdrop-blur-md transition-all hover:scale-105"
-        >
-          <div className="h-6 w-6 rounded-full bg-gradient-to-br from-[#8a3ffc] to-[#00f0ff] flex items-center justify-center text-white text-xs">
-            🐱
-          </div>
-          <span className="font-extrabold text-xs tracking-wider text-white uppercase hidden sm:inline">
-            QUANTUM KITCHEN
-          </span>
-        </Link>
-
-        {/* Center: Clean Floating Pill Navigation Bar */}
-        <nav className="hidden md:flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-[#111328]/85 border border-white/20 shadow-[0_8px_25px_rgba(0,0,0,0.5)] backdrop-blur-md text-xs font-bold text-slate-200">
-          <button
-            onClick={() => setHowToPlayOpen(true)}
-            className="px-3 py-1.5 rounded-full hover:text-white hover:bg-white/10 transition-colors flex items-center gap-1 cursor-pointer"
-          >
-            <span>Game Info</span>
-            <ChevronDown className="h-3 w-3 opacity-60" />
-          </button>
-
-          <a
-            href="#anyons"
-            className="px-3 py-1.5 rounded-full hover:text-white hover:bg-white/10 transition-colors"
-          >
-            Anyons (τ)
-          </a>
-
-          <a
-            href="#lore"
-            className="px-3 py-1.5 rounded-full hover:text-white hover:bg-white/10 transition-colors"
-          >
-            Space Lore
-          </a>
-
-          <Link
-            href="/admin"
-            className="px-3 py-1.5 rounded-full hover:text-[#00f0ff] hover:bg-white/10 transition-colors flex items-center gap-1.5"
-          >
-            <Activity className="h-3 w-3 text-[#00f0ff]" />
-            <span>Scientist Lab</span>
-          </Link>
-
-          <Link
-            href="/credits"
-            className="px-3 py-1.5 rounded-full hover:text-[#ee5396] hover:bg-white/10 transition-colors flex items-center gap-1"
-          >
-            <Heart className="h-3 w-3 text-[#ee5396]" />
-            <span>Credits</span>
-          </Link>
-        </nav>
-
-        {/* Right: Sound Pill + Primary Play Pill */}
-        <div className="flex items-center gap-2 sm:gap-3">
-          {/* Ambient Sound Toggle Pill */}
-          <button
-            onClick={toggleSound}
-            className="h-9 w-9 rounded-full bg-[#111328]/85 border border-white/20 hover:border-white/40 shadow-[0_8px_20px_rgba(0,0,0,0.4)] backdrop-blur-md flex items-center justify-center text-slate-200 hover:text-white cursor-pointer transition-transform hover:scale-105"
-            title={isMuted ? 'Unmute Web Audio' : 'Mute Web Audio'}
-          >
-            {isMuted ? (
-              <VolumeX className="h-4 w-4 text-slate-400" />
-            ) : (
-              <Volume2 className="h-4 w-4 text-[#be95ff]" />
-            )}
-          </button>
-
-          {/* Primary Action Button */}
-          <Link href="/play">
-            <button className="px-5 py-2 rounded-full bg-gradient-to-r from-[#be95ff] via-[#8a3ffc] to-[#00f0ff] hover:from-[#cdaaff] hover:to-[#26f5ff] text-[#0d0922] font-black text-xs sm:text-sm tracking-wider uppercase border border-white/60 shadow-[0_8px_25px_rgba(0,0,0,0.6),0_0_20px_rgba(190,149,255,0.4)] hover:shadow-[0_10px_30px_rgba(0,0,0,0.7),0_0_30px_rgba(0,240,255,0.6)] cursor-pointer transition-all hover:scale-105 active:scale-95 flex items-center gap-1.5">
-              <Play className="h-3.5 w-3.5 fill-[#0d0922]" />
-              <span>PLAY GAME</span>
-            </button>
-          </Link>
-        </div>
-      </header>
-
-      {/* 2. Panoramic Space Hero: Astronaut Cat Chef Cooking in Zero-G */}
-      <CosmicCatChefHero
+    <div className="min-h-screen bg-gradient-to-b from-[#0c0e1e] via-[#141733] via-[#1a1438] to-[#0a0c18] text-[#f4f4f4] flex flex-col selection:bg-[#be95ff] selection:text-[#0d0922] font-sans">
+      {/* 1. Panoramic Space Video Hero & Glass Navigation */}
+      <CosmicVideoHero
         onOpenManual={() => setHowToPlayOpen(true)}
         isMuted={isMuted}
         onToggleMute={toggleSound}
       />
 
-      {/* 3. Uncluttered Space Kitchen Lore (Below the Fold) */}
-      <main className="max-w-6xl mx-auto w-full px-4 sm:px-8 py-16 sm:py-24 space-y-24">
-        {/* Step-by-step Game Loop: 3 Clean Floating Space Cards */}
-        <section id="lore" className="space-y-10 text-center">
+      {/* Main Landing Sections */}
+      <main className="max-w-6xl mx-auto w-full px-4 sm:px-8 py-12 sm:py-20 space-y-24">
+        {/* Section: Live Interactive Weaving Sandbox */}
+        <section id="try-weave" className="space-y-6 text-center">
+          <InteractiveBraidTeaser />
+        </section>
+
+        {/* Section: 3-Step Quantum Cooking Loop */}
+        <section id="how-it-works" className="space-y-12 text-center">
           <div className="space-y-3 max-w-xl mx-auto">
-            <div className="inline-flex items-center gap-2 rounded-full px-4 py-1 bg-[#1a1638] border border-[#be95ff]/40 text-xs font-mono font-bold text-[#be95ff]">
+            <div className="inline-flex items-center gap-2 rounded-full px-4 py-1 bg-[#231b4a] border border-[#be95ff]/40 text-xs font-mono font-bold text-[#be95ff]">
               <Sparkles className="h-3.5 w-3.5" />
-              <span>INTERSTELLAR QUANTUM CHEF</span>
+              <span>NON-ABELIAN TOPOLOGICAL RECIPES</span>
             </div>
             <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight uppercase">
-              Cooking in Zero Gravity
+              How Space Cooking Works
             </h2>
             <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-              In deep space, ingredients don&apos;t sit in bowls—they float as 2D Fibonacci anyons braided into spacetime world-lines.
+              In deep space, ingredients don&apos;t boil in pots. They exist as 2D Fibonacci anyons braided through spacetime world-lines.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {/* Card 1 */}
-            <div className="rounded-3xl bg-gradient-to-b from-[#181335] to-[#0d0a20] border-2 border-[#2b2255] p-8 space-y-4 text-left shadow-xl hover:border-[#be95ff]/60 transition-all group">
-              <div className="h-12 w-12 rounded-2xl bg-[#be95ff]/15 border border-[#be95ff]/40 flex items-center justify-center text-xl font-mono font-extrabold text-[#be95ff]">
-                01
+            {/* Step 1 */}
+            <div className="rounded-3xl bg-gradient-to-b from-[#211b47]/90 to-[#14112c]/90 border-2 border-[#3d336e]/60 p-8 space-y-4 text-left shadow-xl hover:border-[#be95ff]/60 transition-all group">
+              <div className="flex items-center justify-between">
+                <div className="h-12 w-12 rounded-2xl bg-[#be95ff]/15 border border-[#be95ff]/40 flex items-center justify-center text-xl font-mono font-extrabold text-[#be95ff]">
+                  01
+                </div>
+                <span className="text-2xl">📋</span>
               </div>
-              <h3 className="font-extrabold text-lg text-white">Accept Space Tickets</h3>
+              <h3 className="font-extrabold text-lg text-white">Accept Galactic Tickets</h3>
               <p className="text-xs text-slate-300 leading-relaxed">
-                Review astronaut and alien customer orders for target Sweetness, Spiciness, Umami, and Tartness vectors.
+                Analyze client flavor targets: Sweetness, Sourness, Spiciness, and Umami coherence matrices.
               </p>
             </div>
 
-            {/* Card 2 */}
-            <div className="rounded-3xl bg-gradient-to-b from-[#181335] to-[#0d0a20] border-2 border-[#2b2255] p-8 space-y-4 text-left shadow-xl hover:border-[#00f0ff]/60 transition-all group">
-              <div className="h-12 w-12 rounded-2xl bg-[#00f0ff]/15 border border-[#00f0ff]/40 flex items-center justify-center text-xl font-mono font-extrabold text-[#00f0ff]">
-                02
+            {/* Step 2 */}
+            <div className="rounded-3xl bg-gradient-to-b from-[#211b47]/90 to-[#14112c]/90 border-2 border-[#3d336e]/60 p-8 space-y-4 text-left shadow-xl hover:border-[#00f0ff]/60 transition-all group">
+              <div className="flex items-center justify-between">
+                <div className="h-12 w-12 rounded-2xl bg-[#00f0ff]/15 border border-[#00f0ff]/40 flex items-center justify-center text-xl font-mono font-extrabold text-[#00f0ff]">
+                  02
+                </div>
+                <span className="text-2xl">⚡</span>
               </div>
-              <h3 className="font-extrabold text-lg text-white">Weave on the Space Loom</h3>
+              <h3 className="font-extrabold text-lg text-white">Weave Braid Operators</h3>
               <p className="text-xs text-slate-300 leading-relaxed">
-                Execute Over (σᵢ) and Under (σᵢ⁻¹) crossings to build fault-tolerant quantum phase shifts with zero decoherence.
+                Execute Over (σᵢ) and Under (σᵢ⁻¹) crossings to build fault-tolerant unitary matrices with zero decoherence.
               </p>
             </div>
 
-            {/* Card 3 */}
-            <div className="rounded-3xl bg-gradient-to-b from-[#181335] to-[#0d0a20] border-2 border-[#2b2255] p-8 space-y-4 text-left shadow-xl hover:border-[#f1c21b]/60 transition-all group">
-              <div className="h-12 w-12 rounded-2xl bg-[#f1c21b]/15 border border-[#f1c21b]/40 flex items-center justify-center text-xl font-mono font-extrabold text-[#f1c21b]">
-                03
+            {/* Step 3 */}
+            <div className="rounded-3xl bg-gradient-to-b from-[#211b47]/90 to-[#14112c]/90 border-2 border-[#3d336e]/60 p-8 space-y-4 text-left shadow-xl hover:border-[#f1c21b]/60 transition-all group">
+              <div className="flex items-center justify-between">
+                <div className="h-12 w-12 rounded-2xl bg-[#f1c21b]/15 border border-[#f1c21b]/40 flex items-center justify-center text-xl font-mono font-extrabold text-[#f1c21b]">
+                  03
+                </div>
+                <span className="text-2xl">🍽️</span>
               </div>
-              <h3 className="font-extrabold text-lg text-white">Anyon Fusion Plating</h3>
+              <h3 className="font-extrabold text-lg text-white">Anyon Fusion & Plating</h3>
               <p className="text-xs text-slate-300 leading-relaxed">
-                Send braided strands into the Anyon Reactor. Measure the non-Abelian state to plate legendary 3-star space dishes!
+                Twist braided world-lines into the Fusion Cooker. Measure the state to plate legendary 3-star quantum dishes!
               </p>
             </div>
           </div>
         </section>
 
-        {/* Anyon Quasiparticle Ingredients Showcase */}
-        <section id="anyons" className="space-y-10 text-center">
+        {/* Section: Cosmic Dishes Showcase */}
+        <section id="dishes" className="space-y-12 text-center">
           <div className="space-y-3 max-w-xl mx-auto">
-            <div className="inline-flex items-center gap-2 rounded-full px-4 py-1 bg-[#151c38] border border-[#00f0ff]/40 text-xs font-mono font-bold text-[#00f0ff]">
-              <Atom className="h-3.5 w-3.5" />
-              <span>FIBONACCI ANYONS (τ)</span>
+            <div className="inline-flex items-center gap-2 rounded-full px-4 py-1 bg-[#1a2347] border border-[#00f0ff]/40 text-xs font-mono font-bold text-[#00f0ff]">
+              <Award className="h-3.5 w-3.5" />
+              <span>COSMIC KITCHEN MENU</span>
             </div>
             <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight uppercase">
-              Floating Quasiparticle Ingredients
+              Featured Quantum Recipes
             </h2>
             <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-              Every ingredient is a 2D topological anyon carrying quantum memory in its spacetime braids.
+              From topological appetizers to 4-strand singularities, master real non-Abelian Fibonacci fusions.
             </p>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6">
-            {[
-              { key: 'tomato', name: 'Solar Tomato', color: '#da1e28', icon: '🍅', role: 'Tartness Superposition' },
-              { key: 'bread', name: 'Quantum Brioche', color: '#f1c21b', icon: '🥖', role: 'Phase Foundation' },
-              { key: 'carrot', name: 'Starlight Carrot', color: '#ff832b', icon: '🥕', role: 'Sweetness Rotation' },
-              { key: 'lettuce', name: 'Auroral Lettuce', color: '#24a148', icon: '🥬', role: 'Entanglement Simmer' },
-            ].map((ing) => (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            {COSMIC_RECIPES.map((recipe) => (
               <div
-                key={ing.key}
-                className="rounded-3xl bg-[#120f29] border border-[#2b2255] p-6 text-center space-y-3 shadow-lg hover:scale-105 transition-all"
+                key={recipe.id}
+                className="rounded-3xl bg-[#171436] border border-[#3b2e75] p-6 text-left space-y-4 shadow-lg hover:border-[#00f0ff]/60 hover:scale-[1.02] transition-all flex flex-col justify-between"
               >
-                <div className="text-4xl sm:text-5xl drop-shadow-lg">{ing.icon}</div>
-                <h4 className="font-extrabold text-sm sm:text-base text-white">{ing.name}</h4>
-                <p className="text-[11px] text-slate-400 font-mono">{ing.role}</p>
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="text-4xl">{recipe.dishIcon}</span>
+                    <span className="text-[10px] font-mono font-bold px-2 py-0.5 rounded bg-[#ffd556]/15 text-[#f0c119] border border-[#f0c119]/30">
+                      +{recipe.rewardCredits} Credits
+                    </span>
+                  </div>
+                  <div>
+                    <h4 className="font-black text-base text-white">{recipe.name}</h4>
+                    <p className="text-xs text-[#00f0ff] font-mono mt-0.5">
+                      {recipe.strandCount} Strands • {recipe.mealCategory || 'Entrée'}
+                    </p>
+                  </div>
+                  <p className="text-[11px] text-slate-300 leading-relaxed">
+                    {recipe.description}
+                  </p>
+                </div>
+
+                <div className="pt-2 border-t border-white/10 flex items-center justify-between text-[10px] font-mono text-slate-400">
+                  <span>Target: Sweet {recipe.targetFlavor.sweetness}%</span>
+                  <span className="text-[#be95ff]">Umami {recipe.targetFlavor.umami}%</span>
+                </div>
               </div>
             ))}
           </div>
         </section>
 
+        {/* Section: Quantum vs Classical Cooking Comparison */}
+        <section className="rounded-3xl bg-gradient-to-b from-[#181d3d]/90 to-[#0e1022]/90 border-2 border-[#3d336e]/60 p-6 sm:p-10 shadow-2xl space-y-8">
+          <div className="text-center space-y-2 max-w-xl mx-auto">
+            <h3 className="text-2xl sm:text-3xl font-black text-white uppercase tracking-tight">
+              Topological vs. Classical Cooking
+            </h3>
+            <p className="text-xs text-slate-300">
+              Why quantum anyon cooking is inherently fault-tolerant compared to traditional thermodynamics.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="rounded-2xl bg-[#121428] border border-red-500/30 p-6 space-y-3">
+              <div className="flex items-center gap-2 text-red-400 font-bold text-sm">
+                <Flame className="h-4 w-4" />
+                <span>Classical Kitchen (Decoherence-Prone)</span>
+              </div>
+              <ul className="space-y-2 text-xs text-slate-300">
+                <li className="flex items-start gap-2">
+                  <span className="text-red-400">✕</span>
+                  <span>Heat transfer creates thermal entropy and random particle collisions.</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-red-400">✕</span>
+                  <span>Flavor states degrade over time due to environmental noise.</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-red-400">✕</span>
+                  <span>Limited by classical 3D geometric constraints.</span>
+                </li>
+              </ul>
+            </div>
+
+            <div className="rounded-2xl bg-[#151c38] border border-[#00f0ff]/50 p-6 space-y-3 shadow-[0_0_20px_rgba(0,240,255,0.15)]">
+              <div className="flex items-center gap-2 text-[#00f0ff] font-bold text-sm">
+                <ShieldCheck className="h-4 w-4 text-[#00f0ff]" />
+                <span>Quantum Space Loom (Topological Invariance)</span>
+              </div>
+              <ul className="space-y-2 text-xs text-slate-200">
+                <li className="flex items-start gap-2">
+                  <span className="text-[#00f0ff]">✓</span>
+                  <span>Information is stored globally in 2D braid topology—immune to local noise!</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-[#00f0ff]">✓</span>
+                  <span>Fibonacci anyon fusion rules ($τ \otimes τ = \mathbf{1} \oplus τ$) generate exact unitary gates.</span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="text-[#00f0ff]">✓</span>
+                  <span>Fault-tolerant dish plating with mathematical coherence guarantees.</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
         {/* Big Final Call to Action Box */}
-        <section className="rounded-3xl bg-gradient-to-r from-[#1e1542] via-[#2c1b5e] to-[#1e1542] border-2 border-[#be95ff]/50 p-8 sm:p-14 text-center space-y-6 shadow-[0_20px_60px_rgba(0,0,0,0.7)]">
+        <section className="rounded-3xl bg-gradient-to-r from-[#291b58] via-[#3a2278] to-[#291b58] border-2 border-[#be95ff]/60 p-8 sm:p-14 text-center space-y-6 shadow-[0_20px_60px_rgba(0,0,0,0.7)]">
           <div className="space-y-3 max-w-xl mx-auto">
             <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight uppercase">
-              Ready to Cook in Deep Space?
+              Ready to Master the Space Loom?
             </h2>
             <p className="text-xs sm:text-sm text-slate-200 leading-relaxed">
-              Free to play. No installation required. Master the art of non-Abelian quantum cooking right in your browser.
+              No installation required. Play immediately in your browser with full audio soundscapes, live quantum telemetry, and dynamic recipes.
             </p>
           </div>
 
           <div className="pt-2 flex flex-wrap items-center justify-center gap-4">
-            <Link href="/play">
+            <Link href="/play" onClick={() => soundFx.playBell()}>
               <button className="px-9 py-4 rounded-full bg-gradient-to-r from-[#be95ff] via-[#8a3ffc] to-[#00f0ff] hover:from-[#cdaaff] hover:to-[#26f5ff] text-[#0d0922] font-black text-sm sm:text-base tracking-wider uppercase border-2 border-white shadow-[0_12px_35px_rgba(0,0,0,0.7),0_0_30px_rgba(190,149,255,0.6)] cursor-pointer transition-all hover:scale-105 active:scale-95 flex items-center gap-2">
                 <Play className="h-4 w-4 fill-[#0d0922]" />
-                <span>LAUNCH GAME NOW</span>
+                <span>ENTER QUANTUM KITCHEN NOW</span>
               </button>
             </Link>
 
-            <Link href="/credits">
-              <button className="px-6 py-3.5 rounded-full bg-[#111328]/80 hover:bg-[#1a1d3e] text-slate-300 hover:text-white font-bold text-xs sm:text-sm tracking-wider uppercase border border-white/30 cursor-pointer transition-all">
-                Credits & Lineage
-              </button>
-            </Link>
+            <button
+              onClick={() => setHowToPlayOpen(true)}
+              className="px-6 py-3.5 rounded-full bg-[#181d3d]/80 hover:bg-[#202752] text-slate-300 hover:text-white font-bold text-xs sm:text-sm tracking-wider uppercase border border-white/30 cursor-pointer transition-all flex items-center gap-2"
+            >
+              <BookOpen className="h-4 w-4 text-[#00f0ff]" />
+              <span>Chef Field Manual</span>
+            </button>
           </div>
         </section>
       </main>
 
       {/* Clean Space Footer */}
-      <footer className="border-t border-[#1e1a3d] bg-[#05060e] py-8 px-4 sm:px-8">
+      <footer className="border-t border-[#292254] bg-[#0c0e1e] py-8 px-4 sm:px-8">
         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
           <div className="flex items-center gap-2">
+            <ChefHat className="h-4 w-4 text-[#00f0ff]" />
             <span className="font-extrabold text-white">QUANTUM KITCHEN</span>
             <span>•</span>
-            <span>Cosmic Space Threads Simulator</span>
+            <span>Non-Abelian Anyon Weaving Simulator</span>
           </div>
 
           <div className="flex items-center gap-5 font-semibold">
@@ -256,15 +289,15 @@ export default function GameLandingPage() {
               Scientist Lab
             </Link>
             <Link href="/credits" className="hover:text-[#ee5396] transition-colors">
-              Credits
+              Credits & Lineage
             </Link>
             <span className="text-slate-600">|</span>
-            <span className="text-slate-500 font-mono">MIT License</span>
+            <span className="text-slate-500 font-mono">MIT Open Source</span>
           </div>
         </div>
       </footer>
 
-      {/* Embedded Clean How to Play Dialog */}
+      {/* Embedded How to Play Dialog */}
       <HowToPlayModal
         open={howToPlayOpen}
         onOpenChange={setHowToPlayOpen}

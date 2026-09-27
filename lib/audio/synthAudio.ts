@@ -1,13 +1,38 @@
 /**
- * Pure Web Audio Procedural Synthesizer
- * Zero external audio files required! Generates tactile harp plucks,
- * rubber-band snaps, bubbling espresso froths, and quantum glitch fizzes.
+ * Quantum Kitchen Unified Audio Engine
+ * Combines high-precision Web Audio procedural synthesizers with
+ * zero-latency cached audio samples (/sounds/*.wav, *.ogg).
  */
 
 class QuantumAudioEngine {
   private ctx: AudioContext | null = null;
   private isMuted: boolean = false;
   private masterGain: GainNode | null = null;
+
+  // Real Audio Sample Elements / Buffers
+  private audioCache: Map<string, HTMLAudioElement> = new Map();
+  private bgmAudio: HTMLAudioElement | null = null;
+  private bgmPlaying: boolean = false;
+
+  constructor() {
+    if (typeof window !== 'undefined') {
+      // Pre-heat audio elements
+      this.preloadSample('bell', '/sounds/Bell.wav');
+      this.preloadSample('ticket', '/sounds/Ticket.wav');
+      this.preloadSample('upgrade', '/sounds/Upgrade.wav');
+    }
+  }
+
+  private preloadSample(key: string, url: string) {
+    if (typeof window === 'undefined') return;
+    try {
+      const audio = new Audio(url);
+      audio.preload = 'auto';
+      this.audioCache.set(key, audio);
+    } catch {
+      // Audio preload fallback
+    }
+  }
 
   private initContext() {
     if (typeof window === 'undefined') return;
@@ -32,16 +57,130 @@ class QuantumAudioEngine {
     if (this.masterGain && this.ctx) {
       this.masterGain.gain.setValueAtTime(muted ? 0 : 0.35, this.ctx.currentTime);
     }
+    if (this.bgmAudio) {
+      this.bgmAudio.muted = muted;
+    }
   }
 
   public getIsMuted(): boolean {
     return this.isMuted;
   }
 
+  /* =========================================================================
+   * 1. Sample-Based SFX (Bell.wav, Ticket.wav, Upgrade.wav)
+   * ========================================================================= */
+
+  /**
+   * Classic Service Bell ("Order up!" / Fusion Plating / Kitchen Entry)
+   */
+  public playBell() {
+    if (this.isMuted || typeof window === 'undefined') return;
+    try {
+      let audio = this.audioCache.get('bell');
+      if (!audio) {
+        audio = new Audio('/sounds/Bell.wav');
+        this.audioCache.set('bell', audio);
+      }
+      const clone = audio.cloneNode() as HTMLAudioElement;
+      clone.volume = 0.65;
+      clone.play().catch(() => {});
+    } catch {
+      this.playSuccessChime(); // Fallback to synth chime
+    }
+  }
+
+  /**
+   * Tactile Order Ticket Slip (Recipe Switching / Ticket Flipping)
+   */
+  public playTicket() {
+    if (this.isMuted || typeof window === 'undefined') return;
+    try {
+      let audio = this.audioCache.get('ticket');
+      if (!audio) {
+        audio = new Audio('/sounds/Ticket.wav');
+        this.audioCache.set('ticket', audio);
+      }
+      const clone = audio.cloneNode() as HTMLAudioElement;
+      clone.volume = 0.55;
+      clone.play().catch(() => {});
+    } catch {
+      this.playPluck(1, true); // Fallback
+    }
+  }
+
+  /**
+   * Tech Upgrade / Hardware Unlock Chime (Pantry Tool Purchase)
+   */
+  public playUpgrade() {
+    if (this.isMuted || typeof window === 'undefined') return;
+    try {
+      let audio = this.audioCache.get('upgrade');
+      if (!audio) {
+        audio = new Audio('/sounds/Upgrade.wav');
+        this.audioCache.set('upgrade', audio);
+      }
+      const clone = audio.cloneNode() as HTMLAudioElement;
+      clone.volume = 0.7;
+      clone.play().catch(() => {});
+    } catch {
+      this.playSuccessChime(); // Fallback
+    }
+  }
+
+  /* =========================================================================
+   * 2. Background Ambient BGM (Quantum Minecraft.ogg)
+   * ========================================================================= */
+
+  public startBGM() {
+    if (typeof window === 'undefined') return;
+    try {
+      if (!this.bgmAudio) {
+        this.bgmAudio = new Audio('/sounds/Quantum Minecraft.ogg');
+        this.bgmAudio.loop = true;
+        this.bgmAudio.volume = 0.28;
+      }
+      if (this.bgmPlaying && !this.bgmAudio.paused) {
+        this.bgmAudio.muted = this.isMuted;
+        return;
+      }
+      this.bgmAudio.muted = this.isMuted;
+      this.bgmAudio.play().then(() => {
+        this.bgmPlaying = true;
+      }).catch(() => {
+        // Autoplay policy waiting for user interaction
+      });
+    } catch {
+      // Audio error fallback
+    }
+  }
+
+  public stopBGM() {
+    if (this.bgmAudio) {
+      this.bgmAudio.pause();
+      this.bgmPlaying = false;
+    }
+  }
+
+  public toggleBGM(): boolean {
+    if (this.bgmPlaying) {
+      this.stopBGM();
+      return false;
+    } else {
+      this.startBGM();
+      return true;
+    }
+  }
+
+  public isBGMActive(): boolean {
+    return this.bgmPlaying;
+  }
+
+  /* =========================================================================
+   * 3. Procedural Web Audio Synthesizers (Braid Plucks, Mascot Chirps)
+   * ========================================================================= */
+
   /**
    * Tactile Harp Pluck on Braid Crossing
-   * @param lane 1 or 2
-   * @param isOver boolean
    */
   public playPluck(lane: number, isOver: boolean) {
     if (this.isMuted) return;
@@ -49,12 +188,9 @@ class QuantumAudioEngine {
     if (!this.ctx || !this.masterGain) return;
 
     const now = this.ctx.currentTime;
-
-    // Base pitch depends on lane: Lane 1 = C5 (523Hz), Lane 2 = E5 (659Hz)
     const baseFreq = lane === 1 ? 523.25 : 659.25;
-    const freq = isOver ? baseFreq : baseFreq * 0.8909; // Minor 2nd down for under-crossing
+    const freq = isOver ? baseFreq : baseFreq * 0.8909;
 
-    // Dual oscillator: Sine for fundamental body + Triangle for tactile snap
     const osc1 = this.ctx.createOscillator();
     const osc2 = this.ctx.createOscillator();
     const snapGain = this.ctx.createGain();
@@ -66,13 +202,11 @@ class QuantumAudioEngine {
     osc2.type = 'sawtooth';
     osc2.frequency.setValueAtTime(freq * 2, now);
 
-    // Filter to soften the sawtooth into a pleasant acoustic pluck
     const filter = this.ctx.createBiquadFilter();
     filter.type = 'lowpass';
     filter.frequency.setValueAtTime(isOver ? 3200 : 1800, now);
     filter.frequency.exponentialRampToValueAtTime(300, now + 0.3);
 
-    // Fast decay envelope (tactile snap)
     snapGain.gain.setValueAtTime(0.001, now);
     snapGain.gain.linearRampToValueAtTime(0.4, now + 0.015);
     snapGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.35);
@@ -89,7 +223,7 @@ class QuantumAudioEngine {
   }
 
   /**
-   * Shimmering quantum bubbles as ingredients swirl in the bowl
+   * Shimmering quantum bubbles as ingredients swirl
    */
   public playFusionShimmer() {
     if (this.isMuted) return;
@@ -97,7 +231,7 @@ class QuantumAudioEngine {
     if (!this.ctx || !this.masterGain) return;
 
     const now = this.ctx.currentTime;
-    const pitches = [523.25, 659.25, 783.99, 1046.5, 1318.5]; // C-E-G-C-E cosmic pentatonic
+    const pitches = [523.25, 659.25, 783.99, 1046.5, 1318.5];
 
     pitches.forEach((freq, idx) => {
       if (!this.ctx || !this.masterGain) return;
@@ -122,7 +256,7 @@ class QuantumAudioEngine {
   }
 
   /**
-   * Victory dish chime when a super-particle dish is crafted
+   * Victory dish chime
    */
   public playSuccessChime() {
     if (this.isMuted) return;
@@ -130,7 +264,7 @@ class QuantumAudioEngine {
     if (!this.ctx || !this.masterGain) return;
 
     const now = this.ctx.currentTime;
-    const chord = [440, 554.37, 659.25, 880, 1108.73]; // A major triumphant chord
+    const chord = [440, 554.37, 659.25, 880, 1108.73];
 
     chord.forEach((freq, i) => {
       if (!this.ctx || !this.masterGain) return;
@@ -153,7 +287,7 @@ class QuantumAudioEngine {
   }
 
   /**
-   * Decoherence glitch sound (burnt dish / identity particle)
+   * Decoherence glitch sound
    */
   public playGlitchSound() {
     if (this.isMuted) return;
@@ -179,7 +313,7 @@ class QuantumAudioEngine {
   }
 
   /**
-   * Playful mascot chirp / bloop when Quark speaks or is poked
+   * Playful mascot chirp / bloop
    */
   public playMascotChirp(pitchVariant: number = 0) {
     if (this.isMuted) return;
@@ -187,7 +321,7 @@ class QuantumAudioEngine {
     if (!this.ctx || !this.masterGain) return;
 
     const now = this.ctx.currentTime;
-    const baseFreq = 587.33 * Math.pow(1.059, pitchVariant); // D5 base with pitch variation
+    const baseFreq = 587.33 * Math.pow(1.059, pitchVariant);
 
     const osc = this.ctx.createOscillator();
     const gain = this.ctx.createGain();
