@@ -130,27 +130,27 @@ export default function QuantumKitchenPlayPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0c0e11] text-[#e2e2e6] flex flex-col justify-between selection:bg-[#00f0ff] selection:text-[#0c0e11] transition-colors duration-200">
+    <div className="min-h-screen bg-[#0a0712] text-[#f5f4ff] flex flex-col justify-between selection:bg-[#423ea6] selection:text-white transition-colors duration-200">
       {/* 1. TOP HUD NAVIGATION (Cyber Cockpit Bar) */}
-      <header className="flex justify-between items-center w-full px-4 sm:px-8 py-2.5 border-b border-[#3b494b] sticky top-0 z-50 bg-[#0c0e11]/90 backdrop-blur-md">
+      <header className="flex justify-between items-center w-full px-4 sm:px-8 py-2.5 border-b border-[#7b5d95]/35 sticky top-0 z-50 bg-[#523e58]/35 backdrop-blur-xl">
         {/* Brand Badge */}
         <Link href="/" className="flex items-center gap-2.5 shrink-0 group">
-          <div className="w-8 h-8 rounded bg-[#282a2d] border border-[#3b494b] flex items-center justify-center text-[#00f0ff] glow-cyan group-hover:scale-105 transition-transform">
-            <ChefHat className="h-5 w-5 text-[#00f0ff]" />
+          <div className="w-8 h-8 rounded-lg bg-[#523e58]/70 border border-[#9d9be5]/40 flex items-center justify-center text-[#9d9be5] shadow-[0_0_12px_rgba(157,155,229,0.3)] group-hover:scale-105 transition-transform">
+            <ChefHat className="h-5 w-5 text-[#9d9be5]" />
           </div>
           <div className="flex items-center gap-2">
-            <span className="font-headline text-sm sm:text-base tracking-widest uppercase font-bold text-[#dbfcff]">
+            <span className="font-headline text-sm sm:text-base tracking-widest uppercase font-bold text-[#f5f4ff]">
               Quantum Kitchen
             </span>
-            <span className="w-2 h-2 rounded-full bg-[#00f0ff] animate-pulse" />
+            <span className="w-2 h-2 rounded-full bg-[#9d9be5] animate-pulse" />
           </div>
         </Link>
 
         {/* Center: Cyber Order Switcher Capsule (with Prev / Next navigation) */}
-        <div className="flex items-center gap-1.5 sm:gap-2 bg-[#1a1c1f] border border-[#3b494b] px-2 sm:px-3 py-1 rounded-lg shadow-inner">
+        <div className="flex items-center gap-1.5 sm:gap-2 bg-[#523e58]/60 border border-[#7b5d95]/50 px-2 sm:px-3 py-1 rounded-lg shadow-inner">
           <button
             onClick={handlePrevRecipe}
-            className="w-6 h-6 rounded flex items-center justify-center text-[#849495] hover:text-[#00f0ff] hover:bg-[#282a2d] transition-colors cursor-pointer active:scale-95"
+            className="w-6 h-6 rounded flex items-center justify-center text-[#9d9be5]/70 hover:text-white hover:bg-[#7b5d95]/40 transition-colors cursor-pointer active:scale-95"
             title="Previous Recipe Order"
           >
             <ChevronLeft className="h-4 w-4" />
@@ -158,17 +158,17 @@ export default function QuantumKitchenPlayPage() {
 
           <div className="flex items-center gap-2 px-1 sm:px-2">
             <span className="text-sm">{activeRecipe.dishIcon}</span>
-            <span className="font-label text-xs sm:text-sm font-bold text-[#7df4ff] tracking-wider uppercase truncate max-w-[150px] sm:max-w-[240px]">
+            <span className="font-label text-xs sm:text-sm font-bold text-[#9d9be5] tracking-wider uppercase truncate max-w-[150px] sm:max-w-[240px]">
               {`Order ${recipeIndex + 1}/${COSMIC_RECIPES.length}: ${activeRecipe.name}`}
             </span>
-            <span className="font-label text-[10px] text-[#849495] hidden md:inline">
+            <span className="font-label text-[10px] text-[#9d9be5]/60 hidden md:inline">
               ({activeRecipe.strandCount} Strands)
             </span>
           </div>
 
           <button
             onClick={handleNextRecipe}
-            className="w-6 h-6 rounded flex items-center justify-center text-[#849495] hover:text-[#00f0ff] hover:bg-[#282a2d] transition-colors cursor-pointer active:scale-95"
+            className="w-6 h-6 rounded flex items-center justify-center text-[#9d9be5]/70 hover:text-white hover:bg-[#7b5d95]/40 transition-colors cursor-pointer active:scale-95"
             title="Next Recipe Order"
           >
             <ChevronRight className="h-4 w-4" />
@@ -178,24 +178,24 @@ export default function QuantumKitchenPlayPage() {
         {/* Trailing Actions Cluster */}
         <div className="flex items-center gap-2 sm:gap-3 shrink-0">
           {/* Gold Coin Badge */}
-          <div className="flex items-center gap-1.5 px-3 py-1 bg-[#282a2d] border border-[#f0c119]/50 rounded text-[#f0c119] font-label text-xs font-bold shadow-xs">
+          <div className="flex items-center gap-1.5 px-3 py-1 bg-[#523e58]/70 border border-[#9547a9]/50 rounded-lg text-[#9d9be5] font-label text-xs font-bold shadow-xs">
             <span>🪙</span>
             <span className="tracking-wide text-white">{credits.toLocaleString()}</span>
-            <span className="text-[11px] text-[#f0c119]/90 font-medium">Q-Credits</span>
+            <span className="text-[11px] text-[#9d9be5]/90 font-medium">Q-Credits</span>
           </div>
 
           {/* Icon Actions */}
-          <div className="flex items-center gap-1 border-l border-[#3b494b] pl-2">
+          <div className="flex items-center gap-1 border-l border-[#7b5d95]/40 pl-2">
             <button
               onClick={toggleSound}
-              className="w-7 h-7 rounded flex items-center justify-center text-[#b9cacb] hover:text-[#00f0ff] hover:bg-[#282a2d] transition-all cursor-pointer active:scale-95"
+              className="w-7 h-7 rounded flex items-center justify-center text-[#9d9be5]/80 hover:text-white hover:bg-[#7b5d95]/40 transition-all cursor-pointer active:scale-95"
               title={isMuted ? 'Unmute Audio' : 'Mute Audio'}
             >
-              {isMuted ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4 text-[#00f0ff]" />}
+              {isMuted ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4 text-[#9d9be5]" />}
             </button>
             <button
               onClick={() => setHowToPlayOpen(true)}
-              className="w-7 h-7 rounded flex items-center justify-center text-[#b9cacb] hover:text-[#00f0ff] hover:bg-[#282a2d] transition-all cursor-pointer active:scale-95"
+              className="w-7 h-7 rounded flex items-center justify-center text-[#9d9be5]/80 hover:text-white hover:bg-[#7b5d95]/40 transition-all cursor-pointer active:scale-95"
               title="Kitchen Guide"
             >
               <HelpCircle className="h-4 w-4" />
@@ -203,10 +203,10 @@ export default function QuantumKitchenPlayPage() {
             <ThemeToggle />
             <Link
               href="/admin"
-              className="w-7 h-7 rounded flex items-center justify-center text-[#b9cacb] hover:text-[#00f0ff] hover:bg-[#282a2d] transition-all cursor-pointer active:scale-95"
+              className="w-7 h-7 rounded flex items-center justify-center text-[#9d9be5]/80 hover:text-white hover:bg-[#7b5d95]/40 transition-all cursor-pointer active:scale-95"
               title="Synthesis Lab Portal"
             >
-              <Atom className="h-4 w-4 text-[#00f0ff]" />
+              <Atom className="h-4 w-4 text-[#9d9be5]" />
             </Link>
           </div>
         </div>

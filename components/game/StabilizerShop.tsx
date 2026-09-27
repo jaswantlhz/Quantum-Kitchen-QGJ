@@ -11,19 +11,19 @@ interface StabilizerShopProps {
 
 export function StabilizerShop({ upgrades, credits, onBuyUpgrade }: StabilizerShopProps) {
   return (
-    <div className="bg-[#1a1c1f] border border-[#3b494b] rounded-xl p-3.5 sm:p-4 shadow-md">
+    <div className="bg-[#523e58]/25 border border-[#7b5d95]/40 rounded-xl p-3.5 sm:p-4 shadow-md backdrop-blur-md">
       {/* Title Bar */}
-      <div className="flex items-center justify-between mb-3 pb-2 border-b border-[#3b494b]/40">
+      <div className="flex items-center justify-between mb-3 pb-2 border-b border-[#7b5d95]/35">
         <div className="flex items-center gap-2">
-          <span className="font-label text-xs uppercase tracking-wider text-[#00f0ff] font-bold">
+          <span className="font-label text-xs uppercase tracking-wider text-[#9d9be5] font-bold">
             Kitchen Upgrades
           </span>
-          <span className="text-[#3b494b] text-xs">•</span>
-          <span className="font-label text-xs text-[#b9cacb]">
+          <span className="text-[#7b5d95] text-xs">•</span>
+          <span className="font-label text-xs text-[#9d9be5]/80">
             Permanent Cooking Boosts
           </span>
         </div>
-        <span className="font-label text-[11px] text-[#849495] hidden sm:inline">
+        <span className="font-label text-[11px] text-[#9d9be5]/70 hidden sm:inline">
           Invest Q-Credits to improve yields
         </span>
       </div>
@@ -33,19 +33,20 @@ export function StabilizerShop({ upgrades, credits, onBuyUpgrade }: StabilizerSh
         {upgrades.map((u, i) => {
           const isMaxed = u.level >= u.maxLevel;
           const canAfford = credits >= u.cost && !isMaxed;
-          const colorTheme = i % 3 === 0 ? '#00f0ff' : i % 3 === 1 ? '#d4bbff' : '#f0c119';
+          const pipColors = ['#9d9be5', '#9547a9', '#423ea6', '#7b5d95'];
+          const activePipColor = pipColors[i % pipColors.length];
 
           return (
             <div
               key={u.id}
-              className="bg-[#1e2023] border border-[#3b494b]/60 hover:border-[#00f0ff]/50 transition-all rounded-lg p-2.5 flex items-center justify-between group shadow-xs"
+              className="bg-[#523e58]/40 border border-[#7b5d95]/40 hover:border-[#9d9be5]/60 transition-all rounded-lg p-2.5 flex items-center justify-between group shadow-xs"
             >
               <div className="flex items-center gap-2.5 min-w-0 pr-1">
-                <div className="w-9 h-9 rounded bg-[#282a2d] border border-[#3b494b] flex items-center justify-center text-lg shrink-0">
+                <div className="w-9 h-9 rounded-lg bg-[#523e58]/70 border border-[#7b5d95]/50 flex items-center justify-center text-lg shrink-0">
                   {u.icon}
                 </div>
                 <div className="min-w-0">
-                  <div className="font-label text-xs font-semibold text-[#e2e2e6] truncate">
+                  <div className="font-label text-xs font-semibold text-[#f5f4ff] truncate">
                     {u.name}
                   </div>
                   {/* Level pip indicators */}
@@ -55,11 +56,11 @@ export function StabilizerShop({ upgrades, credits, onBuyUpgrade }: StabilizerSh
                         key={lvl}
                         className="w-2.5 h-1 rounded-xs"
                         style={{
-                          backgroundColor: lvl < u.level ? colorTheme : '#3b494b',
+                          backgroundColor: lvl < u.level ? activePipColor : 'rgba(123, 93, 149, 0.4)',
                         }}
                       />
                     ))}
-                    <span className="font-label text-[10px] text-[#849495] ml-1">
+                    <span className="font-label text-[10px] text-[#9d9be5]/70 ml-1">
                       {isMaxed ? 'MAX' : `Lv. ${u.level}/${u.maxLevel}`}
                     </span>
                   </div>
@@ -69,12 +70,12 @@ export function StabilizerShop({ upgrades, credits, onBuyUpgrade }: StabilizerSh
               <button
                 disabled={!canAfford || isMaxed}
                 onClick={() => onBuyUpgrade(u.id)}
-                className={`px-2.5 py-1.5 rounded font-label text-xs font-semibold transition-all shrink-0 whitespace-nowrap ${
+                className={`px-3 py-1.5 rounded-lg font-label text-xs font-semibold transition-all shrink-0 whitespace-nowrap cursor-pointer ${
                   isMaxed
-                    ? 'bg-[#1a1c1f] border border-[#3b494b]/30 text-[#849495] cursor-not-allowed'
+                    ? 'bg-[#523e58]/30 border border-[#7b5d95]/30 text-[#7b5d95] cursor-not-allowed'
                     : canAfford
-                    ? 'bg-[#282a2d] hover:bg-[#333538] border border-[#00f0ff]/40 text-[#00f0ff] active:scale-95 cursor-pointer glow-cyan-btn'
-                    : 'bg-[#282a2d] border border-[#3b494b] text-[#849495] opacity-50 cursor-not-allowed'
+                    ? 'bg-gradient-to-r from-[#423ea6] to-[#9547a9] hover:from-[#523e58] hover:to-[#9547a9] text-white border border-[#9d9be5]/50 active:scale-95 shadow-[0_0_12px_rgba(149,71,169,0.35)]'
+                    : 'bg-[#523e58]/50 border border-[#7b5d95]/40 text-[#7b5d95] opacity-50 cursor-not-allowed'
                 }`}
               >
                 {isMaxed ? 'MAXED' : `+${u.cost} 🪙`}
